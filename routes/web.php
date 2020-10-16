@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Users routes
+Route::get("users/show/{type?}", 'UsersController@home');
+Route::post("users/insert", 'UsersController@insert');
+Route::get("users/edit/{id}", 'UsersController@edit');
+Route::post("users/update", 'UsersController@update');
+
 //Dashboard users
 Route::get("dash/users/all", 'DashUsersController@index');
 Route::post("dash/users/insert", 'DashUsersController@insert');

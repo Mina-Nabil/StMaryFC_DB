@@ -156,8 +156,8 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-meh"></i><span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('users/show')}}">All App Users</a></li>
-                                <li><a href="{{url('users/show/1')}}">5odam</a></li>
-                                <li><a href="{{url('users/show/2')}}">Ma5domeen</a></li>
+                                <li><a href="{{url('users/managers')}}">Admins</a></li>
+                                <li><a href="{{url('users/kids')}}">Kids</a></li>
                                 <li><a href="{{url('users/add')}}">Add New User</a></li>
                             </ul>
                         </li>

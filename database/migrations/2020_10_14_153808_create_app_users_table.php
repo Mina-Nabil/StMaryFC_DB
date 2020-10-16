@@ -22,11 +22,11 @@ class CreateAppUsersTable extends Migration
             $table->id();
             $table->string("USER_NAME")->unique();
             $table->foreignId("USER_USTP_ID")->constrained("app_user_types");
-            $table->date("USER_BDAY");
+            $table->date("USER_BDAY")->nullable();;
             $table->string("USER_CLASS_NAME")->nullable();
             $table->string("USER_MAIL")->nullable();
             $table->string("USER_PASS")->nullable();
-            $table->string("USER_FACE_ID")->nullable();
+            $table->string("USER_FACE_ID")->unique();
             $table->string("USER_MAIN_IMGE")->nullable();
 
         });
