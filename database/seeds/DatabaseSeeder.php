@@ -20,7 +20,14 @@ class DatabaseSeeder extends Seeder
         DB::table('dash_users')->insert([
             "DASH_USNM" => "mina",
             "DASH_FLNM" => "Mina Nabil",
-            "DASH_PASS" => bcrypt('mina@petmatch'),           
+            "DASH_PASS" => bcrypt('mina@stmary'),           
+            "DASH_TYPE_ID" => 1,
+        ]);
+
+        DB::table('dash_users')->insert([
+            "DASH_USNM" => "admin",
+            "DASH_FLNM" => "Mr Peter",
+            "DASH_PASS" => bcrypt('stmaryadmin'),           
             "DASH_TYPE_ID" => 1,
         ]);
     }
