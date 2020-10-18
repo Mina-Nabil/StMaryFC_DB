@@ -61,8 +61,8 @@
                 <!-- ============================================================== -->
                 <!-- Logo -->
                 <!-- ============================================================== -->
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{route('home')}}">
+                <div class="navbar-header d-none d-lg-block ">
+                    <div class="navbar-brand" ></div>
                         <!-- Logo icon --><b>
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
@@ -71,7 +71,7 @@
                             {{-- <img src="{{ asset('images/light-logo.png') }}" height=40px alt="homepage" class="light-logo" /> --}}
                         </b>
                         <!--End Logo icon -->
-                        <!-- Logo text --><span>
+                        <!-- Logo text --><span></span>
                             <!-- dark Logo text -->
                             {{-- <img src="{{ asset('images/dark-text.png') }}" height=40px alt="homepage" class="dark-logo" /> --}}
                             <!-- Light Logo text -->
@@ -148,7 +148,7 @@
                                 <i class="fas fa-calendar-check"></i><span class="hide-menu">Attendance</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('attendance/last/week')}}">Last Week</a></li>
-                                <li><a href="{{url('attendance/last/month')}}">Last Month</a></li>
+                                <li><a href="{{url('attendance/show')}}">Current Month</a></li>
                                 <li><a href="{{url('attendance/query')}}">From/To</a></li>
                                 <li><a href="{{url('attendance/add')}}">Take Attendance</a></li>
                             </ul>
@@ -195,9 +195,9 @@
                     </div>
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
-                            <a style="font-family: 'Oswald'" href="{{url('clients/trans/add')}}" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add App User</a>
-                            <a style="font-family: 'Oswald'" href="{{url('suppliers/trans/add')}}" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add User Image</a>
-                            <a style="font-family: 'Oswald'" href="{{url('sales/add')}}" class="btn btn-info d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add Attendance
+                            <a style="font-family: 'Oswald'" href="{{url('users/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add App User</a>
+                            <a style="font-family: 'Oswald'" href="{{url('suppliers/trans/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add User Payment</a>
+                            <a style="font-family: 'Oswald'" href="{{url('attendance/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Manual Attendance
                             </a>
 
                         </div>

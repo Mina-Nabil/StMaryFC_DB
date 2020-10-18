@@ -40,5 +40,10 @@ class DatabaseSeeder extends Seeder
             'id' => 2,
             "USTP_NAME" => "Kid"
         ]);
+
+        DB::table('groups')->insert([
+            'id' => 1,
+            "GRUP_NAME" => "Admins"
+        ]);
     }
 }

@@ -15,7 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Attendance routes
-Route::get('attendance/show', "AttendanceController@home");
+Route::get('attendance/show', "AttendanceController@month");
+Route::get('attendance/last/week', "AttendanceController@week");
+Route::get('attendance/query', "AttendanceController@queryPage");
+Route::post('attendance/query', "AttendanceController@queryRes");
+Route::get('attendance/add', "AttendanceController@newAttendance");
+Route::post('attendance/insert', "AttendanceController@insert");
 Route::post('attendance/take', "AttendanceController@takeAttendance");
 Route::get('attendance/delete/{id}','AttendanceController@deleteAttendance');
 
