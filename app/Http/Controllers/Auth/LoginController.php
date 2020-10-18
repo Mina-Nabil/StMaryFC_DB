@@ -39,7 +39,7 @@ class LoginController extends Controller
     }
 
     public function username(){
-        return 'DASH_USER';
+        return 'DASH_USNM';
     }
     
 }

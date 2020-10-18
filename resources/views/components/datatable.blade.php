@@ -22,7 +22,7 @@
         <h6 class="card-subtitle">{{$subtitle}}</h6>
         @endif
         <div class="table-responsive m-t-5">
-            <table id="{{$id}}" class="table color-bordered-table table-striped full-color-table full-info-table hover-table" data-display-length='-1' data-order="[]">
+            <table id="{{$id}}" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
                 <thead>
                     <tr>
                         @foreach($cols as $col)
@@ -39,8 +39,10 @@
                         @if(is_array($att))
                         @if(array_key_exists('edit', $att))
                         <td><a href="{{ url( $att['edit']['url'] . $item->{$att['edit']['att']}) }}"><img src="{{ asset('images/edit.png') }}" width=25 height=25></a></td>
+                        @elseif(array_key_exists('del', $att))
+                        <td><div onclick="confirmAndGoTo('{{url( $att['del']['url'] . $item->{$att['del']['att']})}}', 'delete this row')" ><img src="{{ asset('images/del.png') }}" width=25 height=25></div></td>
                         @elseif(array_key_exists('foreign', $att))
-                        <td>{{ $item->{$att['foreign'][0]}->{$att['foreign'][1]}  }}</td>
+                        <td>{{ $item->{$att['foreign'][0]}->{$att['foreign'][1]} ?? '' }}</td>
                         @elseif(array_key_exists('sumForeign', $att))
                         <td>{{ $item->{$att['sumForeign']['rel']}->sum($att['sumForeign']['att'])  }}</td>
                         @elseif(array_key_exists('url', $att))
@@ -51,8 +53,10 @@
                         @elseif(array_key_exists('verified', $att))
                         <td>{{ $item->{$att['verified']['att']}  }}
                             @if($item->{$att['verified']['isVerified']})
-                            <i class="fas fa-check-circle" style="color:lightgreen">
-                                @endif
+                                <i class="fas fa-check-circle" style="color:lightgreen">
+                            @else
+                                <i class=" fas fa-exclamation-circle" style="color:red">
+                            @endif
                         </td>
                         @elseif(array_key_exists('dynamicUrl', $att))
                         <td><a href="{{ url($att['dynamicUrl'][0].$item->{$att['dynamicUrl']['val']}) }}">{{ $item->{$att['dynamicUrl']['att']}  }}</a></td>
@@ -76,22 +80,27 @@
                             </a>
                         </td>
                         @elseif(array_key_exists('date', $att))
-                        <td>{{ $item->{$att['date']['att']}->format($att['date']['format'])  }}</a></td>
+                        <td>{{  $item->{$att['date']['att']}->format($att['date']['format'] ?? 'd-M-y h:i A')  }}</a></td>
+                        @elseif(array_key_exists('number', $att))
+                        <td>{{ number_format($item->{$att['number']['att']}, $att['nums'] ?? 2)  }}</a></td>
                         @elseif(array_key_exists('attUrl', $att))
                         <td><a href="{{ url($att['attUrl']['url'] . '/' . $item->{$att['attUrl']['urlAtt']}) }}">{{ $item->{$att['attUrl']['shownAtt']}  }}</a></td>
                         @elseif(array_key_exists('urlOrStatic', $att))
                         @isset($item->{$att['urlOrStatic']['shownAtt']})
                         <td><a href="{{ url($att['urlOrStatic']['url'] . '/' . $item->{$att['urlOrStatic']['urlAtt']}) }}">{{ $item->{$att['urlOrStatic']['shownAtt']}  }}</a></td>
-                        @else 
+                        @else
                         <td>{{ $item->{$att['urlOrStatic']['static']}  }}</td>
                         @endisset
                         @elseif(array_key_exists('foreignUrl', $att))
                         <td><a href="{{ url($att['foreignUrl'][0] . '/' . $item->{$att['foreignUrl']['1']}) }}">{{ $item->{$att['foreignUrl'][2]}->{$att['foreignUrl'][3]}  }}</a></td>
-                        @elseif(array_key_exists('attOrAtt', $att))
-                        <td>{{  isset($item->{$att['attOrAtt']['basicAtt']}) ? $item->{$att['attOrAtt']['basicAtt']} :  $item->{$att['attOrAtt']['otherAtt']} ?? ''  }}</td>
                         @elseif(array_key_exists('assetImg', $att))
-                        <td>   
+                        <td>
                             <img src="{{ asset( 'storage/'. $item->{$att['assetImg']['filename']}) }}" height="36" style="width: auto" />
+                        </td>
+                        @elseif(array_key_exists('comment', $att))
+                        <td>
+                            <button type="button" style="padding:.1rem" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom" data-content="{{$item->{$att['comment']['att']} }}" data-original-title="Comment:">  <i class="far fa-list-alt"></i>
+                            </button>
                         </td>
                         @endif
                         @else
@@ -117,7 +126,7 @@
                     buttons: [
                         {
                             extend: 'excel',
-                            title: 'Whale Dashboard',
+                            title: 'Genuine Giant',
                             footer: true,
                         }
                     ]

@@ -23,11 +23,10 @@ class CreateAppUsersTable extends Migration
             $table->string("USER_NAME")->unique();
             $table->foreignId("USER_USTP_ID")->constrained("app_user_types");
             $table->date("USER_BDAY")->nullable();;
-            $table->string("USER_CLASS_NAME")->nullable();
             $table->string("USER_MAIL")->nullable();
             $table->string("USER_PASS")->nullable();
             $table->string("USER_FACE_ID")->unique();
-            $table->string("USER_MAIN_IMGE")->nullable();
+            $table->foreignId("USER_MAIN_IMGE")->nullable();
 
         });
 
@@ -35,6 +34,10 @@ class CreateAppUsersTable extends Migration
             $table->id();
             $table->foreignId("USIM_USER_ID")->constrained("app_users");
             $table->string("USIM_URL");
+        });
+
+        Schema::table('app_users', function (Blueprint $table){
+            $table->foreign('USER_MAIN_IMGE')->on('app_user_images')->references('id');
         });
     }
 
@@ -45,6 +48,9 @@ class CreateAppUsersTable extends Migration
      */
     public function down()
     {
+        Schema::table('app_users', function (Blueprint $table){
+            $table->dropForeign('app_users_user_main_imge_foreign');
+        });
         Schema::dropIfExists('app_user_images');
         Schema::dropIfExists('app_users');
         Schema::dropIfExists('app_user_types');

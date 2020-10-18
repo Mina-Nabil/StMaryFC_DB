@@ -14,11 +14,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Attendance routes
+Route::get('attendance/show', "AttendanceController@home");
+Route::post('attendance/take', "AttendanceController@takeAttendance");
+Route::get('attendance/delete/{id}','AttendanceController@deleteAttendance');
+
 //Users routes
 Route::get("users/show/{type?}", 'UsersController@home');
+Route::get("users/profile/{id}", 'UsersController@profile');
+Route::get("users/toggle/{id}", 'UsersController@toggle');
+Route::get("users/add", 'UsersController@addPage');
 Route::post("users/insert", 'UsersController@insert');
-Route::get("users/edit/{id}", 'UsersController@edit');
 Route::post("users/update", 'UsersController@update');
+Route::post("users/add/image", 'UsersController@attachImage');
+Route::get("users/setimage/{userID}/{imageID}", 'UsersController@setMainImage');
+
+//Groups routes
+Route::get('groups/show', 'GroupsController@home');
+Route::get('groups/edit/{id}', 'GroupsController@edit');
+Route::post('groups/insert', 'GroupsController@insert');
+Route::post('groups/update', 'GroupsController@update');
 
 //Dashboard users
 Route::get("dash/users/all", 'DashUsersController@index');

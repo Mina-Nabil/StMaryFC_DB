@@ -7,7 +7,7 @@ use App\Models\DashUser;
 use Illuminate\Http\Request;
 
 class DashUsersController extends Controller
-{
+{ 
     protected $data;
     //init page data
     private function initDataArr()
@@ -16,7 +16,6 @@ class DashUsersController extends Controller
         $this->data['types'] = DashType::all();
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cardTitle'] = "Dash";
         $this->data['cols'] = ['Username', 'Fullname', 'Type', 'Edit'];
         $this->data['atts'] = ['DASH_USNM', 'DASH_FLNM', ['foreign' => ['dash_types', 'DHTP_NAME']], ['edit' => ['url' => 'dash/users/edit/', 'att' => 'id']]];
         $this->data['homeURL'] = 'dash/users/all';

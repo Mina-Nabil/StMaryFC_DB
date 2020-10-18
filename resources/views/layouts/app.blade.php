@@ -147,22 +147,24 @@
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                                 <i class="fas fa-calendar-check"></i><span class="hide-menu">Attendance</span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="{{url('breeds/show')}}">Last 100</a></li>
-                                <li><a href="{{url('cities/show')}}">From/To</a></li>
-                                <li><a href="{{url('cities/show')}}">Take Attendance</a></li>
+                                <li><a href="{{url('attendance/last/week')}}">Last Week</a></li>
+                                <li><a href="{{url('attendance/last/month')}}">Last Month</a></li>
+                                <li><a href="{{url('attendance/query')}}">From/To</a></li>
+                                <li><a href="{{url('attendance/add')}}">Take Attendance</a></li>
                             </ul>
                         </li>
 
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-meh"></i><span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('users/show')}}">All App Users</a></li>
-                                <li><a href="{{url('users/managers')}}">Admins</a></li>
-                                <li><a href="{{url('users/kids')}}">Kids</a></li>
+                                <li><a href="{{url('users/show/1')}}">Admins</a></li>
+                                <li><a href="{{url('users/show/2')}}">Kids</a></li>
                                 <li><a href="{{url('users/add')}}">Add New User</a></li>
                             </ul>
                         </li>
 
 
+                        <li> <a href="{{url('groups/show')}}"><i class=" fas fa-graduation-cap"></i>Groups</a>
                         <li> <a href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i>Admins</a>
 
                         </li>

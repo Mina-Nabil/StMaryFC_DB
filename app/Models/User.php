@@ -12,6 +12,32 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     protected $table = "app_users";
+    public $timestamps = false;
+
+    public function images(){
+        return $this->hasMany('App\Models\UserImage', "USIM_USER_ID");
+    }
+    public function mainImage(){
+        return $this->hasOne('App\Models\UserImage', 'id', "USER_MAIN_IMGE");
+    }
+
+    public function type(){
+        return $this->belongsTo('App\Models\UserType', 'USER_USTP_ID');
+    }
+
+    public function group(){
+        return $this->belongsTo('App\Models\Group', 'USER_GRUP_ID');
+    }
+
+    public function attendance(){
+        return $this->hasMany('App\Models\Attendance', "ATND_USER_ID");
+    }
+
+    public function getLatestAttendance(){
+        return Attendance::where('ATND_USER_ID', $this->id)->orderByDesc('ATND_DATE')->limit(200)->get();
+    }
+
+
 
     /**
      * The attributes that are mass assignable.
@@ -37,7 +63,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'USER_BDAY' => 'datetime',
     ];
 
     /**

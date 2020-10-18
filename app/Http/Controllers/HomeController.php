@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -55,5 +56,10 @@ class HomeController extends Controller
     {
         if (!Auth::check()) return redirect('/login');
         return view('home');
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+        return redirect('login');
     }
 }
