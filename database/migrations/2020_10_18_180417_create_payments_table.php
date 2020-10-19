@@ -15,7 +15,14 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('PYMT_USER_ID')->constrained('app_users');
+            $table->double("PYMT_AMNT");
+            $table->date("PYMT_DATE");
+            $table->string("PYMT_NOTE")->nullable();
+        });
+
+        Schema::table('attendance', function (Blueprint $table){
+            $table->tinyInteger('ATND_PAID')->default(0);
         });
     }
 
@@ -26,6 +33,9 @@ class CreatePaymentsTable extends Migration
      */
     public function down()
     {
+        Schema::table('attendance', function (Blueprint $table){
+            $table->dropColumn('ATND_PAID');
+        });
         Schema::dropIfExists('payments');
     }
 }

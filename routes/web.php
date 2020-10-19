@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Payments routes
+Route::get('payments/show', "PaymentsController@month");
+Route::get('payments/due', "PaymentsController@due");
+Route::get('payments/query', "PaymentsController@queryPage");
+Route::post('payments/query', "PaymentsController@queryRes");
+Route::get('payments/add', "PaymentsController@addPayment");
+Route::post('payments/insert', "PaymentsController@insert");
+Route::get('payments/delete/{id}','PaymentsController@delete');
+Route::get('payments/get/unpaid/{userID}', 'PaymentsController@getUnpaidDays');
+
 //Attendance routes
 Route::get('attendance/show', "AttendanceController@month");
 Route::get('attendance/last/week', "AttendanceController@week");

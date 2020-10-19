@@ -145,6 +145,16 @@
 
 
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="fas fa-dollar-sign"></i><span class="hide-menu">Payments</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{url('payments/due')}}">Due</a></li>
+                                <li><a href="{{url('payments/show')}}">Current Month</a></li>
+                                <li><a href="{{url('payments/query')}}">Report</a></li>
+                                <li><a href="{{url('payments/add')}}">Add Payment</a></li>
+                            </ul>
+                        </li>
+
+                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                                 <i class="fas fa-calendar-check"></i><span class="hide-menu">Attendance</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('attendance/last/week')}}">Last Week</a></li>
@@ -257,7 +267,7 @@
         <!-- footer -->
         <!-- ============================================================== -->
         <footer class="footer">
-            © 2019 {{config('app.name', 'PetMatch')}} by mSquareApps
+            © 2020 {{config('app.name', 'PetMatch')}} by mSquareApps
         </footer>
         <!-- ============================================================== -->
         <!-- End footer -->
@@ -564,6 +574,7 @@
 
     </script>
     <!-- End Table Search Script -->
+    @yield("js_content")
 </body>
 
 </html>
