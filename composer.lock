@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b863c66a7db658cefe7be5f1b7e07767",
+    "content-hash": "4582edc1caebce42d016c233da9d33a3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4745,16 +4745,16 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v4.1.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "f7505183009bebd7636f3efded2b177a8827b2a3"
+                "reference": "556b2ee357cd40ed5bf7d230cf2ba85528fc0714"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/f7505183009bebd7636f3efded2b177a8827b2a3",
-                "reference": "f7505183009bebd7636f3efded2b177a8827b2a3",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/556b2ee357cd40ed5bf7d230cf2ba85528fc0714",
+                "reference": "556b2ee357cd40ed5bf7d230cf2ba85528fc0714",
                 "shasum": ""
             },
             "require": {
@@ -4765,15 +4765,11 @@
                 "symfony/console": "^5.0"
             },
             "require-dev": {
-                "facade/ignition": "^2.0",
-                "fideloper/proxy": "^4.2",
-                "fruitcake/laravel-cors": "^1.0",
                 "laravel/framework": "^7.0",
-                "laravel/tinker": "^2.0",
                 "nunomaduro/larastan": "^0.5",
                 "orchestra/testbench": "^5.0",
                 "phpstan/phpstan": "^0.12.3",
-                "phpunit/phpunit": "^8.5.1 || ^9.0"
+                "phpunit/phpunit": "^8.5.1"
             },
             "type": "library",
             "extra": {
@@ -4811,7 +4807,7 @@
                 "php",
                 "symfony"
             ],
-            "time": "2020-02-04T21:11:24+00:00"
+            "time": "2020-01-22T21:36:14+00:00"
         },
         {
             "name": "phar-io/manifest",
