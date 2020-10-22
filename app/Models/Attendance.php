@@ -31,6 +31,16 @@ class Attendance extends Model
             ->get();
     }
 
+    public static function getAttendanceLite($from, $to, $user = 0)
+    {
+
+        $query = DB::table('attendance')->whereBetween('ATND_DATE', [$from, $to]);
+        if ($user != 0) {
+            $query = $query->where('ATND_USER_ID', $user);
+        }
+        return $query->select('attendance.id')->get();
+    }
+
     public static function getDuePayments()
     {
         return DB::table('attendance')->join('app_users', "app_users.id", '=', "ATND_USER_ID")

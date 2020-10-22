@@ -17,8 +17,13 @@ class Payment extends Model
         return $this->belongsTo('App\Models\User', "PYMT_USER_ID");
     }
 
-    public static function getPaymentsAttendanceArrayPerMonth($userID, $date)
+    public static function getPaymentsLite($from, $to, $user = 0)
     {
+        $query = DB::table('payments')->whereBetween('PYMT_DATE', [$from, $to]);
+        if ($user != 0) {
+            $query = $query->where('PYMT_USER_ID', $user);
+        }
+        return $query->select('id', 'PYMT_AMNT')->get();
     }
 
     public static function insertPayment($date, $userID, $amount, $note = '')

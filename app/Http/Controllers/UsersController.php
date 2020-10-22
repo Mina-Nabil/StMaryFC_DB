@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Group;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
@@ -205,5 +209,19 @@ class UsersController extends Controller
 
         //Images array
         $this->data['imageFormURL'] = url('users/add/image');
+
+        //Overview array
+        $now = new DateTime();
+        $year = $now->format('Y');
+        $this->data['overItems'] = array();
+        for($month=1 ; $month <13 ; $month++){
+            $date = new DateTime($year . '-' . $month . '-01');
+            $tmp = [ 
+                $date->format('F Y') ,
+                Attendance::getAttendanceLite($date->format('Y-m-01'), $date->format('Y-m-t'), $this->data['user']->id)->count(),
+                Payment::getPaymentsLite($date->format('Y-m-01'),$date->format('Y-m-t'), $this->data['user']->id)->sum('PYMT_AMNT')
+            ];
+            array_push($this->data['overItems'], $tmp);
+        }
     }
 }

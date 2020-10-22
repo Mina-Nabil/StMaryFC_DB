@@ -16,6 +16,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs profile-tab" role="tablist">
                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">User Info</a> </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#overview" role="tab">Overview</a> </li>
                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#attendance" role="tab">Attendance</a> </li>
                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#images" role="tab">Images</a> </li>
                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a> </li>
@@ -32,7 +33,7 @@
                             </div>
                             <div class="col-md-3 col-xs-6 b-r"> <strong>Class Name</strong>
                                 <br>
-                                <p class="text-muted">{{$user->USER_CLASS_NAME ?? ''}}</p>
+                                <p class="text-muted">{{$user->group->GRUP_NAME ?? ''}}</p>
                             </div>
                             <div class="col-md-3 col-xs-6"> <strong>Birthdate</strong>
                                 <br>
@@ -45,6 +46,32 @@
                         <hr>
                         <strong>Email</strong>
                         <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane" id="overview" role="tabpanel">
+                    <div class="card-body">
+                        <div class="table-responsive m-t-5">
+                            <table id="overTable" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
+                                <thead>
+                                    <th>Month</th>
+                                    <th>Attendances</th>
+                                    <th>Paid</th>
+                                </thead>
+                                <tbody>
+                                    @foreach($overItems as $item)
+
+                                    <tr>
+                                        <td>{{$item[0]}}</td>
+                                        <td>{{$item[1]}}</td>
+                                        <td>{{number_format($item[2],2)}}</td>
+                                    </tr>
+                                 
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
