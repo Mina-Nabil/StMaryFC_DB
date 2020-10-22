@@ -57,7 +57,7 @@ class DashUsersController extends Controller
         $dashUser->DASH_USNM = $request->name;
         $dashUser->DASH_FLNM = $request->fullname;
         $dashUser->DASH_TYPE_ID = $request->type;
-        $dashUser->DASH_PASS = $request->password;
+        $dashUser->DASH_PASS = bcrypt($request->password);
 
         if ($request->hasFile('photo')) {
             $dashUser->DASH_IMGE = $request->photo->store('images/users', 'public');
