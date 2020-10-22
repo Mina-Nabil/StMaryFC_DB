@@ -121,7 +121,7 @@
                 <!-- User Profile-->
                 <div class="user-profile">
                     <div class="user-pro-body">
-                        @if(isset(Auth::user()->image))
+                        @if(isset(Auth::user()->DASH_IMGE))
                         <div><img src="{{ asset( 'storage/'. Auth::user()->DASH_IMGE ) }} " alt="user-img" class="img-circle"></div>
                         @else
                         <div><img src="{{ asset('assets/images/users/def-user.png') }} " alt="user-img" class="img-circle"></div>
