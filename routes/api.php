@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/login', 'ApiController@login');
+
+Route::middleware('auth:sanctum')->get('/current/user', 'ApiController@getCurrentUser');
+Route::middleware('auth:sanctum')->get('/user/by/id/{id}', 'ApiController@getUserByID');
+Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserByFaceID');
+Route::middleware('auth:sanctum')->get('/groups', 'ApiController@getGroups');
