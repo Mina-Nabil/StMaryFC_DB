@@ -24,7 +24,7 @@ class ApiController extends Controller
     public function getUserByID($userID)
     {
         $user = User::with(['group', 'type', 'mainImage'])->find($userID);
-        $user->mainImage = url($user->mainImage->USIM_URL);
+        $user->main_image = url($user->mainImage->USIM_URL);
         if ($user)
             return $this->getApiMessage(true, $user);
         else
