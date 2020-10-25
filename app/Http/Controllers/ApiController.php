@@ -25,7 +25,7 @@ class ApiController extends Controller
     {
         $user = User::with(['group', 'type', 'mainImage'])->find($userID);
         if ($user){
-            $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL) ?? '';
+            $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
             return $this->getApiMessage(true, $user);
         }
         else
@@ -39,7 +39,7 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
-            $user->full_image_url = asset('storage/' . $user->mainImage->USIM_URL) ?? '';
+            $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
             if ($user)
                 return $this->getApiMessage(true, $user);
             else
@@ -50,7 +50,7 @@ class ApiController extends Controller
     public function getCurrentUser(Request $request)
     {
         $user = $request->user()->load('group', 'type', 'mainImage');
-        $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL) ?? '';
+        $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
 
         return $this->getApiMessage(true, $user);
     }
