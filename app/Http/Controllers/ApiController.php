@@ -23,7 +23,7 @@ class ApiController extends Controller
 
     public function getUserByID($userID)
     {
-        $user = User::with(['group', 'type'])->find($userID);
+        $user = User::with(['group', 'type', 'mainImage'])->find($userID);
         if ($user)
             return $this->getApiMessage(true, $user);
         else
@@ -36,7 +36,7 @@ class ApiController extends Controller
             'faceID' => 'required'
         ]);
         if ($validation === true) {
-            $user = User::with(['group', 'type'])->where("USER_FACE_ID", $request->faceID)->first();
+            $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
             if ($user)
                 return $this->getApiMessage(true, $user);
             else
@@ -46,7 +46,7 @@ class ApiController extends Controller
 
     public function getCurrentUser(Request $request)
     {
-        return $this->getApiMessage(true, $request->user()->load('group', 'type'));
+        return $this->getApiMessage(true, $request->user()->load('group', 'type', 'mainImage'));
     }
 
     public function login(Request $request)
