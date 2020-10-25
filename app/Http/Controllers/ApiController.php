@@ -24,7 +24,7 @@ class ApiController extends Controller
     public function getUserByID($userID)
     {
         $user = User::with(['group', 'type', 'mainImage'])->find($userID);
-        $user->full_image_url = url($user->mainImage->USIM_URL);
+        $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL);
         if ($user)
             return $this->getApiMessage(true, $user);
         else
@@ -38,19 +38,19 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
-            $user->full_image_url = url($user->mainImage->USIM_URL);
+            $user->full_image_url = asset('storage/' . $user->mainImage->USIM_URL);
             if ($user)
                 return $this->getApiMessage(true, $user);
             else
                 return $this->getApiMessage(false, ['error' => 'FaceID not found']);
-        } 
+        }
     }
 
     public function getCurrentUser(Request $request)
     {
         $user = $request->user()->load('group', 'type', 'mainImage');
-        $user->full_image_url = url($user->mainImage->USIM_URL);
-        
+        $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL);
+
         return $this->getApiMessage(true, $user);
     }
 
