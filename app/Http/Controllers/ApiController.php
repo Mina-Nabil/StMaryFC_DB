@@ -24,9 +24,10 @@ class ApiController extends Controller
     public function getUserByID($userID)
     {
         $user = User::with(['group', 'type', 'mainImage'])->find($userID);
-        $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL) ?? '';
-        if ($user)
+        if ($user){
+            $user->full_image_url =  asset('storage/' . $user->mainImage->USIM_URL) ?? '';
             return $this->getApiMessage(true, $user);
+        }
         else
             return $this->getApiMessage(false);
     }
@@ -34,7 +35,7 @@ class ApiController extends Controller
     public function getUserByFaceID(Request $request)
     {
         $validation = $this->validateRequest($request, [
-            'faceID' => 'required'
+            'faceID' => 'required|exists:app_users,USER_FACE_ID'
         ]);
         if ($validation === true) {
             $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
