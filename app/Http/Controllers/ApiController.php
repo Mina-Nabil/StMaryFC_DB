@@ -38,7 +38,7 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
-            $user->mainImage->USIM_URL = url($user->mainImage->USIM_URL);
+            $user->full_image_url = url($user->mainImage->USIM_URL);
             if ($user)
                 return $this->getApiMessage(true, $user);
             else
@@ -48,7 +48,10 @@ class ApiController extends Controller
 
     public function getCurrentUser(Request $request)
     {
-        return $this->getApiMessage(true, $request->user()->load('group', 'type', 'mainImage'));
+        $user = $request->user()->load('group', 'type', 'mainImage');
+        $user->full_image_url = url($user->mainImage->USIM_URL);
+        
+        return $this->getApiMessage(true, $user);
     }
 
     public function login(Request $request)
