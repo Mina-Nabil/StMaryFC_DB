@@ -18,8 +18,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\UserImage', "USIM_USER_ID");
     }
     public function mainImage(){
-        
-        return url(($this->hasOne('App\Models\UserImage', 'id', "USER_MAIN_IMGE"))->USIM_URL);
+        return $this->hasOne('App\Models\UserImage', 'id', "USER_MAIN_IMGE");
     }
 
     public function type(){
