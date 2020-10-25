@@ -37,6 +37,7 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $user = User::with(['group', 'type', 'mainImage'])->where("USER_FACE_ID", $request->faceID)->first();
+            $user->mainImage = url($user->mainImage->USIM_URL);
             if ($user)
                 return $this->getApiMessage(true, $user);
             else
