@@ -6,7 +6,7 @@
         <x-datatable  id="myTable" :title="$title" :subtitle="$subTitle" :cols="$cols" :items="$items" :atts="$atts" />
     </div>
 
-    <div class="col-lg-5">
+    <div class="col-5">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{ $formTitle }}</h4>
