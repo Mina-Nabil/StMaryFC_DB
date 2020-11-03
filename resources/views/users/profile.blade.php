@@ -126,7 +126,7 @@
                             </a>
                         </div>
                         <hr>
-                        <h4 class="card-title">Add New Model Image</h4>
+                        <h4 class="card-title">Add New User Image</h4>
                         <form class="form pt-3" method="post" action="{{ url($imageFormURL) }}" enctype="multipart/form-data">
                             @csrf
                             <input type=hidden name=userID value="{{(isset($user)) ? $user->id : ''}}">
