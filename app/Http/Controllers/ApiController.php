@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\UserImage;
@@ -56,11 +57,11 @@ class ApiController extends Controller
         if ($validation === true) {
             $arguments = explode(" ", $request->name);
             $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID');
-            foreach($arguments as $value){
+            foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE", "%" . $value . "%", 'and'],
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
-                    ]);
+                ]);
             }
             $users = $users->get();
             if ($users) {
@@ -68,6 +69,25 @@ class ApiController extends Controller
             } else
                 return $this->getApiMessage(false);
         }
+    }
+
+    public function takeAttendance(Request $request)
+    {
+        $validation = $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id',
+            "date" => 'required'
+        ]);
+        if ($validation === true) {
+            $res = Attendance::takeAttendace($request->userID, $request->date);
+            if ($res) {
+                return $this->getApiMessage(true, $res);
+            } else
+                return $this->getApiMessage(false);
+        }
+    }
+
+    public function takeBulkAttendance(Request $request)
+    {
     }
 
 
