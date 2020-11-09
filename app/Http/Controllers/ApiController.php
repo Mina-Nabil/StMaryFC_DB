@@ -54,7 +54,15 @@ class ApiController extends Controller
             "name"      => "required",
         ]);
         if ($validation === true) {
-            $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID')->where("GRUP_NAME",  "LIKE", "%" . $request->name . "%")->orWhere("USER_NAME", "LIKE", "%" . $request->name . "%")->get();
+            $arguments = explode(" ", $request->name);
+            $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID');
+            foreach($arguments as $value){
+                $users = $users->where([
+                    ["GRUP_NAME",  "LIKE", "%" . $request->name . "%", 'and'],
+                    ["USER_NAME", "LIKE", "%" . $request->name . "%", 'or']
+                    ]);
+            }
+            $users = $users->get();
             if ($users) {
                 return $this->getApiMessage(true, $users);
             } else
