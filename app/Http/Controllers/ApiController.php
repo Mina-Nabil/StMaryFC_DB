@@ -39,6 +39,15 @@ class ApiController extends Controller
             return $this->getApiMessage(false);
     }
 
+    public function getUsersByGroupID($groupID)
+    {
+        $users = User::with(['group', 'type', 'mainImage'])->where("USER_GRUP_ID", $groupID)->get();
+        if ($users) {
+            return $this->getApiMessage(true, $users);
+        } else
+            return $this->getApiMessage(false);
+    }
+
 
     public function addGroup(Request $request)
     {
