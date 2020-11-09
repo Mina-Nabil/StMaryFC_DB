@@ -19,4 +19,7 @@ Route::post('/login', 'ApiController@login');
 Route::middleware('auth:sanctum')->get('/current/user', 'ApiController@getCurrentUser');
 Route::middleware('auth:sanctum')->get('/user/by/id/{id}', 'ApiController@getUserByID');
 Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserByFaceID');
+Route::middleware('auth:sanctum')->post('/add/group', 'ApiController@addGroup');
+Route::middleware('auth:sanctum')->post('/add/user', 'ApiController@addUser');
 Route::middleware('auth:sanctum')->get('/groups', 'ApiController@getGroups');
+Route::middleware('auth:sanctum')->get('/types', 'ApiController@getUsertypes');

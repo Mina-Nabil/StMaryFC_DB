@@ -13,10 +13,9 @@
                     <div class="form-group">
                         <label>User*</label>
                         <div class="input-group mb-3">
-                            <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                <option value="" disabled selected>Pick From Registered Users</option>
+                            <select name=userID[] class="select2 select2-multiple"  multiple="multiple" data-placeholder="Choose From The Following Users" style="width: 100%; height:36px;" required>
                                 @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->USER_NAME}}</option>
+                                <option value="{{ $user->id }}">{{$user->group->GRUP_NAME}}-{{$user->USER_NAME}}</option>
                                 @endforeach
                             </select>
                         </div>

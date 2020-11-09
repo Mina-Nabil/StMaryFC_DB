@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Group;
 use App\Models\User;
 use DateInterval;
 use DateTime;
@@ -12,7 +13,7 @@ class AttendanceController extends Controller
 {
     public function newAttendance()
     {
-        $data['users'] = User::all();
+        $data['users'] = User::with('group')->get();
         $data['formTitle'] = "Take Manual Attendance";
         $data['formURL'] = "attendance/insert";
         return view('attendance.add', $data);
@@ -36,34 +37,47 @@ class AttendanceController extends Controller
         return view('attendance.show', $this->data);
     }
 
-    public function queryPage()
+    public function queryUser()
     {
-        $data['users'] = User::all();
+        $data['items'] = User::all();
         $data['formTitle'] = "Attendance Report";
         $data['formURL'] = "attendance/query";
+        $data['byGroup'] = false;
+        return view('attendance.query', $data);
+    }
+
+    public function queryGroup()
+    {
+        $data['items'] = Group::all();
+        $data['formTitle'] = "Attendance Report";
+        $data['formURL'] = "attendance/query";
+        $data['byGroup'] = true;
         return view('attendance.query', $data);
     }
 
     public function queryRes(Request $request)
     {
         $request->validate([
-            "userID" => 'required',
             "fromDate" => 'required',
             "toDate" => 'required'
         ]);
-        
-        $this->initAttendanceArray($request->fromDate, $request->toDate, $request->userID);
+        if (isset($request->userID) && $request->userID > 0) {
+            $this->initAttendanceArray($request->fromDate, $request->toDate, $request->userID);
+        } elseif (isset($request->groupID) && $request->groupID > 0) {
+            $this->initAttendanceArray($request->fromDate, $request->toDate, 0, $request->groupID);
+        } else {
+            $this->initAttendanceArray($request->fromDate, $request->toDate, 0);
+        }
         return view('attendance.show', $this->data);
     }
 
     public function insert(Request $request)
     {
         $request->validate([
-            "userID" => 'required|exists:app_users,id',
             "date" => 'required'
         ]);
-
-        Attendance::takeAttendace($request->userID, $request->date);
+        foreach ($request->userID as $userID)
+            Attendance::takeAttendace($userID, $request->date);
         return redirect('attendance/show');
     }
 
@@ -86,14 +100,18 @@ class AttendanceController extends Controller
     //////attendance array
     protected $data;
 
-    public function initAttendanceArray($from, $to, $userID=0){
-        $this->data['items'] = Attendance::getAttendance($from, $to, $userID);
+    public function initAttendanceArray($from, $to, $userID = 0, $groupID = 0)
+    {
+        if ($userID != 0)
+            $this->data['items'] = Attendance::getAttendance($from, $to, $userID);
+        elseif ($groupID != 0)
+            $this->data['items'] = Attendance::getAttendance($from, $to, 0, $groupID);
         $this->data['title'] = "Users Attendance";
         $this->data['subTitle'] = "Check users attendance";
         $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
-                'USER_NAME', 'GRUP_NAME', 
+                'USER_NAME', 'GRUP_NAME',
                 ['verified' => ['att' => 'ATND_DATE', 'isVerified' => 'ATND_PAID']],
                 ['del'  =>  ['att' => 'id', 'url' => 'attendance/delete/']]
             ];

@@ -9,21 +9,35 @@
                 <h4 class="card-title">{{ $formTitle }}</h4>
                 <form class="form pt-3" method="post" action="{{ url($formURL) }}" enctype="multipart/form-data">
                     @csrf
-
+                    @if ($byGroup)
+                    <div class="form-group">
+                        <label>Group*</label>
+                        <div class="input-group mb-3">
+                            <select name=groupID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
+                                <option value="" disabled selected>Pick a Group</option>
+                                <option value="0">All Groups</option>
+                                @foreach($items as $group)
+                                <option value="{{ $group->id }}">{{$group->GRUP_NAME}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <small class="text-danger">{{$errors->first('groupID')}}</small>
+                    </div>
+                    @else 
                     <div class="form-group">
                         <label>User*</label>
                         <div class="input-group mb-3">
                             <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
                                 <option value="" disabled selected>Pick From Registered Users</option>
                                 <option value="0">All Users</option>
-                                @foreach($users as $user)
+                                @foreach($items as $user)
                                 <option value="{{ $user->id }}">{{$user->USER_NAME}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <small class="text-danger">{{$errors->first('userID')}}</small>
                     </div>
-
+                    @endif
                     <div class="form-group">
                         <label>From</label>
                         <div class="input-group mb-3">

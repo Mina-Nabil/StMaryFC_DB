@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label>Covering Days</label>
                         <div class="input-group mb-3">
-                            <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose From The Following Tags" id=days name=days[]>
+                            <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose From The Following Days" id=days name=days[]>
                                 <option value="0">All Previous days</option>
                             </select>
                         </div>

@@ -159,7 +159,8 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('attendance/last/week')}}">Last Week</a></li>
                                 <li><a href="{{url('attendance/show')}}">Current Month</a></li>
-                                <li><a href="{{url('attendance/query')}}">From/To</a></li>
+                                <li><a href="{{url('attendance/user/query')}}">By User</a></li>
+                                <li><a href="{{url('attendance/group/query')}}">By Group</a></li>
                                 <li><a href="{{url('attendance/add')}}">Take Attendance</a></li>
                             </ul>
                         </li>

@@ -27,7 +27,8 @@ Route::get('payments/get/unpaid/{userID}', 'PaymentsController@getUnpaidDays');
 //Attendance routes
 Route::get('attendance/show', "AttendanceController@month");
 Route::get('attendance/last/week', "AttendanceController@week");
-Route::get('attendance/query', "AttendanceController@queryPage");
+Route::get('attendance/user/query', "AttendanceController@queryUser");
+Route::get('attendance/group/query', "AttendanceController@queryGroup");
 Route::post('attendance/query', "AttendanceController@queryRes");
 Route::get('attendance/add', "AttendanceController@newAttendance");
 Route::post('attendance/insert', "AttendanceController@insert");

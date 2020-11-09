@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+use App\Models\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,15 +22,59 @@ class ApiController extends Controller
         return $this->getApiMessage(true, Group::all());
     }
 
+    public function getUsertypes()
+    {
+        return $this->getApiMessage(true, UserType::all());
+    }
+
     public function getUserByID($userID)
     {
         $user = User::with(['group', 'type', 'mainImage'])->find($userID);
-        if ($user){
+        if ($user) {
             $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
             return $this->getApiMessage(true, $user);
-        }
-        else
+        } else
             return $this->getApiMessage(false);
+    }
+
+
+    public function addGroup(Request $request)
+    {
+        $validation = $this->validateRequest($request, [
+            "name"      => "required|unique:groups,GRUP_NAME",
+        ]);
+        if ($validation === true) {
+
+            $group = new Group();
+            $group->GRUP_NAME = $request->name;
+            $group->save();
+            if ($group)
+                return $this->getApiMessage(true, $group);
+            else
+                return $this->getApiMessage(false, ['error' => 'Group Addition Failed']);
+        }
+    }
+
+    public function addUser(Request $request)
+    {
+        $validation = $this->validateRequest($request, [[
+            "name" => "required|unique:app_users,USER_NAME",
+            "type" => "required|exists:app_user_types,id",
+            "group" => "required|exists:groups,id",
+            "birthDate" => "nullable|date",
+            "mail" => "required_if:type,1|nullable|email",
+            "password" => "required_if:type,1|nullable",
+        ]);
+        if ($validation === true) {
+
+            $group = new Group();
+            $group->GRUP_NAME = $request->name;
+            $group->save();
+            if ($group)
+                return $this->getApiMessage(true, $group);
+            else
+                return $this->getApiMessage(false, ['error' => 'Group Addition Failed']);
+        }
     }
 
     public function getUserByFaceID(Request $request)

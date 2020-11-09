@@ -18,13 +18,15 @@ class Attendance extends Model
         return $this->belongsTo("App\Models\User", "ATND_USER_ID");
     }
 
-    public static function getAttendance($from, $to, $user = 0)
+    public static function getAttendance($from, $to, $user = 0, $group = 0)
     {
-
         $query = DB::table('attendance')->join('app_users', 'app_users.id', '=', 'ATND_USER_ID')->join('groups', 'groups.id', '=', 'USER_GRUP_ID')
             ->whereBetween('ATND_DATE', [$from, $to]);
         if ($user != 0) {
             $query = $query->where('ATND_USER_ID', $user);
+        }
+        else if ($group != 0) {
+            $query = $query->where('USER_GRUP_ID', $group);
         }
         return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'USER_NAME', 'GRUP_NAME')
             ->orderByDesc('ATND_DATE')
