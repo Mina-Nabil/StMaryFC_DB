@@ -67,13 +67,20 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
 
-            $group = new Group();
-            $group->GRUP_NAME = $request->name;
-            $group->save();
-            if ($group)
-                return $this->getApiMessage(true, $group);
+            $user = new User();
+            $user->USER_NAME = $request->name;
+            $user->USER_USTP_ID = $request->type;
+            $user->USER_BDAY = $request->birthDate;
+            $user->USER_MAIL = $request->mail;
+            $user->USER_PASS = bcrypt($request->password);
+            $user->USER_GRUP_ID = $request->group;
+            $user->USER_FACE_ID = bcrypt($user->USER_NAME);
+    
+            $user->save();
+            if ($user)
+                return $this->getApiMessage(true, $user);
             else
-                return $this->getApiMessage(false, ['error' => 'Group Addition Failed']);
+                return $this->getApiMessage(false, ['error' => 'User Addition Failed']);
         }
     }
 
