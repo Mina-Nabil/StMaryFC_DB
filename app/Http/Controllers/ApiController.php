@@ -55,11 +55,11 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID')->where("GRUP_NAME",  "LIKE", "%" . $request->name . "%")->where("USER_NAME", "LIKE", "%" . $request->name . "%")->get();
+            if ($users) {
+                return $this->getApiMessage(true, $users);
+            } else
+                return $this->getApiMessage(false);
         }
-        if ($users) {
-            return $this->getApiMessage(true, $users);
-        } else
-            return $this->getApiMessage(false);
     }
 
 
