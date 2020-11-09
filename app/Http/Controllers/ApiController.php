@@ -58,8 +58,8 @@ class ApiController extends Controller
             $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID');
             foreach($arguments as $value){
                 $users = $users->where([
-                    ["GRUP_NAME",  "LIKE", "%" . $request->name . "%", 'and'],
-                    ["USER_NAME", "LIKE", "%" . $request->name . "%", 'or']
+                    ["GRUP_NAME",  "LIKE", "%" . $value . "%", 'and'],
+                    ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                     ]);
             }
             $users = $users->get();
