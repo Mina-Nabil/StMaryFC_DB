@@ -165,7 +165,7 @@ class UsersController extends Controller
                         ],
                     ]
                 ],
-                ['date' => ['att' => "USER_BDAY"]],
+                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 ['foreign' => ['group', 'GRUP_NAME']],
             ];
     }
@@ -201,7 +201,7 @@ class UsersController extends Controller
         $this->data['cols'] = ['Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
-                ['date' => ['att' => "ATND_DATE"]],
+                ['date' => ['att' => "ATND_DATE", 'format' => 'd-M-Y']],
                 ['del'  =>  ['att' => 'id', 'url' => 'attendance/delete/']]
             ];
 
