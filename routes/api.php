@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/current/user', 'ApiController@getCurren
 Route::middleware('auth:sanctum')->get('/user/by/id/{id}', 'ApiController@getUserByID');
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
 Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserByFaceID');
+Route::middleware('auth:sanctum')->post('/search/name', 'ApiController@searchByName');
 Route::middleware('auth:sanctum')->post('/add/group', 'ApiController@addGroup');
 Route::middleware('auth:sanctum')->post('/add/user', 'ApiController@addUser');
 Route::middleware('auth:sanctum')->get('/groups', 'ApiController@getGroups');

@@ -48,6 +48,20 @@ class ApiController extends Controller
             return $this->getApiMessage(false);
     }
 
+    public function searchByName(Request $request)
+    {
+        $validation = $this->validateRequest($request, [
+            "name"      => "required",
+        ]);
+        if ($validation === true) {
+            $users = User::with(['group', 'type', 'mainImage'])->where("GRUP_NAME",  "LIKE", "%" . $request->name . "%")->where("USER_NAME", "LIKE", "%" . $request->name . "%")->get();
+        }
+        if ($users) {
+            return $this->getApiMessage(true, $users);
+        } else
+            return $this->getApiMessage(false);
+    }
+
 
     public function addGroup(Request $request)
     {
@@ -86,21 +100,20 @@ class ApiController extends Controller
             $user->USER_PASS = bcrypt($request->password);
             $user->USER_GRUP_ID = $request->group;
             $user->USER_FACE_ID = bcrypt($user->USER_NAME);
-    
+
             $user->save();
             if ($request->hasFile('photo')) {
-                try {         
-                $newImage = new UserImage();
-                $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
-                $newImage->USIM_USER_ID = $user->id;
-                $newImage->save();
-                $user->USER_MAIN_IMGE = $newImage->id;
-                $user->save();
-                } catch (Exception $e){
-
+                try {
+                    $newImage = new UserImage();
+                    $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
+                    $newImage->USIM_USER_ID = $user->id;
+                    $newImage->save();
+                    $user->USER_MAIN_IMGE = $newImage->id;
+                    $user->save();
+                } catch (Exception $e) {
                 }
             }
-    
+
             if ($user)
                 return $this->getApiMessage(true, $user->load(['group', 'type', 'mainImage']));
             else
