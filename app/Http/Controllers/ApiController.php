@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -79,16 +80,20 @@ class ApiController extends Controller
     
             $user->save();
             if ($request->hasFile('photo')) {
+                try {         
                 $newImage = new UserImage();
                 $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
                 $newImage->USIM_USER_ID = $user->id;
                 $newImage->save();
                 $user->USER_MAIN_IMGE = $newImage->id;
                 $user->save();
+                } catch (Exception $e){
+
+                }
             }
     
             if ($user)
-                return $this->getApiMessage(true, $user);
+                return $this->getApiMessage(true, $user->load(['group', 'type', 'mainImage']));
             else
                 return $this->getApiMessage(false, ['error' => 'User Addition Failed']);
         }
