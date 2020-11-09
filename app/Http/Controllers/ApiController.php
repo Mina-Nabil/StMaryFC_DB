@@ -81,7 +81,7 @@ class ApiController extends Controller
             if ($request->hasFile('photo')) {
                 $newImage = new UserImage();
                 $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
-                $newImage->USIM_USER_ID = $request->userID;
+                $newImage->USIM_USER_ID = $user->id;
                 $newImage->save();
                 $user->USER_MAIN_IMGE = $newImage->id;
                 $user->save();
