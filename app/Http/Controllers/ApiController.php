@@ -94,7 +94,11 @@ class ApiController extends Controller
         if ($validation === true) {
             $failedIDs = [];
             foreach ($request->userIDs as $id) {
-                $res = Attendance::takeAttendace($id, $request->date);
+                try {
+                    $res = Attendance::takeAttendace($id, $request->date);
+                } catch (Exception $e) {
+                    $res = false;
+                }
                 if (!$res) {
                     array_push($failedIDs, $id);
                 }
