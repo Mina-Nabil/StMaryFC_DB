@@ -106,6 +106,8 @@ class AttendanceController extends Controller
             $this->data['items'] = Attendance::getAttendance($from, $to, $userID);
         elseif ($groupID != 0)
             $this->data['items'] = Attendance::getAttendance($from, $to, 0, $groupID);
+        else
+            $this->data['items'] = Attendance::getAttendance($from, $to);
         $this->data['title'] = "Users Attendance";
         $this->data['subTitle'] = "Check users attendance";
         $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Delete'];
