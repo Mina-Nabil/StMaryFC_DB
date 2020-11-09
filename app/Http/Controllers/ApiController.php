@@ -88,6 +88,27 @@ class ApiController extends Controller
 
     public function takeBulkAttendance(Request $request)
     {
+        $validation = $this->validateRequest($request, [
+            "date" => 'required'
+        ]);
+        if ($validation === true) {
+            $failedIDs = [];
+            foreach ($request->userIDs as $id) {
+                $res = Attendance::takeAttendace($id, $request->date);
+                if (!$res) {
+                    array_push($failedIDs, $id);
+                }
+            }
+            if (count($failedIDs) == 0) {
+                return $this->getApiMessage(1);
+            } elseif (count($failedIDs) < count($request->userIDs)) {
+                return $this->getApiMessage(2, ['failedIDs' => $failedIDs]);
+            } elseif (count($failedIDs) == count($request->userIDs)) {
+                return $this->getApiMessage(false, ['Message' => "Failed to take attendance"]);
+            } else {
+                return $this->getApiMessage(false, ['Message' => "Oops Something went wrong!"]);
+            }
+        }
     }
 
 
