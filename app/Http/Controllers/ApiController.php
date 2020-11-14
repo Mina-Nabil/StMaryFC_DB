@@ -59,11 +59,11 @@ class ApiController extends Controller
             $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID');
             foreach ($arguments as $value) {
                 $users = $users->where([
-                    ["GRUP_NAME",  "LIKE", "%" . $value . "%", 'and'],
+                    ["GRUP_NAME",  "LIKE",  $value . "%", 'and'],
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                 ]);
             }
-            $users = $users->get();
+            $users = $users->get(["app_users.id", "app_users.USER_NAME", "groups.GRUP_NAME", "main_image.USIM_URL"]);
             if ($users) {
                 return $this->getApiMessage(true, $users);
             } else
