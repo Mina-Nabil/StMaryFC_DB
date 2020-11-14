@@ -56,7 +56,7 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $arguments = explode(" ", $request->name);
-            $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->rightJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
+            $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended');
             foreach ($arguments as $value) {
