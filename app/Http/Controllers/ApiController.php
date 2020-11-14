@@ -61,7 +61,7 @@ class ApiController extends Controller
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended');
             foreach ($arguments as $value) {
                 $users = $users->where([
-                    ["GRUP_NAME",  "LIKE",  $value . "%", 'and'],
+                    ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                 ]);
             }
