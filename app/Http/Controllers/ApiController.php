@@ -57,14 +57,15 @@ class ApiController extends Controller
         if ($validation === true) {
             $arguments = explode(" ", $request->name);
             $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->join('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
-            ->selectRaw('(Select COUNT(ATND_DATE) as attendned from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )');
+            ->selectRaw('(Select COUNT(ATND_DATE) as attendned from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )')
+            ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"]);
             foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'and'],
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                 ]);
             }
-            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"]);
+            $users = $users->get();
             if ($users) {
                 return $this->getApiMessage(true, $users);
             } else
