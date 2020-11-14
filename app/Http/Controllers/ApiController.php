@@ -56,7 +56,7 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $arguments = explode(" ", $request->name);
-            $users = User::with(['group', 'type', 'mainImage'])->join("groups", "groups.id", '=', 'USER_GRUP_ID');
+            $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->join('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE');
             foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'and'],

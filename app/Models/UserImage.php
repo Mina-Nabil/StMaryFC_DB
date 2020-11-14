@@ -11,6 +11,6 @@ class UserImage extends Model
     
 
     public function user(){
-        return $this->belongsTo('App\Models\User', 'USER_USTP_ID');
+        return $this->belongsTo('App\Models\User', 'USER_MAIN_IMGE');
     }
 }
