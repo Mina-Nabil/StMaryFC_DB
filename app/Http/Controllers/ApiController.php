@@ -65,7 +65,7 @@ class ApiController extends Controller
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                 ]);
             }
-            $users = $users->get();
+            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended"]);
             if ($users) {
                 return $this->getApiMessage(true, $users);
             } else
