@@ -63,7 +63,7 @@ class ApiController extends Controller
                     ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
                 ]);
             }
-            $users = $users->get(["app_users.id", "app_users.USER_NAME", "groups.GRUP_NAME", "main_image.USIM_URL"]);
+            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"]);
             if ($users) {
                 return $this->getApiMessage(true, $users);
             } else
