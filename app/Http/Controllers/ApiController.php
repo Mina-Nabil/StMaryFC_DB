@@ -62,7 +62,7 @@ class ApiController extends Controller
             foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
-                    ["USER_NAME", "LIKE", "%" . $value . "%", 'or']
+                    ["USER_NAME", "LIKE", "% " . $value . "%", 'or']
                 ]);
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended"]);
