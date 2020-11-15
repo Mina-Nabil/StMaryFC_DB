@@ -96,7 +96,9 @@ class ApiController extends Controller
         ]);
         if ($validation === true) {
             $failedIDs = [];
-            foreach ($request->userIDs as $id) {
+            $userIDs = json_decode($request->userIDs);
+            if(is_array($userIDs))
+            foreach ($userIDs as $id) {
                 try {
                     $res = Attendance::takeAttendace($id, $request->date);
                 } catch (Exception $e) {
