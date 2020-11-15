@@ -97,25 +97,28 @@ class ApiController extends Controller
         if ($validation === true) {
             $failedIDs = [];
             $userIDs = json_decode($request->userIDs);
-            if(is_array($userIDs))
-            foreach ($userIDs as $id) {
-                try {
-                    $res = Attendance::takeAttendace($id, $request->date);
-                } catch (Exception $e) {
-                    $res = false;
+            if(is_array($userIDs)){
+                foreach ($userIDs as $id) {
+                    try {
+                        $res = Attendance::takeAttendace($id, $request->date);
+                    } catch (Exception $e) {
+                        $res = false;
+                    }
+                    if (!$res) {
+                        array_push($failedIDs, $id);
+                    }
                 }
-                if (!$res) {
-                    array_push($failedIDs, $id);
+                if (count($failedIDs) == 0) {
+                    return $this->getApiMessage(1);
+                } elseif (count($failedIDs) < count($request->userIDs)) {
+                    return $this->getApiMessage(2, ['failedIDs' => $failedIDs]);
+                } elseif (count($failedIDs) == count($request->userIDs)) {
+                    return $this->getApiMessage(false, ['Message' => "Failed to take attendance"]);
+                } else {
+                    return $this->getApiMessage(false, ['Message' => "Oops Something went wrong!"]);
                 }
-            }
-            if (count($failedIDs) == 0) {
-                return $this->getApiMessage(1);
-            } elseif (count($failedIDs) < count($request->userIDs)) {
-                return $this->getApiMessage(2, ['failedIDs' => $failedIDs]);
-            } elseif (count($failedIDs) == count($request->userIDs)) {
-                return $this->getApiMessage(false, ['Message' => "Failed to take attendance"]);
             } else {
-                return $this->getApiMessage(false, ['Message' => "Oops Something went wrong!"]);
+                return $this->getApiMessage(false, ['Message' => "Invalid Array!"]);
             }
         }
     }
