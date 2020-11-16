@@ -255,7 +255,7 @@ class ApiController extends Controller
 
     private function adjustImageUrl($users){
         foreach($users as $key => $user){
-            $user->USIM_URL = url(Storage::url($user->USIM_URL));
+            $user->USIM_URL = $user->USIM_URL ? url(Storage::url($user->USIM_URL)) : NULL;
         }
     }
 }
