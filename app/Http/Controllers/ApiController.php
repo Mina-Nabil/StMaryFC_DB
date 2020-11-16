@@ -59,7 +59,7 @@ class ApiController extends Controller
             $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
-                         (Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and ATND_PAID=0) as isPaymentDue');
+                         (Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and ATND_PAID=0) as paymentsDue');
             foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
@@ -67,7 +67,7 @@ class ApiController extends Controller
                     ["USER_NAME", "LIKE", $value . "%", 'or'],
                 ]);
             }
-            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "isPaymentDue"]);
+            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
             if ($users) {
                 $this->adjustImageUrl($users);
                 return $this->getApiMessage(true, $users);
