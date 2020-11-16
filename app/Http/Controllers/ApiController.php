@@ -68,6 +68,9 @@ class ApiController extends Controller
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended"]);
             if ($users) {
+                foreach($users as $key => $user){
+                    $user->USIM_URL = asset($user->USIM_URL);
+                }
                 return $this->getApiMessage(true, $users);
             } else
                 return $this->getApiMessage(false);
