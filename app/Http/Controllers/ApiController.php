@@ -254,7 +254,7 @@ class ApiController extends Controller
 
     private function adjustImageUrl($users){
         foreach($users as $key => $user){
-            $user->USIM_URL = asset($user->USIM_URL);
+            $user->USIM_URL = storage_path($user->USIM_URL);
         }
     }
 }
