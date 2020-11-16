@@ -10,6 +10,7 @@ use App\Models\UserType;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
@@ -254,7 +255,7 @@ class ApiController extends Controller
 
     private function adjustImageUrl($users){
         foreach($users as $key => $user){
-            $user->USIM_URL = storage_path($user->USIM_URL);
+            $user->USIM_URL = Storage::url($user->USIM_URL);
         }
     }
 }
