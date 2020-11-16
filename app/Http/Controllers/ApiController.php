@@ -68,9 +68,7 @@ class ApiController extends Controller
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended"]);
             if ($users) {
-                foreach($users as $key => $user){
-                    $user->USIM_URL = asset($user->USIM_URL);
-                }
+                $this->adjustImageUrl($users);
                 return $this->getApiMessage(true, $users);
             } else
                 return $this->getApiMessage(false);
@@ -251,6 +249,12 @@ class ApiController extends Controller
     private function getApiMessage(bool $status, $returnObject = null)
     {
         return response(json_encode(new ApiMessage($status, $returnObject), JSON_UNESCAPED_UNICODE))->withHeaders(['Content-Type' => 'application/json']);
+    }
+
+    private function adjustImageUrl($users){
+        foreach($users as $key => $user){
+            $user->USIM_URL = asset($user->USIM_URL);
+        }
     }
 }
 
