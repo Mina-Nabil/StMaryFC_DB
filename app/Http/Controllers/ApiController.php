@@ -100,6 +100,7 @@ class ApiController extends Controller
         if ($validation === true) {
             $failedIDs = [];
             $userIDs = json_decode($request->userIDs);
+            dd($userIDs);
             if(is_array($userIDs)){
                 foreach ($userIDs as $id) {
                     try {
