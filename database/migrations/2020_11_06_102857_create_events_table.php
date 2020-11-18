@@ -31,14 +31,14 @@ class CreateEventsTable extends Migration
         Schema::create('events_attendance', function (Blueprint $table){
             $table->id();
             $table->foreignId('EVAT_EVNT_ID')->constrained('events');
-            $table->foreignId('EVAT_USER_ID')->constrained('users');
+            $table->foreignId('EVAT_USER_ID')->constrained('app_users');
             $table->double('EVAT_STTS')->default(0); //0 7agaz bas - 1 7agaz w geh - 2 7agaz w cancel
         });
 
         Schema::create('event_payments', function (Blueprint $table){
             $table->id();
             $table->foreignId('EVPY_EVNT_ID')->constrained('events');
-            $table->foreignId('EVPY_USER_ID')->constrained('users');
+            $table->foreignId('EVPY_USER_ID')->constrained('app_users');
             $table->double('EVPY_AMNT');
             $table->timestamps();
         });
