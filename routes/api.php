@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->post('/take/bulk/attendance', 'ApiController@
 //users&search
 Route::middleware('auth:sanctum')->get('/current/user', 'ApiController@getCurrentUser');
 Route::middleware('auth:sanctum')->get('/user/by/id/{id}', 'ApiController@getUserByID');
+Route::middleware('auth:sanctum')->get('/get/users', 'ApiController@getUsers');
 Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserByFaceID');
 Route::middleware('auth:sanctum')->post('/search/name', 'ApiController@searchByName');
 Route::middleware('auth:sanctum')->post('/add/user', 'ApiController@addUser');
