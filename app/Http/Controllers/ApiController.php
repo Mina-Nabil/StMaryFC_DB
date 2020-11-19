@@ -23,7 +23,7 @@ class ApiController extends Controller
 
     public function getGroups()
     {
-        return $this->getApiMessage(true, Group::all());
+        return $this->getApiMessage(true, Group::withCount("users as usersCount")->all());
     }
 
     public function getUsertypes()
@@ -58,8 +58,8 @@ class ApiController extends Controller
         if ($validation === true) {
             $arguments = explode(" ", $request->name);
             $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
-            ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
-            ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
+                ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
+                ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
                          (Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and ATND_PAID=0) as paymentsDue');
             foreach ($arguments as $value) {
                 $users = $users->where([
@@ -100,7 +100,7 @@ class ApiController extends Controller
         if ($validation === true) {
             $failedIDs = [];
             $userIDs = json_decode($request->userIDs);
-            if(is_array($userIDs)){
+            if (is_array($userIDs)) {
                 foreach ($userIDs as $id) {
                     try {
                         $res = Attendance::takeAttendace($id, $request->date);
@@ -142,6 +142,45 @@ class ApiController extends Controller
             else
                 return $this->getApiMessage(false, ['error' => 'Group Addition Failed']);
         }
+    }
+
+    public function toggleGroup(Request $request)
+    {
+        $validation = $this->validateRequest($request, [
+            "id"      => "required|exists:groups,id",
+        ]);
+        if ($validation === true) {
+            try {
+                $group = Group::find($request->id);
+                $res = $group->toggle();
+                if ($res)
+                    return $this->getApiMessage(true);
+                else
+                    return $this->getApiMessage(false, ['error' => 'Group Toggle Failed']);
+            } catch (Exception $e) {
+                return $this->getApiMessage(false, ['error' => 'Group Toggle Failed']);
+            }
+        } else
+            return $this->getApiMessage(false, ['error' => 'Group Not Found']);
+    }
+
+    public function delGroup(Request $request)
+    {
+        $validation = $this->validateRequest($request, [
+            "id"      => "required|exists:groups,id",
+        ]);
+        if ($validation === true) {
+            try {
+                $res = Group::destroy($request->id);
+                if ($res)
+                    return $this->getApiMessage(true);
+                else
+                    return $this->getApiMessage(false, ['error' => 'Group Deletion Failed']);
+            } catch (Exception $e) {
+                return $this->getApiMessage(false, ['error' => 'Group Deletion Failed']);
+            }
+        } else
+            return $this->getApiMessage(false, ['error' => 'Group Not Found']);
     }
 
     public function addUser(Request $request)
@@ -253,8 +292,9 @@ class ApiController extends Controller
         return response(json_encode(new ApiMessage($status, $returnObject), JSON_UNESCAPED_UNICODE))->withHeaders(['Content-Type' => 'application/json']);
     }
 
-    private function adjustImageUrl($users){
-        foreach($users as $key => $user){
+    private function adjustImageUrl($users)
+    {
+        foreach ($users as $key => $user) {
             $user->USIM_URL = $user->USIM_URL ? url(Storage::url($user->USIM_URL)) : NULL;
         }
     }

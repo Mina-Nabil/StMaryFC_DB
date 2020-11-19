@@ -33,3 +33,5 @@ Route::middleware('auth:sanctum')->get('/types', 'ApiController@getUsertypes');
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
 Route::middleware('auth:sanctum')->post('/add/group', 'ApiController@addGroup');
 Route::middleware('auth:sanctum')->get('/groups', 'ApiController@getGroups');
+Route::middleware('auth:sanctum')->post('/del/group', 'ApiController@delGroup');
+Route::middleware('auth:sanctum')->post('/toggle/group', 'ApiController@toggleGroup');
