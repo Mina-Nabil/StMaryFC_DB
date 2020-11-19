@@ -15,7 +15,7 @@ class UpdateUsersTable extends Migration
     {
         Schema::table("app_users", function (Blueprint $table){
             $table->string("USER_MOBN")->nullable();
-            $table->string("USER_CMNT")->nullable();
+            $table->string("USER_NOTE")->nullable();
             $table->string("USER_CODE")->nullable();
         });
     }
@@ -29,7 +29,7 @@ class UpdateUsersTable extends Migration
     {
         Schema::table("app_users", function (Blueprint $table){
             $table->dropColumn("USER_MOBN");
-            $table->dropColumn("USER_CMNT");
+            $table->dropColumn("USER_NOTE");
             $table->dropColumn("USER_CODE");
         });
     }
