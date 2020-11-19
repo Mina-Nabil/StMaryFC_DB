@@ -42,15 +42,18 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="col-md-3 col-xs-6 b-r">
-                            <strong>Account Type</strong>
-                            <p class="m-t-30">{{$user->type->USTP_NAME}}</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6 b-r">
-                            <strong>Email</strong>
-                            <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                        <div class=row>
+                            <div class="col-lg-3 col-xs-6 b-r">
+                                <strong>Account Type</strong>
+                                <p class="m-t-30">{{$user->type->USTP_NAME}}</p>
+                            </div>
+                            <div class="col-md-3 col-xs-6 b-r">
+                                <strong>Email</strong>
+                                <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                            </div>
                         </div>
                         <hr>
+                        <div class=row>
                         <div class="col-md-4 col-xs-6 b-r">
                             <strong>Code</strong>
                             <p class="m-t-30">{{$user->USTP_CODE}}</p>
@@ -59,8 +62,9 @@
                             <strong>Phone</strong>
                             <p class="m-t-30">{{$user->USER_MOBN ?? ''}}</p>
                         </div>
+                        </div>
                         <hr>
-                        <div class="col-md-4 col-xs-12 b-r">
+                        <div class="col-12 b-r">
                             <strong>Note</strong>
                             <p class="m-t-30">{{$user->USER_NOTE ?? ''}}</p>
                         </div>
