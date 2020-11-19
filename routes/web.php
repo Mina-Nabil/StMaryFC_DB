@@ -48,6 +48,7 @@ Route::get("users/setimage/{userID}/{imageID}", 'UsersController@setMainImage');
 //Groups routes
 Route::get('groups/show', 'GroupsController@home');
 Route::get('groups/edit/{id}', 'GroupsController@edit');
+Route::get('groups/toggle/{id}', 'GroupsController@toggle');
 Route::post('groups/insert', 'GroupsController@insert');
 Route::post('groups/update', 'GroupsController@update');
 

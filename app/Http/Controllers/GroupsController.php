@@ -16,9 +16,27 @@ class GroupsController extends Controller
         $this->data['items'] = Group::all();
         $this->data['title'] = "Available Groups";
         $this->data['subTitle'] = "Manage all Available Groups";
-        $this->data['cols'] = ['Group', 'Edit'];
+        $this->data['cols'] = ['Group', 'Active', 'Edit'];
         $this->data['atts'] = [
             'GRUP_NAME',
+            [
+                'toggle' => [
+                    "att"   =>  "GRUP_ACTV",
+                    "url"   =>  "groups/toggle/",
+                    "states" => [
+                        "1" => "True",
+                        "0" => "False",
+                    ],
+                    "actions" => [
+                        "1" => "Disable",
+                        "0" => "Activate",
+                    ],
+                    "classes" => [
+                        "1" => "label-success",
+                        "0" => "label-danger",
+                    ],
+                ]
+            ],
             ['edit' => ['url' => 'groups/edit/', 'att' => 'id']],
         ];
         $this->data['homeURL'] = $this->homeURL;
@@ -77,5 +95,12 @@ class GroupsController extends Controller
         $group->save();
 
         return redirect($this->homeURL);
+    }
+
+    public function toggle($id)
+    {
+        $group = Group::findOrFail($id);
+        $group->toggle();
+        return back();
     }
 }

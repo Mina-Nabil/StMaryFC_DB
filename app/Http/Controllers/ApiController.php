@@ -219,6 +219,9 @@ class ApiController extends Controller
             $user->USER_PASS = bcrypt($request->password);
             $user->USER_GRUP_ID = $request->group;
             $user->USER_FACE_ID = bcrypt($user->USER_NAME);
+            $user->USER_NOTE = $request->note;
+            $user->USER_CODE = $request->code;
+            $user->USER_MOBN = $request->mobn;
 
             $user->save();
             if ($request->hasFile('photo')) {
