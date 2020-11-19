@@ -10,8 +10,6 @@ use App\Models\UserImage;
 use App\Models\UserType;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
@@ -105,7 +103,7 @@ class UsersController extends Controller
         $user->USER_NOTE = $request->note;
         $user->USER_CODE = $request->code;
         $user->USER_MOBN = $request->mobn;
-        
+
         $user->save();
 
         return redirect('users/profile/' . $user->id);
@@ -149,9 +147,10 @@ class UsersController extends Controller
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['Username', 'Type', "Born", 'Class'];
+        $this->data['cols'] = ['#', 'Username', 'Type', "Born", 'Class', 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
+                ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
                 [
                     'toggle' => [
@@ -173,6 +172,8 @@ class UsersController extends Controller
                 ],
                 ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 ['foreign' => ['group', 'GRUP_NAME']],
+                'USER_MOBN',
+                ['comment' => ['att' => 'USER_NOTE']]
             ];
     }
 

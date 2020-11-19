@@ -13,6 +13,19 @@
                     @if(isset($user->DASH_IMGE))
                     <input type=hidden name=oldPath value="{{$user->DASH_IMGE}}">
                     @endif
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Code</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-barcode"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name=code placeholder="User Code" value="{{ (isset($user)) ? $user->USER_CODE : old('code')}}">
+                        </div>
+                        <small class="text-danger">{{$errors->first('code')}}</small>
+
+                    </div>
+
                     <div class="form-group">
                         <label>User Name*</label>
                         <div class="input-group mb-3">
@@ -69,29 +82,51 @@
 
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email</label>
+                        <label for="exampleInputEmail1">Phone Number</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-cellphone-iphone"></i></span>
                             </div>
-                            <input type="text" class="form-control" name=mail placeholder="Admin Email Address" value="{{ (isset($user)) ? $user->USER_MAIL : old('mail')}}">
+                            <input type="text" class="form-control" name=mobn placeholder="Phone Number" value="{{ (isset($user)) ? $user->USER_MOBN : old('mobn')}}">
                         </div>
-                        <small class="text-danger">{{$errors->first('mail')}}</small>
+                        <small class="text-danger">{{$errors->first('mobn')}}</small>
 
                     </div>
 
 
                     <div class="form-group">
-                        <label>Password*</label>
+                        <label for="exampleInputEmail1">Admin MobApp Username</label>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-email"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name=mail placeholder="Username" value="{{ (isset($user)) ? $user->USER_MAIL : old('mail')}}">
+                        </div>
+                        <small class="text-danger">{{$errors->first('mail') != "" ? $errors->first('mail') : "Required if type is admin"}}</small>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Admin MobApp Password</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon33"><i class="ti-lock"></i></span>
                             </div>
                             <input type="text" class="form-control" name=password placeholder="Password" aria-label="Password" aria-describedby="basic-addon33" @if($isPassNeeded) required @endif>
                         </div>
-                        <small class="text-danger">{{$errors->first('password')}}</small>
+                        <small class="text-danger">{{$errors->first('password') != "" ? $errors->first('password') : "Required if type is admin"}}</small>
 
                     </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Comment</label>
+                        <div class="input-group mb-3">
+                            <textarea  class="form-control" name=note>{{ (isset($user)) ? $user->USER_NOTE : old('note')}}</textarea>
+                        </div>
+                        <small class="text-danger">{{$errors->first('note')}}</small>
+                    </div>
+
                     <button type="submit" class="btn btn-success mr-2">Submit</button>
                     @if($isCancel)
                     <a href="{{url($homeURL) }}" class="btn btn-dark">Cancel</a>
