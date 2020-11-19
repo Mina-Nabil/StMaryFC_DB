@@ -23,7 +23,7 @@ class ApiController extends Controller
 
     public function getGroups()
     {
-        return $this->getApiMessage(true, Group::withCount("users as usersCount")->all());
+        return $this->getApiMessage(true, Group::withCount("users as usersCount")->get());
     }
 
     public function getUsertypes()
