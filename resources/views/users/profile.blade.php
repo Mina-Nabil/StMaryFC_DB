@@ -6,7 +6,8 @@
 <div class="row">
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
-        <div class="card"> <img class="card-img" src="{{  (isset($user->mainImage->USIM_URL)) ? asset( 'storage/'. $user->mainImage->USIM_URL ) : asset('assets/images/users/def-user.png')}}" alt="Card image">
+        <div class="card"> <img class="card-img" src="{{  (isset($user->mainImage->USIM_URL)) ? asset( 'storage/'. $user->mainImage->USIM_URL ) : asset('assets/images/users/def-user.png')}}"
+                alt="Card image">
         </div>
     </div>
     <!-- Column -->
@@ -41,11 +42,26 @@
                             </div>
                         </div>
                         <hr>
-                        <strong>Account Type</strong>
-                        <p class="m-t-30">{{$user->type->USTP_NAME}}</p>
+                        <div class="col-md-3 col-xs-6 b-r">
+                            <strong>Account Type</strong>
+                            <p class="m-t-30">{{$user->type->USTP_NAME}}</p>
+                        </div>
+                        <div class="col-md-3 col-xs-6 b-r">
+                            <strong>Email</strong>
+                            <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
                         <hr>
-                        <strong>Email</strong>
-                        <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                        <div class="col-md-4 col-xs-6 b-r">
+                            <strong>Code</strong>
+                            <p class="m-t-30">{{$user->USTP_CODE}}</p>
+                        </div>
+                        <div class="col-md-4 col-xs-6 b-r">
+                            <strong>Phone</strong>
+                            <p class="m-t-30">{{$user->USER_MOBN ?? ''}}</p>
+                        <hr>
+                        <div class="col-md-4 col-xs-12 b-r">
+                            <strong>Note</strong>
+                            <p class="m-t-30">{{$user->USER_NOTE ?? ''}}</p>
+                        <hr>
                     </div>
                 </div>
 
@@ -67,7 +83,7 @@
                                         <td>{{$item[1]}}</td>
                                         <td>{{number_format($item[2],2)}}</td>
                                     </tr>
-                                 
+
                                     @endforeach
                                 </tbody>
                             </table>
@@ -191,6 +207,18 @@
                                 @csrf
                                 <input type=hidden name=id value="{{(isset($user)) ? $user->id : ''}}">
                                 <div class="form-group">
+                                    <label for="exampleInputEmail1">Code</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-barcode"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" name=code placeholder="User Code" value="{{ (isset($user)) ? $user->USER_CODE : old('code')}}">
+                                    </div>
+                                    <small class="text-danger">{{$errors->first('code')}}</small>
+
+                                </div>
+
+                                <div class="form-group">
                                     <label>User Name*</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -226,6 +254,8 @@
                                             @foreach($types as $type)
                                             <option value="{{ $type->id }}" @if(isset($user) && $type->id == $user->USER_USTP_ID)
                                                 selected
+                                                @elseif($type->id == old('type'))
+                                                selected
                                                 @endif
                                                 >{{$type->USTP_NAME}}</option>
                                             @endforeach
@@ -237,35 +267,57 @@
                                 <div class="form-group">
                                     <label>Birth Date</label>
                                     <div class="input-group mb-3">
-                                        <input type="date" value="{{$user->USER_BDAY->format('Y-m-d') ?? now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=birthDate
-                                            required />
+                                        <input type="date" value="{{$user->USER_BDAY ?? now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=birthDate required />
                                     </div>
                                     <small class="text-danger">{{$errors->first('birthDate')}}</small>
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email</label>
+                                    <label for="exampleInputEmail1">Phone Number</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-cellphone-iphone"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name=mail placeholder="Admin Email Address" value="{{ (isset($user)) ? $user->USER_MAIL : old('mail')}}">
+                                        <input type="text" class="form-control" name=mobn placeholder="Phone Number" value="{{ (isset($user)) ? $user->USER_MOBN : old('mobn')}}">
                                     </div>
+                                    <small class="text-danger">{{$errors->first('mobn')}}</small>
+
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label>Password*</label>
+                                    <label for="exampleInputEmail1">Admin MobApp Username</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-email"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" name=mail placeholder="Username" value="{{ (isset($user)) ? $user->USER_MAIL : old('mail')}}">
+                                    </div>
+                                    <small class="text-danger">{{$errors->first('mail') != "" ? $errors->first('mail') : "Required if type is admin"}}</small>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label>Admin MobApp Password</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon33"><i class="ti-lock"></i></span>
                                         </div>
                                         <input type="text" class="form-control" name=password placeholder="Password" aria-label="Password" aria-describedby="basic-addon33" @if($isPassNeeded) required
                                             @endif>
-                                        <small class="text-danger">{{$errors->first('password')}}</small>
-
                                     </div>
+                                    <small class="text-danger">{{$errors->first('password') != "" ? $errors->first('password') : "Required if type is admin"}}</small>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Comment</label>
+                                    <div class="input-group mb-3">
+                                        <textarea class="form-control" name=note>{{ (isset($user)) ? $user->USER_NOTE : old('note')}}</textarea>
+                                    </div>
+                                    <small class="text-danger">{{$errors->first('note')}}</small>
                                 </div>
                                 <button type="submit" class="btn btn-success mr-2">Submit</button>
                                 @if($isCancel)
