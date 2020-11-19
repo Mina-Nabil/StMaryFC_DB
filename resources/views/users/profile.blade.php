@@ -49,6 +49,7 @@
                         <div class="col-md-3 col-xs-6 b-r">
                             <strong>Email</strong>
                             <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                        </div>
                         <hr>
                         <div class="col-md-4 col-xs-6 b-r">
                             <strong>Code</strong>
@@ -57,10 +58,12 @@
                         <div class="col-md-4 col-xs-6 b-r">
                             <strong>Phone</strong>
                             <p class="m-t-30">{{$user->USER_MOBN ?? ''}}</p>
+                        </div>
                         <hr>
                         <div class="col-md-4 col-xs-12 b-r">
                             <strong>Note</strong>
                             <p class="m-t-30">{{$user->USER_NOTE ?? ''}}</p>
+                        </div>
                         <hr>
                     </div>
                 </div>
