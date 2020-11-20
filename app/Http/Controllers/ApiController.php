@@ -46,7 +46,7 @@ class ApiController extends Controller
         $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
-                     (Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and ATND_PAID=0) as paymentsDue')
+                     (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments')
             ->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
         if ($users) {
             $this->adjustImageUrl($users);
@@ -76,7 +76,7 @@ class ApiController extends Controller
                 ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)
                 ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
                 ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
-                         (Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and ATND_PAID=0) as paymentsDue');
+                (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
             foreach ($arguments as $value) {
                 $users = $users->where([
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
