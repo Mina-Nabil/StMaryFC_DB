@@ -36,7 +36,7 @@ class UsersController extends Controller
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
-            "mail" => "required_if:type,1|nullable|email",
+            "mail" => "required_if:type,1|nullable",
             "password" => "required_if:type,1|nullable",
         ]);
 
@@ -89,7 +89,7 @@ class UsersController extends Controller
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
-            "mail" => "required_if:type,1|email",
+            "mail" => "required_if:type,1",
             "password" => "required_if:type,1",
         ]);
 
