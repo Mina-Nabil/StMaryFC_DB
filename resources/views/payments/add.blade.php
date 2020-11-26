@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label>User*</label>
                         <div class="input-group mb-3">
-                            <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" id=userSel onchange="getDueDays(userSel)" required>
+                            <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" id=userSel required>
                                 <option value="" disabled selected>Pick From Registered Users</option>
                                 @foreach($users as $user)
                                 <option value="{{ $user->id }}">{{$user->USER_NAME}}</option>
@@ -37,7 +37,7 @@
                         </div>
                         <small class="text-danger">{{$errors->first('date')}}</small>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Covering Days</label>
                         <div class="input-group mb-3">
                             <select class="select2 m-b-10 select2-multiple" style="width: 100%" multiple="multiple" data-placeholder="Choose From The Following Days" id=days name=days[]>
@@ -45,7 +45,7 @@
                             </select>
                         </div>
 
-                    </div>
+                    </div> --}}
 
                     <div class="form-group">
                         <label>Payment Note</label>
@@ -66,32 +66,32 @@
 
 @section('js_content')
 <script>
-    function getDueDays(callerID) {
-    userID = callerID.options[callerID.selectedIndex].value;
-    var http = new XMLHttpRequest();
-    var url = "{{url('payments/get/unpaid/')}}" + '/' +  userID;
-    http.open('GET', url, true);
-    //Send the proper header information along with the request
-    //http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//     function getDueDays(callerID) {
+//     userID = callerID.options[callerID.selectedIndex].value;
+//     var http = new XMLHttpRequest();
+//     var url = "{{url('payments/get/unpaid/')}}" + '/' +  userID;
+//     http.open('GET', url, true);
+//     //Send the proper header information along with the request
+//     //http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
 
-    http.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        try {        
-            prices = JSON.parse(this.responseText);
-            listtt = document.getElementById('days' );
-            listtt.innerHTML = '';
-            listtt.innerHTML += '<option value="0">All Month</option>';
-            prices.forEach(element => {
-                listtt.innerHTML += '<option value="' + element['id'] + '">' + element['date'] + '</option>';
-            });
-        } catch(e){
-            console.log(e); 
-        }
-      } 
-    };
-    http.send();
-   }
+//     http.onreadystatechange = function() {
+//       if (this.readyState == 4 && this.status == 200) {
+//         try {        
+//             prices = JSON.parse(this.responseText);
+//             listtt = document.getElementById('days' );
+//             listtt.innerHTML = '';
+//             listtt.innerHTML += '<option value="0">All Month</option>';
+//             prices.forEach(element => {
+//                 listtt.innerHTML += '<option value="' + element['id'] + '">' + element['date'] + '</option>';
+//             });
+//         } catch(e){
+//             console.log(e); 
+//         }
+//       } 
+//     };
+//     http.send();
+//    }
 
 </script>
 @endsection

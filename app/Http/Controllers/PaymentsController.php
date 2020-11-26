@@ -70,19 +70,9 @@ class PaymentsController extends Controller
         ]);
         DB::transaction(function () use ($request) {
             Payment::insertPayment($request->date, $request->userID, $request->amount, $request->note);
-            foreach ($request->days as $attendanceID) {
-
-                if ($attendanceID != 0) {
-                    $attendance = Attendance::findOrFail($attendanceID);
-                    $attendance->ATND_PAID = 1;
-                    $attendance->save();
-                } elseif ($attendanceID == 0) {
-                    $startDate =  (new DateTime($request->date))->format('Y-m-01');
-                    $endDate =  (new DateTime($request->date))->format('Y-m-t');
-                    Attendance::setPaid($request->userID, $startDate, $endDate);
-                    break;
-                }
-            }
+            $startDate =  (new DateTime($request->date))->format('Y-m-01');
+            $endDate =  (new DateTime($request->date))->format('Y-m-t');
+            Attendance::setPaid($request->userID, $startDate, $endDate);
         });
         return redirect('payments/show');
     }
