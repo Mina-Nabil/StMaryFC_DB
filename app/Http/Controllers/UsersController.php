@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Group;
 use App\Models\Payment;
+use App\Models\UniformState;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
@@ -33,8 +34,10 @@ class UsersController extends Controller
     {
         $request->validate([
             "name" => "required|unique:app_users,USER_NAME",
+            "code" => "required|unique:app_users,USER_CODE",
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
+            "uniform" => "required|exists:uniform_states,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1|nullable",
             "password" => "required_if:type,1|nullable",
@@ -51,15 +54,16 @@ class UsersController extends Controller
         $user->USER_NOTE = $request->note;
         $user->USER_CODE = $request->code;
         $user->USER_MOBN = $request->mobn;
+        $user->USER_UFRM_ID = $request->uniform;
 
         $user->save();
 
         return redirect('users/profile/' . $user->id);
     }
 
-    public function profile($id)
+    public function profile($id, Request $request)
     {
-        $this->initProfileArray($id);
+        $this->initProfileArray($id, $request->year ?? null);
         return view('users.profile', $this->data);
     }
 
@@ -86,24 +90,26 @@ class UsersController extends Controller
 
         $request->validate([
             "name" => ["required", Rule::unique('app_users', "USER_NAME")->ignore($user->USER_NAME, "USER_NAME")],
+            "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
+            "uniform" => "required|exists:uniform_states,id",
             "birthDate" => "nullable|date",
-            "mail" => "required_if:type,1",
-            "password" => "required_if:type,1",
+            "mail" => "required_if:type,1"
         ]);
 
         $user->USER_NAME = $request->name;
         $user->USER_USTP_ID = $request->type;
         $user->USER_BDAY = $request->birthDate;
         $user->USER_MAIL = $request->mail;
+        if(isset($request->password) && $request->password != '')
         $user->USER_PASS = bcrypt($request->password);
         $user->USER_GRUP_ID = $request->group;
         $user->USER_FACE_ID = bcrypt($user->USER_NAME);
         $user->USER_NOTE = $request->note;
         $user->USER_CODE = $request->code;
         $user->USER_MOBN = $request->mobn;
-
+        $user->USER_UFRM_ID = $request->uniform;
         $user->save();
 
         return redirect('users/profile/' . $user->id);
@@ -147,7 +153,7 @@ class UsersController extends Controller
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['#', 'Username', 'Type', "Born", 'Class', 'Mob#', 'Comment'];
+        $this->data['cols'] = ['#', 'Username', 'Type', 'Uniform', "Born", 'Class', 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
@@ -158,15 +164,28 @@ class UsersController extends Controller
                         "url"   =>  "users/toggle/",
                         "states" => [
                             "1" => "Admin",
-                            "2" => "Kid",
+                            "2" => "Player",
                         ],
                         "actions" => [
-                            "1" => "set as Kid",
+                            "1" => "set as Player",
                             "2" => "set as Admin",
                         ],
                         "classes" => [
                             "1" => "label-success",
                             "2" => "label-info",
+                        ],
+                    ]
+                ],
+                [
+                    'state' => [
+                        'rel' => 'uniform',
+                        'att' => 'USER_UFRM_ID',
+                        'foreignAtt' => 'UFRM_NAME',
+                        'classes' => [
+                            "1" => "label-inverse",
+                            "2" => "label-warning",
+                            "3" => "label-danger",
+                            "4" => "label-success"
                         ],
                     ]
                 ],
@@ -181,6 +200,7 @@ class UsersController extends Controller
     {
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
+        $this->data['uniformStates'] = UniformState::all();
         $this->data['groups'] = Group::all();
         $this->data['formTitle'] = "Add New User";
         $this->data['formURL'] = "users/insert";
@@ -189,12 +209,14 @@ class UsersController extends Controller
         $this->data['isPassNeeded'] = false;
     }
 
-    private function initProfileArray($id)
+    private function initProfileArray($id, $overviewYear = null)
     {
         $this->data['user'] = User::find($id);
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
+        $this->data['uniformStates'] = UniformState::all();
         $this->data['groups'] = Group::all();
+        $this->data['years'] = $this->data['user']->getAttendedYears();
         $this->data['formTitle'] = "Add New User";
         $this->data['formURL'] = "users/update";
         $this->data['homeURL'] = "users/show";
@@ -219,7 +241,8 @@ class UsersController extends Controller
 
         //Overview array
         $now = new DateTime();
-        $year = $now->format('Y');
+        $year = $overviewYear ?? $now->format('Y');
+        $this->data['loadedYear'] = $year;
         $this->data['overItems'] = array();
         for($month=1 ; $month <13 ; $month++){
             $date = new DateTime($year . '-' . $month . '-01');

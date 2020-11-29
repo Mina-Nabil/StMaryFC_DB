@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('app_user_types')->insert([
             'id' => 2,
-            "USTP_NAME" => "Kid"
+            "USTP_NAME" => "Player"
         ]);
 
         DB::table('groups')->insert([

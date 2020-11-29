@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -9,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     protected $table = "app_users";
     public $timestamps = false;
@@ -25,6 +26,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\UserType', 'USER_USTP_ID');
     }
 
+    public function uniform(){
+        return $this->belongsTo('App\Models\UniformState', 'USER_UFRM_ID');
+    }
+
     public function group(){
         return $this->belongsTo('App\Models\Group', 'USER_GRUP_ID');
     }
@@ -35,6 +40,10 @@ class User extends Authenticatable
 
     public function getLatestAttendance(){
         return Attendance::where('ATND_USER_ID', $this->id)->orderByDesc('ATND_DATE')->limit(200)->get();
+    }
+
+    public function getAttendedYears(){
+        return Attendance::where('ATND_USER_ID', $this->id)->selectRaw("DISTINCT YEAR(ATND_DATE) as year")->get();
     }
 
 

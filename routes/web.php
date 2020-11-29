@@ -38,6 +38,7 @@ Route::get('attendance/delete/{id}','AttendanceController@deleteAttendance');
 //Users routes
 Route::get("users/show/{type?}", 'UsersController@home');
 Route::get("users/profile/{id}", 'UsersController@profile');
+Route::post("users/profile/{id}", 'UsersController@profile');
 Route::get("users/toggle/{id}", 'UsersController@toggle');
 Route::get("users/add", 'UsersController@addPage');
 Route::post("users/insert", 'UsersController@insert');

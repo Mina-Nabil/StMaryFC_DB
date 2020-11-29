@@ -28,7 +28,7 @@
                 <div class="tab-pane active" id="profile" role="tabpanel">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Model Name</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Player Name</strong>
                                 <br>
                                 <p class="text-muted">{{$user->USER_NAME}}</p>
                             </div>
@@ -36,37 +36,43 @@
                                 <br>
                                 <p class="text-muted">{{$user->group->GRUP_NAME ?? ''}}</p>
                             </div>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Uniform</strong>
+                                <br>
+                                <p class="text-muted">{{$user->uniform->UFRM_NAME ?? ''}}</p>
+                            </div>
                             <div class="col-md-3 col-xs-6"> <strong>Birthdate</strong>
                                 <br>
-                                <p class="text-muted">{{$user->USER_BDAY->format('d-M-Y')}}</p>
+                                <p class="text-muted">{{($user->USER_BDAY) ? $user->USER_BDAY->format('d-M-Y') : ''}}</p>
                             </div>
                         </div>
                         <hr>
                         <div class=row>
-                            <div class="col-lg-3 col-xs-6 b-r">
+                            <div class="col-lg-4 col-xs-6 b-r">
                                 <strong>Account Type</strong>
-                                <p class="m-t-30">{{$user->type->USTP_NAME}}</p>
+                                <p class="text-muted">{{$user->type->USTP_NAME}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r">
+                            <div class="col-md-4 col-xs-6 b-r">
                                 <strong>Email</strong>
-                                <p class="m-t-30">{{$user->USER_MAIL ?? ''}}</p>
+                                <p class="text-muted">{{$user->USER_MAIL ?? ''}}</p>
                             </div>
                         </div>
                         <hr>
                         <div class=row>
-                        <div class="col-md-4 col-xs-6 b-r">
-                            <strong>Code</strong>
-                            <p class="m-t-30">{{$user->USTP_CODE}}</p>
-                        </div>
-                        <div class="col-md-4 col-xs-6 b-r">
-                            <strong>Phone</strong>
-                            <p class="m-t-30">{{$user->USER_MOBN ?? ''}}</p>
-                        </div>
+                            <div class="col-md-4 col-xs-6 b-r">
+                                <strong>ID</strong>
+                                <p class="text-muted">{{$user->USER_CODE}}</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6 b-r">
+                                <strong>Phone</strong>
+                                <p class="text-muted">{{$user->USER_MOBN ?? ''}}</p>
+                            </div>
                         </div>
                         <hr>
-                        <div class="col-12 b-r">
-                            <strong>Note</strong>
-                            <p class="m-t-30">{{$user->USER_NOTE ?? ''}}</p>
+                        <div class=row>
+                            <div class="col-12 b-r">
+                                <strong>Note</strong>
+                                <p class="text-muted">{{$user->USER_NOTE ?? ''}}</p>
+                            </div>
                         </div>
                         <hr>
                     </div>
@@ -75,7 +81,32 @@
 
                 <div class="tab-pane" id="overview" role="tabpanel">
                     <div class="card-body">
+                        <h4 class="card-title">Years Overview</h4>
+                        <form class="form pt-3" method="post">
+                            @csrf
+                            <input type=hidden name=userID value="{{(isset($user)) ? $user->id : ''}}">
+                            <div class=row>
+                                <div class=col-9>
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <select name=year class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
+                                                <option value="" disabled selected>Pick From Attended Years</option>
+                                                @foreach($years as $year)
+                                                <option value="{{ $year->year }}">{{$year->year}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=col-3>
+                                    <button type="submit" class="btn btn-success mr-2">Submit</button>
+                                </div>
+                            </div>
+
+                        </form>
+                        <hr>
                         <div class="table-responsive m-t-5">
+                            <h4 class="card-title">{{$loadedYear ?? now()->format('Y')}}'s Overview</h4>
                             <table id="overTable" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
                                 <thead>
                                     <th>Month</th>
@@ -104,15 +135,20 @@
                         <form class="form pt-3" method="post" action="{{ url($attendanceFormURL) }}" enctype="multipart/form-data">
                             @csrf
                             <input type=hidden name=userID value="{{(isset($user)) ? $user->id : ''}}">
-
-                            <div class="form-group">
-                                <label>Attendance Date</label>
-                                <div class="input-group mb-3">
-                                    <input type="date" value="{{ now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=date required />
+                            <div class=row>
+                                <div class=col-9>
+                                    <div class="form-group">
+                                        <label>Attendance Date</label>
+                                        <div class="input-group mb-3">
+                                            <input type="date" value="{{ now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=date required />
+                                        </div>
+                                        <small class="text-danger">{{$errors->first('date')}}</small>
+                                    </div>
                                 </div>
-                                <small class="text-danger">{{$errors->first('date')}}</small>
+                                <div class="col-3 align-self-center">
+                                    <button type="submit" class="btn btn-success mr-2">Submit</button>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-success mr-2">Submit</button>
                         </form>
                         <hr>
                         <x-datatable id="myTable" :title="$title" :subtitle="$subTitle" :cols="$cols" :items="$items" :atts="$atts" />
@@ -214,7 +250,7 @@
                                 @csrf
                                 <input type=hidden name=id value="{{(isset($user)) ? $user->id : ''}}">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Code</label>
+                                    <label for="exampleInputEmail1">ID</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-barcode"></i></span>
@@ -272,9 +308,28 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Uniform State*</label>
+                                    <div class="input-group mb-3">
+                                        <select name=uniform class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
+                                            <option value="" disabled selected>Pick From Unifrom States</option>
+                                            @foreach($uniformStates as $state)
+                                            <option value="{{ $state->id }}" @if(isset($user) && $state->id == $user->USER_UFRM_ID)
+                                                selected
+                                                @elseif($state->id == old('uniform'))
+                                                selected
+                                                @endif
+                                                >{{$state->UFRM_NAME}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <small class="text-danger">{{$errors->first('uniform')}}</small>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Birth Date</label>
                                     <div class="input-group mb-3">
-                                        <input type="date" value="{{$user->USER_BDAY ?? now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=birthDate required />
+                                        <input type="date" value="{{$user->USER_BDAY ? $user->USER_BDAY->format('Y-m-d') : now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date"
+                                            name=birthDate required />
                                     </div>
                                     <small class="text-danger">{{$errors->first('birthDate')}}</small>
                                 </div>

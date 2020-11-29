@@ -203,6 +203,7 @@ class ApiController extends Controller
     {
         $validation = $this->validateRequest($request, [
             "name" => "required|unique:app_users,USER_NAME",
+            "code" => "required|unique:app_users,USER_CODE",
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
