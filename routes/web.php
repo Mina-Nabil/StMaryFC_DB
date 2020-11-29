@@ -45,6 +45,7 @@ Route::post("users/insert", 'UsersController@insert');
 Route::post("users/update", 'UsersController@update');
 Route::post("users/add/image", 'UsersController@attachImage');
 Route::get("users/setimage/{userID}/{imageID}", 'UsersController@setMainImage');
+Route::get("users/delete/{id}", 'UsersController@delete');
 
 //Groups routes
 Route::get('groups/show', 'GroupsController@home');

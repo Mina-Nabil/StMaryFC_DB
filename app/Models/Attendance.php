@@ -28,7 +28,7 @@ class Attendance extends Model
         else if ($group != 0) {
             $query = $query->where('USER_GRUP_ID', $group);
         }
-        return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'USER_NAME', 'GRUP_NAME')
+        return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'USER_NAME', 'GRUP_NAME', 'ATND_USER_ID')
             ->orderByDesc('ATND_DATE')
             ->get();
     }
@@ -47,7 +47,7 @@ class Attendance extends Model
     {
         return DB::table('attendance')->join('app_users', "app_users.id", '=', "ATND_USER_ID")
             ->where('ATND_PAID', 0)
-            ->selectRaw("DISTINCT USER_NAME , DATE_FORMAT(ATND_DATE, '%Y-%M') as paymentDue")
+            ->selectRaw("DISTINCT USER_NAME, ATND_USER_ID , DATE_FORMAT(ATND_DATE, '%Y-%M') as paymentDue")
             ->get();
     }
 

@@ -140,6 +140,14 @@ class UsersController extends Controller
         $user->save();
         return back();
     }
+
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect('users/show');
+    }
     ////////data functions
     protected $data;
 

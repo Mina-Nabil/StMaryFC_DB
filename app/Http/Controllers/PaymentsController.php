@@ -28,7 +28,7 @@ class PaymentsController extends Controller
         $data['title'] = "Payments Due";
         $data['subTitle'] = "Check payments to be collected";
         $data['cols'] = ['User', 'Month'];
-        $data['atts'] = ['USER_NAME', 'paymentDue'];
+        $data['atts'] = [['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']], 'paymentDue'];
 
         return view('payments.show', $data);
     }
@@ -105,6 +105,6 @@ class PaymentsController extends Controller
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
         $this->data['cols'] = ['User', 'For', 'Amount', 'Note'];
-        $this->data['atts'] = [['foreign' => ['user', 'USER_NAME']], ['date' => ['att' => 'PYMT_DATE', 'format' => 'M-Y']], 'PYMT_AMNT', ['comment' => ['att' => 'PYMT_NOTE']]];
+        $this->data['atts'] = [['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']], ['date' => ['att' => 'PYMT_DATE', 'format' => 'M-Y']], 'PYMT_AMNT', ['comment' => ['att' => 'PYMT_NOTE']]];
     }
 }

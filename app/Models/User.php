@@ -38,6 +38,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Attendance', "ATND_USER_ID");
     }
 
+    public function payments(){
+        return $this->hasMany('App\Models\Payment', "PYMT_USER_ID");
+    }
+
     public function getLatestAttendance(){
         return Attendance::where('ATND_USER_ID', $this->id)->orderByDesc('ATND_DATE')->limit(200)->get();
     }
@@ -94,4 +98,15 @@ class User extends Authenticatable
     {
         return $this->USER_PASS;
     }
+
+        // this is a recommended way to declare event handlers
+        public static function boot() {
+            parent::boot();
+    
+            static::deleting(function($user) { // before delete() method call this
+                 $user->attendance()->delete();
+                 $user->payments()->delete();
+                 // do the rest of the cleanup...
+            });
+        }
 }

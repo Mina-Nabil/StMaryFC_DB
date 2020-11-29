@@ -47,22 +47,22 @@
                         </div>
                         <hr>
                         <div class=row>
-                            <div class="col-lg-4 col-xs-6 b-r">
+                            <div class="col-lg-6 col-xs-6 b-r">
                                 <strong>Account Type</strong>
                                 <p class="text-muted">{{$user->type->USTP_NAME}}</p>
                             </div>
-                            <div class="col-md-4 col-xs-6 b-r">
+                            <div class="col-md-6 col-xs-6 b-r">
                                 <strong>Email</strong>
                                 <p class="text-muted">{{$user->USER_MAIL ?? ''}}</p>
                             </div>
                         </div>
                         <hr>
                         <div class=row>
-                            <div class="col-md-4 col-xs-6 b-r">
+                            <div class="col-md-6 col-xs-6 b-r">
                                 <strong>ID</strong>
                                 <p class="text-muted">{{$user->USER_CODE}}</p>
                             </div>
-                            <div class="col-md-4 col-xs-6 b-r">
+                            <div class="col-md-6 col-xs-6 b-r">
                                 <strong>Phone</strong>
                                 <p class="text-muted">{{$user->USER_MOBN ?? ''}}</p>
                             </div>
@@ -386,6 +386,10 @@
                                 <a href="{{url($homeURL) }}" class="btn btn-dark">Cancel</a>
                                 @endif
                             </form>
+                            <hr>
+                            <h4 class="card-title">Delete User</h4>
+                            <button type="button" onclick="confirmAndGoTo('{{url('users/delete/'.$user->id )}}', 'delete this User and all his attendance and payment ?')"
+                                class="btn btn-danger mr-2">Delete All User Data</button>
                         </div>
                     </div>
                 </div>
