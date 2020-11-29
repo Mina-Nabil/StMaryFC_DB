@@ -255,7 +255,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-barcode"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name=code placeholder="User Code" value="{{ (isset($user)) ? $user->USER_CODE : old('code')}}">
+                                        <input type="text" class="form-control" name=code placeholder="User ID" value="{{ (isset($user)) ? $user->USER_CODE : old('code')}}">
                                     </div>
                                     <small class="text-danger">{{$errors->first('code')}}</small>
 
