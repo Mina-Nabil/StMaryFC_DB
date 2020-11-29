@@ -146,7 +146,7 @@ class UsersController extends Controller
     private function initDataArray($type)
     {
         if ($type == 0) {
-            $this->data['items'] = User::all();
+            $this->data['items'] = User::orderBy("USER_CODE")->get();
         } else {
             $this->data['items'] = User::where('USER_USTP_ID', $type)->get();
         }
