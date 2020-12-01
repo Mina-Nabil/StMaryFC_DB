@@ -175,8 +175,8 @@
                         </li>
 
 
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false" href="{{url('groups/show')}}"><i class=" fas fa-graduation-cap"></i>Groups</a>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false" href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i>Managers</a>
+                        <li> <a href="{{url('groups/show')}}"><i class=" fas fa-graduation-cap"></i><span class="hide-menu">Groups</span></a>
+                        <li> <a href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i><span class="hide-menu">Managers</span></a>
 
                         </li>
 
