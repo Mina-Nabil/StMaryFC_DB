@@ -88,6 +88,13 @@
                         <a href="{{url($homeURL) }}" class="btn btn-dark">Cancel</a>
                     @endif
                 </form>
+                @isset($user)
+                <hr>
+                <h4 class="card-title">Delete User</h4>
+                <button type="button" onclick="confirmAndGoTo('{{url('dashusers/delete/'.$user->id )}}', 'delete this User and all his attendance and payment ?')"
+                    class="btn btn-danger mr-2">Delete All User Data</button>
+                @endisset
+                
             </div>
         </div>
     </div>

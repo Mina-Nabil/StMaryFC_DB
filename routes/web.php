@@ -59,6 +59,7 @@ Route::get("dash/users/all", 'DashUsersController@index');
 Route::post("dash/users/insert", 'DashUsersController@insert');
 Route::get("dash/users/edit/{id}", 'DashUsersController@edit');
 Route::post("dash/users/update", 'DashUsersController@update');
+Route::get("dash/users/delete/{id}", 'DashUsersController@delete');
 
 
 Route::get('logout', 'HomeController@logout')->name('logout');

@@ -156,31 +156,13 @@ class UsersController extends Controller
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['#', 'Username', 'Type', "Born", 'Class', 'Mob#', 'Comment'];
+        $this->data['cols'] = ['#', 'Username', 'Class', "Born", 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
-                [
-                    'toggle' => [
-                        "att"   =>  "USER_USTP_ID",
-                        "url"   =>  "users/toggle/",
-                        "states" => [
-                            "1" => "Admin",
-                            "2" => "Player",
-                        ],
-                        "actions" => [
-                            "1" => "set as Player",
-                            "2" => "set as Admin",
-                        ],
-                        "classes" => [
-                            "1" => "label-success",
-                            "2" => "label-info",
-                        ],
-                    ]
-                ],
-                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 ['foreign' => ['group', 'GRUP_NAME']],
+                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
             ];
