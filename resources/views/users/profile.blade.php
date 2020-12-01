@@ -319,7 +319,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon22"><i class="mdi mdi-cellphone-iphone"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name=mobn placeholder="Phone Number" value="{{ (isset($user)) ? $user->USER_MOBN : old('mobn')}}">
+                                        <input type="number" class="form-control" name=mobn placeholder="Phone Number" value="{{ (isset($user)) ? $user->USER_MOBN : old('mobn')}}">
                                     </div>
                                     <small class="text-danger">{{$errors->first('mobn')}}</small>
 
