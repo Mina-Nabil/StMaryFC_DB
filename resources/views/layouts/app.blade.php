@@ -176,7 +176,7 @@
 
 
                         <li> <a href="{{url('groups/show')}}"><i class=" fas fa-graduation-cap"></i>Groups</a>
-                        <li> <a href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i>Admins</a>
+                        <li> <a href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i>Managers</a>
 
                         </li>
 

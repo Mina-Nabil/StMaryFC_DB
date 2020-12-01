@@ -14,8 +14,8 @@ class DashUsersController extends Controller
     {
         $this->data['items'] = DashUser::with('dash_types')->get();
         $this->data['types'] = DashType::all();
-        $this->data['title'] = "Dashboard Users";
-        $this->data['subTitle'] = "Manage All Dashboard Users";
+        $this->data['title'] = "Dashboard Managers";
+        $this->data['subTitle'] = "Manage All Dashboard Managers";
         $this->data['cols'] = ['Username', 'Fullname', 'Type', 'Edit'];
         $this->data['atts'] = ['DASH_USNM', 'DASH_FLNM', ['foreign' => ['dash_types', 'DHTP_NAME']], ['edit' => ['url' => 'dash/users/edit/', 'att' => 'id']]];
         $this->data['homeURL'] = 'dash/users/all';
@@ -25,7 +25,7 @@ class DashUsersController extends Controller
     {
 
         $this->initDataArr();
-        $this->data['formTitle'] = "Add Admins";
+        $this->data['formTitle'] = "Add Managers";
         $this->data['isPassNeeded'] = true;
         $this->data['formURL'] = "dash/users/insert";
         $this->data['isCancel'] = false;
@@ -36,7 +36,7 @@ class DashUsersController extends Controller
     {
         $this->initDataArr();
         $this->data['user'] = DashUser::findOrFail($id);
-        $this->data['formTitle'] = "Manage Admin(" . $this->data['user']->DASH_USNM . ')';
+        $this->data['formTitle'] = "Edit Manager(" . $this->data['user']->DASH_USNM . ')';
         $this->data['isPassNeeded'] = false;
         $this->data['formURL'] = "dash/users/update";
         $this->data['isCancel'] = true;
