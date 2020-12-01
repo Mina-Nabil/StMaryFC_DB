@@ -91,8 +91,8 @@
                 @isset($user)
                 <hr>
                 <h4 class="card-title">Delete User</h4>
-                <button type="button" onclick="confirmAndGoTo('{{url('dashusers/delete/'.$user->id )}}', 'delete this User and all his attendance and payment ?')"
-                    class="btn btn-danger mr-2">Delete All User Data</button>
+                <button type="button" onclick="confirmAndGoTo('{{url('dash/users/delete/'.$user->id )}}', 'delete this Manager and all his information permenantly ?')"
+                    class="btn btn-danger mr-2">Delete All Manager Data</button>
                 @endisset
                 
             </div>

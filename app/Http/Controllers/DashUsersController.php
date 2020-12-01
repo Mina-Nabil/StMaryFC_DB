@@ -98,4 +98,10 @@ class DashUsersController extends Controller
 
         return redirect("dash/users/all");
     }
+
+    public function delete($id){
+        $user = DashUser::findOrFail($id);
+        $user->delete();
+        return redirect("dash/users/all");
+    }
 }
