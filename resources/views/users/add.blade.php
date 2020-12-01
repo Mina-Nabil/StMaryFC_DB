@@ -73,24 +73,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Uniform State*</label>
-                        <div class="input-group mb-3">
-                            <select name=uniform class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                <option value="" disabled selected>Pick From Unifrom States</option>
-                                @foreach($uniformStates as $state)
-                                <option value="{{ $state->id }}" @if(isset($user) && $state->id == $user->USER_UFRM_ID)
-                                    selected
-                                    @elseif($state->id == old('uniform'))
-                                    selected
-                                    @endif
-                                    >{{$state->UFRM_NAME}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <small class="text-danger">{{$errors->first('uniform')}}</small>
-                    </div>
-
-                    <div class="form-group">
                         <label>Birth Date</label>
                         <div class="input-group mb-3">
                             <input type="date" value="{{$user->USER_BDAY ?? now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=birthDate required />

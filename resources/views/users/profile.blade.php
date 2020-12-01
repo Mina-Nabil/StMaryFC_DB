@@ -28,19 +28,15 @@
                 <div class="tab-pane active" id="profile" role="tabpanel">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Player Name</strong>
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>Player Name</strong>
                                 <br>
                                 <p class="text-muted">{{$user->USER_NAME}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Class Name</strong>
+                            <div class="col-md-4 col-xs-6 b-r"> <strong>Class Name</strong>
                                 <br>
                                 <p class="text-muted">{{$user->group->GRUP_NAME ?? ''}}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Uniform</strong>
-                                <br>
-                                <p class="text-muted">{{$user->uniform->UFRM_NAME ?? ''}}</p>
-                            </div>
-                            <div class="col-md-3 col-xs-6"> <strong>Birthdate</strong>
+                            <div class="col-md-4 col-xs-6"> <strong>Birthdate</strong>
                                 <br>
                                 <p class="text-muted">{{($user->USER_BDAY) ? $user->USER_BDAY->format('d-M-Y') : ''}}</p>
                             </div>
@@ -305,24 +301,6 @@
                                         </select>
                                     </div>
                                     <small class="text-danger">{{$errors->first('type')}}</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Uniform State*</label>
-                                    <div class="input-group mb-3">
-                                        <select name=uniform class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                            <option value="" disabled selected>Pick From Unifrom States</option>
-                                            @foreach($uniformStates as $state)
-                                            <option value="{{ $state->id }}" @if(isset($user) && $state->id == $user->USER_UFRM_ID)
-                                                selected
-                                                @elseif($state->id == old('uniform'))
-                                                selected
-                                                @endif
-                                                >{{$state->UFRM_NAME}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <small class="text-danger">{{$errors->first('uniform')}}</small>
                                 </div>
 
                                 <div class="form-group">

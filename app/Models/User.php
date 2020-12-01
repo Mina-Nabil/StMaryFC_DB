@@ -26,10 +26,6 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\UserType', 'USER_USTP_ID');
     }
 
-    public function uniform(){
-        return $this->belongsTo('App\Models\UniformState', 'USER_UFRM_ID');
-    }
-
     public function group(){
         return $this->belongsTo('App\Models\Group', 'USER_GRUP_ID');
     }

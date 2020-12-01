@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Group;
 use App\Models\Payment;
-use App\Models\UniformState;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
@@ -37,7 +36,6 @@ class UsersController extends Controller
             "code" => "required|unique:app_users,USER_CODE",
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
-            "uniform" => "required|exists:uniform_states,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1|nullable",
             "password" => "required_if:type,1|nullable",
@@ -54,7 +52,6 @@ class UsersController extends Controller
         $user->USER_NOTE = $request->note;
         $user->USER_CODE = $request->code;
         $user->USER_MOBN = $request->mobn;
-        $user->USER_UFRM_ID = $request->uniform;
 
         $user->save();
 
@@ -93,7 +90,6 @@ class UsersController extends Controller
             "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
-            "uniform" => "required|exists:uniform_states,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1"
         ]);
@@ -109,7 +105,6 @@ class UsersController extends Controller
         $user->USER_NOTE = $request->note;
         $user->USER_CODE = $request->code;
         $user->USER_MOBN = $request->mobn;
-        $user->USER_UFRM_ID = $request->uniform;
         $user->save();
 
         return redirect('users/profile/' . $user->id);
@@ -161,7 +156,7 @@ class UsersController extends Controller
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['#', 'Username', 'Type', 'Uniform', "Born", 'Class', 'Mob#', 'Comment'];
+        $this->data['cols'] = ['#', 'Username', 'Type', "Born", 'Class', 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
@@ -184,19 +179,6 @@ class UsersController extends Controller
                         ],
                     ]
                 ],
-                [
-                    'state' => [
-                        'rel' => 'uniform',
-                        'att' => 'USER_UFRM_ID',
-                        'foreignAtt' => 'UFRM_NAME',
-                        'classes' => [
-                            "1" => "label-inverse",
-                            "2" => "label-warning",
-                            "3" => "label-danger",
-                            "4" => "label-success"
-                        ],
-                    ]
-                ],
                 ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 ['foreign' => ['group', 'GRUP_NAME']],
                 'USER_MOBN',
@@ -208,7 +190,6 @@ class UsersController extends Controller
     {
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
-        $this->data['uniformStates'] = UniformState::all();
         $this->data['groups'] = Group::all();
         $this->data['formTitle'] = "Add New User";
         $this->data['formURL'] = "users/insert";
@@ -222,7 +203,6 @@ class UsersController extends Controller
         $this->data['user'] = User::find($id);
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
-        $this->data['uniformStates'] = UniformState::all();
         $this->data['groups'] = Group::all();
         $this->data['years'] = $this->data['user']->getAttendedYears();
         $this->data['formTitle'] = "Add New User";
