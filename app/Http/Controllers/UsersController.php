@@ -162,7 +162,7 @@ class UsersController extends Controller
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
                 ['foreign' => ['group', 'GRUP_NAME']],
-                ['modelFunc' => ['funcName' => 'isAttended'] ] ,
+                ['modelFunc' => ['funcName' => 'monthlyAttendance'] ] ,
                 ['modelFunc' => ['funcName' => 'monthlyPayment'] ] ,
                 ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
                 'USER_MOBN',

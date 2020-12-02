@@ -46,8 +46,8 @@ class User extends Authenticatable
         return Attendance::where('ATND_USER_ID', $this->id)->selectRaw("DISTINCT YEAR(ATND_DATE) as year")->get();
     }
 
-    public function isAttended(){
-        return $this->selectRaw("(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = {$this->id} and MONTH(ATND_DATE) = MONTH(CURDATE()) ) as isAttended")->first()->isAttended;
+    public function monthlyAttendance(){
+        return $this->attendance()->whereRaw("MONTH(ATND_DATE) = MONTH(CURDATE())")->count();        
     }
 
     public function monthlyPayment(){
