@@ -149,9 +149,9 @@ class UsersController extends Controller
     private function initDataArray($type)
     {
         if ($type == 0) {
-            $this->data['items'] = User::orderByRaw("ABS(USER_CODE)")->get();
+            $this->data['items'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         } else {
-            $this->data['items'] = User::where('USER_USTP_ID', $type)->orderByRaw("ABS(USER_CODE)")->get();
+            $this->data['items'] = User::where('USER_USTP_ID', $type)->orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         }
 
         $this->data['title'] = "Dashboard Users";
