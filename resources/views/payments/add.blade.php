@@ -16,7 +16,7 @@
                             <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" id=userSel required>
                                 <option value="" disabled selected>Pick From Registered Users</option>
                                 @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->USER_CODE}}-{{$user->USER_NAME}}</option>
+                                <option value="{{ $user->id }}">{{$user->USER_CODE}} - {{$user->USER_NAME}}</option>
                                 @endforeach
                             </select>
                         </div>

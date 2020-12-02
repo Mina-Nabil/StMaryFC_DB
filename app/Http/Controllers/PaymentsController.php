@@ -35,7 +35,7 @@ class PaymentsController extends Controller
 
     public function queryPage()
     {
-        $data['users'] = User::all();
+        $data['users'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         $data['formTitle'] = "Payments Report";
         $data['formURL'] = "payments/query";
         return view('payments.query', $data);
@@ -55,7 +55,7 @@ class PaymentsController extends Controller
 
     public function addPayment()
     {
-        $data['users'] = User::all();
+        $data['users'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         $data['formTitle'] = "Add New Payment";
         $data['formURL'] = url("payments/insert");
         return view('payments.add', $data);
