@@ -85,6 +85,8 @@
                         <td>{{ number_format($item->{$att['number']['att']}, $att['nums'] ?? 2)  }}</a></td>
                         @elseif(array_key_exists('attUrl', $att))
                         <td><a href="{{ url($att['attUrl']['url'] . '/' . $item->{$att['attUrl']['urlAtt']}) }}">{{ $item->{$att['attUrl']['shownAtt']}  }}</a></td>
+                        @elseif(array_key_exists('modelFunc', $att))
+                        <td>{{ $item->{$att['modelFunc']['funcName']}()  }}</td>
                         @elseif(array_key_exists('urlOrStatic', $att))
                         @isset($item->{$att['urlOrStatic']['shownAtt']})
                         <td><a href="{{ url($att['urlOrStatic']['url'] . '/' . $item->{$att['urlOrStatic']['urlAtt']}) }}">{{ $item->{$att['urlOrStatic']['shownAtt']}  }}</a></td>
