@@ -65,7 +65,7 @@ class PaymentsController extends Controller
     {
         $payment = Payment::findOrFail($id);
         $payment->delete();
-        return redirect('payments/show');
+        return back();
     }
 
     public function insert(Request $request)
