@@ -61,6 +61,13 @@ class PaymentsController extends Controller
         return view('payments.add', $data);
     }
 
+    public function delete($id)
+    {
+        $payment = Payment::findOrFail($id);
+        $payment->delete();
+        return redirect('payments/show');
+    }
+
     public function insert(Request $request)
     {
         $request->validate([
@@ -104,7 +111,13 @@ class PaymentsController extends Controller
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
-        $this->data['cols'] = ['User', 'For', 'Amount', 'Note'];
-        $this->data['atts'] = [['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']], ['date' => ['att' => 'PYMT_DATE', 'format' => 'M-Y']], 'PYMT_AMNT', ['comment' => ['att' => 'PYMT_NOTE']]];
+        $this->data['cols'] = ['User', 'For', 'Amount', 'Note', 'Delete'];
+        $this->data['atts'] = [
+            ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']], 
+            ['date' => ['att' => 'PYMT_DATE', 'format' => 'M-Y']], 
+            'PYMT_AMNT', 
+            ['comment' => ['att' => 'PYMT_NOTE']],
+            ['del' => ['url' => 'payments/delete/', 'att' => 'id']]
+        ];
     }
 }
