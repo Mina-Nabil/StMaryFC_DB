@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class UserImage extends Model
@@ -19,7 +20,11 @@ class UserImage extends Model
             $this->user->USER_MAIN_IMGE = null;
             $this->user->save();
         }
-        unlink(public_path('storage/' . $this->USIM_URL));
+        try{ 
+            unlink(public_path('storage/' . $this->USIM_URL));
+        } catch (Exception $e){
+            
+        }
         $this->delete();
         return;
     }
