@@ -11,6 +11,16 @@ class UserImage extends Model
     
 
     public function user(){
-        return $this->belongsTo('App\Models\User', 'USER_MAIN_IMGE');
+        return $this->belongsTo('App\Models\User', 'USIM_USER_ID');
+    }
+
+    public function deleteImage(){
+        if($this->user->USER_MAIN_IMGE == $this->id){
+            $this->user->USER_MAIN_IMGE = null;
+            $this->user->save();
+        }
+        unlink(public_path('storage/' . $this->USIM_URL));
+        $this->delete();
+        return;
     }
 }

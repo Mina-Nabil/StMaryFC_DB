@@ -228,6 +228,9 @@
                                                     <div class="label label-danger">Main Image</div>
                                                 </a>
                                                 @endif
+                                                <a href="javascript:void(0);" onclick="confirmAndGoTo('{{url('users/delete/image/'.$image->id)}}', 'delete this image')">
+                                                    <img src="{{ asset('images/del.png') }}" width=25 height=25>
+                                                </a>
                                             </td>
                                         <tr>
                                             @endforeach

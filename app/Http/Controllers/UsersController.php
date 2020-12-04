@@ -143,6 +143,13 @@ class UsersController extends Controller
         $user->delete();
         return redirect('users/show');
     }
+
+    public function deleteImage($id)
+    {
+        $image = UserImage::findOrFail($id);
+        $image->deleteImage();
+        return back();
+    }
     ////////data functions
     protected $data;
 
