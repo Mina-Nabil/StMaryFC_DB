@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ApiController extends Controller
 {
@@ -243,6 +244,113 @@ class ApiController extends Controller
                 return $this->getApiMessage(false, ['error' => 'User Addition Failed']);
         }
     }
+
+    public function editUser(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $validation = $this->validateRequest($request, [
+            "id"   => "required|exists:app_users,id",
+            "name" => ["required", Rule::unique('app_users', "USER_NAME")->ignore($user->USER_NAME, "USER_NAME")],
+            "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
+            "birthDate" => "nullable|date",
+        ]);
+        if ($validation === true) {
+
+            $user->USER_NAME = $request->name;
+            $user->USER_BDAY = $request->birthDate;
+            $user->USER_FACE_ID = bcrypt($user->USER_NAME);
+            $user->USER_NOTE = $request->note;
+            $user->USER_CODE = $request->code;
+            $user->USER_MOBN = $request->mobn;
+
+            $user->save();
+            if ($request->hasFile('photo')) {
+                try {
+                    $newImage = new UserImage();
+                    $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
+                    $newImage->USIM_USER_ID = $user->id;
+                    $newImage->save();
+                    $user->USER_MAIN_IMGE = $newImage->id;
+                    $user->save();
+                } catch (Exception $e) {
+                }
+            }
+
+            if ($user)
+                return $this->getApiMessage(true, $user->load(['group', 'type', 'mainImage']));
+            else
+                return $this->getApiMessage(false, ['error' => 'User Modification Failed']);
+        }
+    }
+
+    public function changePassword(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $validation = $this->validateRequest($request, [
+            "oldPassword" => "required",
+            "newPassword" => "required",
+        ]);
+        if ($validation === true) {
+
+            if (Hash::check($request->oldPassword, $user->USER_PASS)) {
+                $user->USER_PASS = bcrypt($request->newPassword);
+
+
+                $res = $user->save();
+
+                if ($res)
+                    return $this->getApiMessage(true);
+                else
+                    return $this->getApiMessage(false, ['error' => 'Password Modification Failed']);
+            }
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Invalid Password']);
+        }
+    }
+
+    public function changeEmail(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $user = User::findOrFail($request->id);
+
+        $validation = $this->validateRequest($request, [
+            "password"  => "required",
+            "email"     => "required",
+        ]);
+        if ($validation === true) {
+
+            if (Hash::check($request->password, $user->USER_PASS)) {
+                $user->USER_MAIL = $request->email;
+
+
+                $res = $user->save();
+
+                if ($res)
+                    return $this->getApiMessage(true);
+                else
+                    return $this->getApiMessage(false, ['error' => 'Email Modification Failed']);
+            }
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Invalid Password']);
+        }
+    }
+
+
 
     public function getUserByFaceID(Request $request)
     {

@@ -29,6 +29,9 @@ Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserB
 Route::middleware('auth:sanctum')->post('/search/name', 'ApiController@searchByName');
 Route::middleware('auth:sanctum')->post('/add/user', 'ApiController@addUser');
 Route::middleware('auth:sanctum')->get('/types', 'ApiController@getUsertypes');
+Route::middleware('auth:sanctum')->post('/edit/user/password', 'ApiController@changePassword');
+Route::middleware('auth:sanctum')->post('/edit/user/email', 'ApiController@changeEmail');
+Route::middleware('auth:sanctum')->post('/edit/user', 'ApiController@editUser');
 
 //groups
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
