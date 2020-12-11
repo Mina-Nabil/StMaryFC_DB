@@ -314,9 +314,9 @@ class ApiController extends Controller
                     return $this->getApiMessage(true);
                 else
                     return $this->getApiMessage(false, ['error' => 'Password Modification Failed']);
+            } else {
+                return $this->getApiMessage(false, ['error' => 'Invalid Password']);
             }
-        } else {
-            return $this->getApiMessage(false, ['error' => 'Invalid Password']);
         }
     }
 
@@ -344,9 +344,9 @@ class ApiController extends Controller
                     return $this->getApiMessage(true);
                 else
                     return $this->getApiMessage(false, ['error' => 'Email Modification Failed']);
+            } else {
+                return $this->getApiMessage(false, ['error' => 'Invalid Password']);
             }
-        } else {
-            return $this->getApiMessage(false, ['error' => 'Invalid Password']);
         }
     }
 
