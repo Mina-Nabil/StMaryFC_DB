@@ -26,17 +26,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->call(function (){
-        //     $unCompressedUserImages = UserImage::where('USIM_CMPS', 0)->get();
-        //     foreach($unCompressedUserImages as $image){
-        //         $image->compress();
-        //     }
-        // })->everyMinute();
         $schedule->call(function (){
-            $unCompressedUserImages = UserImage::where('USIM_USER_ID', 3)->get();
-            $image = UserImage::findOrFail(4);
-            $image->flipImage();
-            
+            $unCompressedUserImages = UserImage::where('USIM_CMPS', 0)->get();
+            foreach($unCompressedUserImages as $image){
+                $image->compress();
+            }
         })->everyMinute();
     }
 
