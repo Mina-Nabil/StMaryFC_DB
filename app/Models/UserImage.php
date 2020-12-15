@@ -84,7 +84,7 @@ class UserImage extends Model
                 imagejpeg($image, public_path('storage/' . $imagePath), 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
-                $image = imagerotate($image, -180, 0);
+                $image = imageflip($image, IMG_FLIP_VERTICAL);
                 imagejpeg($image, public_path('storage/' . $imagePath), 50);
             }
         }
