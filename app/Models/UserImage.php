@@ -37,10 +37,10 @@ class UserImage extends Model
             $imagePath = public_path('storage/' . $this->USIM_URL);
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
-                imagejpeg($image, $imagePath, 60);
+                imagejpeg($image, $imagePath, 40);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif(public_path('storage/' . $this->USIM_URL));
-                imagejpeg($image, $imagePath, 60);
+                imagejpeg($image, $imagePath, 40);
             }
 
             $this->USIM_CMPS = 1;
@@ -56,11 +56,11 @@ class UserImage extends Model
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $imagePath, 100);
+                imagejpeg($image, $imagePath, 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif(public_path('storage/' . $this->USIM_URL));
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $imagePath, 100);
+                imagejpeg($image, $imagePath, 50);
             }
         }
     }
