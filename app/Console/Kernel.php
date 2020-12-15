@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
         //     }
         // })->everyMinute();
         $schedule->call(function (){
-            $unCompressedUserImages = UserImage::all();
+            $unCompressedUserImages = UserImage::get();
             foreach($unCompressedUserImages as $image){
                 $image->rotate();
             }
