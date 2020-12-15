@@ -32,7 +32,7 @@ class UserImage extends Model
 
     public function compress()
     {
-        // if (!$this->USIM_CMPS) {
+        if (!$this->USIM_CMPS) {
             $ext = last(explode('.', $this->USIM_URL));
             $imagePath = public_path('storage/' . $this->USIM_URL);
             if ($ext == 'png') {
@@ -45,7 +45,7 @@ class UserImage extends Model
 
             $this->USIM_CMPS = 1;
             $this->save();
-        // }
+        }
     }
 
     // public function rotateImage()
