@@ -50,7 +50,7 @@ class UserImage extends Model
 
     public function rotate()
     {
-        if ($this->id != 3 || $this->id != 1 || $this->id != 6 ) {
+        if ($this->id != 3 && $this->id != 1 && $this->id != 6 ) {
             $ext = last(explode('.', $this->USIM_URL));
             $imagePath = public_path('storage/' . $this->USIM_URL);
             if ($ext == 'png') {
