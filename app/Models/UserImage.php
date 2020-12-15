@@ -37,10 +37,10 @@ class UserImage extends Model
             $imagePath = public_path('storage/' . $this->USIM_URL);
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
-                imagejpeg($image, $imagePath, 40);
+                imagejpeg($image, $imagePath, 20);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
-                imagejpeg($image, $imagePath, 40);
+                imagejpeg($image, $imagePath, 20);
             }
 
             $this->USIM_CMPS = 1;
