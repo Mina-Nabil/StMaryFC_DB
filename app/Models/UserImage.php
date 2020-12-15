@@ -76,20 +76,17 @@ class UserImage extends Model
         if ($this->USIM_USER_ID == 3 ) {
             $fileName = $this->USIM_URL;
             $ext = last(explode('.', $fileName));
-            $fileNoExt = str_replace('.' . $ext, '', $fileName);
             $imagePath = public_path('storage/' . $this->USIM_URL);
-            $newImagePath = $fileNoExt . '_rot' . '.' . $ext;
+
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, public_path('storage/' . $newImagePath), 50);
+                imagejpeg($image, public_path('storage/' . $imagePath), 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
                 $image = imagerotate($image, -180, 0);
-                imagejpeg($image, public_path('storage/' . $newImagePath), 50);
+                imagejpeg($image, public_path('storage/' . $imagePath), 50);
             }
-            $this->USIM_URL = $newImagePath;
-            $this->save();
         }
     }
 
