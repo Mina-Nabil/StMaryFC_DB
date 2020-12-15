@@ -51,17 +51,22 @@ class UserImage extends Model
     public function rotate()
     {
         if ($this->id != 3 && $this->id != 1 && $this->id != 6 ) {
-            $ext = last(explode('.', $this->USIM_URL));
+            $fileName = $this->USIM_URL;
+            $ext = last(explode('.', $fileName));
+            $fileNoExt = str_replace('.' . $ext, '', $fileName);
             $imagePath = public_path('storage/' . $this->USIM_URL);
+            $newImagePath = $fileNoExt . '_rot' . '.' . $ext;
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $imagePath, 50);
+                imagejpeg($image, $newImagePath, 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif(public_path('storage/' . $this->USIM_URL));
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $imagePath, 50);
+                imagejpeg($image, $newImagePath, 50);
             }
+            $this->USIM_URL = $newImagePath;
+            $this->save();
         }
     }
 
