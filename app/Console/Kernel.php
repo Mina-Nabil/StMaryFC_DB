@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function (){
-            $unCompressedUserImages = UserImage::where('USIM_CMPS', 0)->get();
+            $unCompressedUserImages = UserImage::all();
             foreach($unCompressedUserImages as $image){
                 $image->compress();
             }
