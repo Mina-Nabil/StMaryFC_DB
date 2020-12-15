@@ -48,9 +48,32 @@ class UserImage extends Model
         }
     }
 
-    public function rotateImage()
+    // public function rotateImage()
+    // {
+    //     if ($this->USIM_USER_ID != 3 && $this->USIM_USER_ID != 1 && $this->USIM_USER_ID != 6 ) {
+    //         $fileName = $this->USIM_URL;
+    //         $ext = last(explode('.', $fileName));
+    //         $fileNoExt = str_replace('.' . $ext, '', $fileName);
+    //         $imagePath = public_path('storage/' . $this->USIM_URL);
+    //         $newImagePath = $fileNoExt . '_rot' . '.' . $ext;
+    //         if ($ext == 'png') {
+    //             $image = imagecreatefrompng($imagePath);
+    //             $image = imagerotate($image, -90, 0);
+    //             imagejpeg($image, public_path('storage/' . $newImagePath), 50);
+    //         } else if ($ext == 'jpg' || $ext == 'jpeg') {
+    //             $image = self::imagecreatefromjpegexif($imagePath);
+    //             $image = imagerotate($image, -90, 0);
+    //             imagejpeg($image, public_path('storage/' . $newImagePath), 50);
+    //         }
+    //         $this->USIM_URL = $newImagePath;
+    //         $this->save();
+    //     }
+    // }
+
+
+    public function flip()
     {
-        if ($this->USIM_USER_ID != 3 && $this->USIM_USER_ID != 1 && $this->USIM_USER_ID != 6 ) {
+        if ($this->USIM_USER_ID == 3 ) {
             $fileName = $this->USIM_URL;
             $ext = last(explode('.', $fileName));
             $fileNoExt = str_replace('.' . $ext, '', $fileName);
@@ -62,7 +85,7 @@ class UserImage extends Model
                 imagejpeg($image, public_path('storage/' . $newImagePath), 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
-                $image = imagerotate($image, -90, 0);
+                $image = imagerotate($image, -180, 0);
                 imagejpeg($image, public_path('storage/' . $newImagePath), 50);
             }
             $this->USIM_URL = $newImagePath;
