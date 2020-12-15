@@ -48,7 +48,7 @@ class UserImage extends Model
         }
     }
 
-    public function rotate()
+    public function rotateImage()
     {
         if ($this->id != 3 && $this->id != 1 && $this->id != 6 ) {
             $fileName = $this->USIM_URL;
@@ -59,11 +59,11 @@ class UserImage extends Model
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $newImagePath, 50);
+                imagejpeg($image, public_path('storage/' . $newImagePath), 50);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
                 $image = imagerotate($image, -90, 0);
-                imagejpeg($image, $newImagePath, 50);
+                imagejpeg($image, public_path('storage/' . $newImagePath), 50);
             }
             $this->USIM_URL = $newImagePath;
             $this->save();
