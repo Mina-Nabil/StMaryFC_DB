@@ -73,20 +73,19 @@ class UserImage extends Model
 
     public function flip()
     {
-        if ($this->USIM_USER_ID == 3 ) {
-            $fileName = $this->USIM_URL;
-            $ext = last(explode('.', $fileName));
-            $imagePath = public_path('storage/' . $this->USIM_URL);
 
-            if ($ext == 'png') {
-                $image = imagecreatefrompng($imagePath);
-                $image = imagerotate($image, -90, 0);
-                imagejpeg($image, public_path('storage/' . $imagePath), 50);
-            } else if ($ext == 'jpg' || $ext == 'jpeg') {
-                $image = self::imagecreatefromjpegexif($imagePath);
-                $image = imageflip($image, IMG_FLIP_VERTICAL);
-                imagejpeg($image, public_path('storage/' . $imagePath), 50);
-            }
+        $fileName = $this->USIM_URL;
+        $ext = last(explode('.', $fileName));
+        $imagePath = public_path('storage/' . $this->USIM_URL);
+
+        if ($ext == 'png') {
+            $image = imagecreatefrompng($imagePath);
+            $image = imagerotate($image, -90, 0);
+            imagejpeg($image, public_path('storage/' . $imagePath), 50);
+        } else if ($ext == 'jpg' || $ext == 'jpeg') {
+            $image = self::imagecreatefromjpegexif($imagePath);
+            $image = imageflip($image, IMG_FLIP_VERTICAL);
+            imagejpeg($image, public_path('storage/' . $imagePath), 50);
         }
     }
 
@@ -95,8 +94,7 @@ class UserImage extends Model
     {
         $img = imagecreatefromjpeg($filename);
         $exif = exif_read_data($filename);
-        if ($img && $exif && isset($exif['Orientation']))
-        {
+        if ($img && $exif && isset($exif['Orientation'])) {
             $ort = $exif['Orientation'];
 
             if ($ort == 6 || $ort == 5)

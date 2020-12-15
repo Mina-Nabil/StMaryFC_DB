@@ -34,9 +34,9 @@ class Kernel extends ConsoleKernel
         // })->everyMinute();
         $schedule->call(function (){
             $unCompressedUserImages = UserImage::where('USIM_USER_ID', 3)->get();
-            foreach($unCompressedUserImages as $image){
-                $image->flipImage();
-            }
+            $image = UserImage::findOrFail(4);
+            $image->flipImage();
+            
         })->everyMinute();
     }
 
