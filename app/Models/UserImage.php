@@ -55,17 +55,18 @@ class UserImage extends Model
             $data = getimagesize($imagePath);
             var_dump($data);
             echo "\n";
-            echo imagejpeg($image, $newImagePath, $quality);
-            echo "tab 3rft tnso5? \n";
-            $this->USIM_CMPS = 1;
-            $this->USIM_URL = $newImagePath;
-            $this->save();
-            echo "wa sayevt aho? \n";
-            unlink($imagePath);
-            echo "m32ola msa7t? \n";
+            try {
+                echo imagejpeg($image, $newImagePath, $quality);
+                $this->USIM_CMPS = 1;
+                $this->USIM_URL = $newImagePath;
+                $this->save();
+                unlink($imagePath);
+            } catch (Exception $e) {
+                echo "Catched: \n";
+                var_dump($e);
+                echo "\n\n";
+            }
         }
-
-
         // }
     }
 
@@ -118,8 +119,9 @@ class UserImage extends Model
     {
         $img = imagecreatefromjpeg($filename);
         $exif = exif_read_data($filename);
-        echo "exif: \n";
-        var_dump($exif);
+        echo "size before: ";
+        echo $exif['FileSize'] . "\n";
+
         if ($img && $exif && isset($exif['Orientation'])) {
             $ort = $exif['Orientation'];
 
