@@ -33,35 +33,43 @@ class UserImage extends Model
     public function compress()
     {
         $quality = 20;
-        // if (!$this->USIM_CMPS) {
-        $ext = last(explode('.', $this->USIM_URL));
-        $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
-        $imagePath = public_path('storage/' . $this->USIM_URL);
-        $newImagePath = public_path('storage/' . $fileNoExt . '_' . $quality . '.' . $ext);
-        echo "Extension: " . $ext . "\n";
-        echo "FileNoExt: " . $fileNoExt . "\n";
-        echo "Path: " . $imagePath . "\n";
-        echo "New Path: " . $newImagePath . "\n";
-        if ($ext == 'png') {
-            $image = imagecreatefrompng($imagePath);
-            imagejpeg($image, $newImagePath, $quality);
-            $this->USIM_CMPS = 1;
-            $this->USIM_URL = $newImagePath;
-            $this->save();
-            unlink($imagePath);
-        } else if ($ext == 'jpg' || $ext == 'jpeg') {
-            $image = self::imagecreatefromjpegexif($imagePath);
-            try {
-                imagejpeg($image, $newImagePath, $quality);
-                $this->USIM_CMPS = 1;
-                $this->USIM_URL = $newImagePath;
-                $this->save();
-                unlink($imagePath);
-            } catch (Exception $e) {
-
+        if (!$this->USIM_CMPS) {
+            $ext = last(explode('.', $this->USIM_URL));
+            $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
+            $imagePath = public_path('storage/' . $this->USIM_URL);
+            $newImagePath = public_path('storage/' . $fileNoExt . '_' . $quality . '.' . $ext);
+            echo "Extension: " . $ext . "\n";
+            echo "FileNoExt: " . $fileNoExt . "\n";
+            echo "Path: " . $imagePath . "\n";
+            echo "New Path: " . $newImagePath . "\n";
+            if ($ext == 'png') {
+                try {
+                    $image = imagecreatefrompng($imagePath);
+                    imagejpeg($image, $newImagePath, $quality);
+                    $this->USIM_CMPS = 1;
+                    $this->USIM_URL = $newImagePath;
+                    $this->save();
+                    unlink($imagePath);
+                } catch (Exception $e) {
+                    echo "Something went wrong here \n";
+                    echo $e->getMessage();
+                    echo "\n";
+                }
+            } else if ($ext == 'jpg' || $ext == 'jpeg') {
+                $image = self::imagecreatefromjpegexif($imagePath);
+                try {
+                    imagejpeg($image, $newImagePath, $quality);
+                    $this->USIM_CMPS = 1;
+                    $this->USIM_URL = $newImagePath;
+                    $this->save();
+                    unlink($imagePath);
+                } catch (Exception $e) {
+                    echo "Something went wrong here \n";
+                    echo $e->getMessage();
+                    echo "\n";
+                }
             }
         }
-        // }
     }
 
     // public function rotateImage()

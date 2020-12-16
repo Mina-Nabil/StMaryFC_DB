@@ -30,6 +30,10 @@ class Kernel extends ConsoleKernel
             echo  "CRON started \n ";
             $unCompressedUserImages = UserImage::get();
             foreach($unCompressedUserImages as $image){
+                $image->USIM_CMPS = 0;
+                $image->save();
+            }
+            foreach($unCompressedUserImages as $image){
                 echo $image->id . ": started compressing.. \n ";
                 $image->compress();
                 echo $image->id . ": Compressing DONE ================== \n ";
