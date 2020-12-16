@@ -118,6 +118,8 @@ class UserImage extends Model
     {
         $img = imagecreatefromjpeg($filename);
         $exif = exif_read_data($filename);
+        echo "exif: \n";
+        var_dump($exif);
         if ($img && $exif && isset($exif['Orientation'])) {
             $ort = $exif['Orientation'];
 
