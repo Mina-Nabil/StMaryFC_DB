@@ -32,19 +32,24 @@ class UserImage extends Model
 
     public function compress()
     {
+        $quality = 10;
         // if (!$this->USIM_CMPS) {
             $ext = last(explode('.', $this->USIM_URL));
+            $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
             $imagePath = public_path('storage/' . $this->USIM_URL);
+            $newImagePath = $fileNoExt . '_' . $quality . '.' . $ext;
             if ($ext == 'png') {
                 $image = imagecreatefrompng($imagePath);
-                imagejpeg($image, $imagePath, 5);
+                imagejpeg($image, $newImagePath, $quality);
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
-                imagejpeg($image, $imagePath, 5);
+                imagejpeg($image, $newImagePath, $quality);
             }
 
             $this->USIM_CMPS = 1;
+            $this->USIM_URL = $newImagePath;
             $this->save();
+            unlink($imagePath);
         // }
     }
 
