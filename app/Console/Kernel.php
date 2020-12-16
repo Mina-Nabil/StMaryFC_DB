@@ -27,12 +27,12 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->call(function (){
-            echo  "CRON started";
-            $unCompressedUserImages = UserImage::all();
+            echo  "CRON started \n ";
+            $unCompressedUserImages = UserImage::get();
             foreach($unCompressedUserImages as $image){
-                echo $image->id . ": started compressing..";
+                echo $image->id . ": started compressing.. \n ";
                 $image->compress();
-                echo $image->id . ": compressing done";
+                echo $image->id . ": compressing done \n ";
             }
         })->everyMinute();
     }

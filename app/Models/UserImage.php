@@ -38,6 +38,10 @@ class UserImage extends Model
         $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
         $imagePath = public_path('storage/' . $this->USIM_URL);
         $newImagePath = $fileNoExt . '_' . $quality . '.' . $ext;
+        echo "Extension: " . $ext . "\n";
+        echo "FileNoExt: " . $fileNoExt . "\n";
+        echo "Path: " . $imagePath . "\n";
+        echo "New Path: " . $newImagePath . "\n";
         if ($ext == 'png') {
             $image = imagecreatefrompng($imagePath);
             imagejpeg($image, $newImagePath, $quality);
@@ -47,11 +51,15 @@ class UserImage extends Model
             unlink($imagePath);
         } else if ($ext == 'jpg' || $ext == 'jpeg') {
             $image = self::imagecreatefromjpegexif($imagePath);
+            echo "Gebt el image?";
             imagejpeg($image, $newImagePath, $quality);
+            echo "tab 3rft tnso5?";
             $this->USIM_CMPS = 1;
             $this->USIM_URL = $newImagePath;
             $this->save();
+            echo "wa sayevt aho?";
             unlink($imagePath);
+            echo "m32ola msa7t?";
         }
 
 
