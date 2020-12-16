@@ -29,7 +29,9 @@ class Kernel extends ConsoleKernel
         $schedule->call(function (){
             $unCompressedUserImages = UserImage::all();
             foreach($unCompressedUserImages as $image){
+                echo $image->id . ": started compressing..";
                 $image->compress();
+                echo $image->id . ": compressing done";
             }
         })->everyMinute();
     }
