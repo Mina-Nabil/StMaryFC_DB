@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             foreach($unCompressedUserImages as $image){
                 echo $image->id . ": started compressing.. \n ";
                 $image->compress();
-                echo $image->id . ": compressing done \n ";
+                echo $image->id . ": Compressing DONE ================== \n ";
             }
         })->everyMinute();
     }
