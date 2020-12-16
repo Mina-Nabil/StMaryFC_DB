@@ -32,12 +32,12 @@ class UserImage extends Model
 
     public function compress()
     {
-        $quality = 20;
         if (!$this->USIM_CMPS) {
+            $quality = 20;
             $ext = last(explode('.', $this->USIM_URL));
             $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
             $imagePath = public_path('storage/' . $this->USIM_URL);
-            $newImagePath = public_path('storage/' . $fileNoExt . '_' . $quality . '.' . $ext);
+            $newImagePath =  $fileNoExt . '_' . $quality . '.' . $ext;
             echo "Extension: " . $ext . "\n";
             echo "FileNoExt: " . $fileNoExt . "\n";
             echo "Path: " . $imagePath . "\n";
@@ -45,7 +45,7 @@ class UserImage extends Model
             if ($ext == 'png') {
                 try {
                     $image = imagecreatefrompng($imagePath);
-                    imagejpeg($image, $newImagePath, $quality);
+                    imagejpeg($image, public_path('storage/' .$newImagePath), $quality);
                     $this->USIM_CMPS = 1;
                     $this->USIM_URL = $newImagePath;
                     $this->save();
@@ -58,7 +58,7 @@ class UserImage extends Model
             } else if ($ext == 'jpg' || $ext == 'jpeg') {
                 $image = self::imagecreatefromjpegexif($imagePath);
                 try {
-                    imagejpeg($image, $newImagePath, $quality);
+                    imagejpeg($image, public_path('storage/' .$newImagePath), $quality);
                     $this->USIM_CMPS = 1;
                     $this->USIM_URL = $newImagePath;
                     $this->save();

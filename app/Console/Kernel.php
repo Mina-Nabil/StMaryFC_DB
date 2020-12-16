@@ -26,14 +26,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->call(function (){
+        $schedule->call(function () {
             echo  "CRON started \n ";
             $unCompressedUserImages = UserImage::get();
-            foreach($unCompressedUserImages as $image){
-                $image->USIM_CMPS = 0;
-                $image->save();
-            }
-            foreach($unCompressedUserImages as $image){
+            foreach ($unCompressedUserImages as $image) {
                 echo $image->id . ": started compressing.. \n ";
                 $image->compress();
                 echo $image->id . ": Compressing DONE ================== \n ";
@@ -48,7 +44,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
