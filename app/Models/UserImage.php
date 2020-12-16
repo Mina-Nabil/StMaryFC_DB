@@ -32,7 +32,7 @@ class UserImage extends Model
 
     public function compress()
     {
-        $quality = 10;
+        $quality = 20;
         // if (!$this->USIM_CMPS) {
         $ext = last(explode('.', $this->USIM_URL));
         $fileNoExt = str_replace('.' . $ext, '', $this->USIM_URL);
