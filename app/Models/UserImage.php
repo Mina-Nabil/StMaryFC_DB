@@ -51,15 +51,17 @@ class UserImage extends Model
             unlink($imagePath);
         } else if ($ext == 'jpg' || $ext == 'jpeg') {
             $image = self::imagecreatefromjpegexif($imagePath);
-            echo "Gebt el image?";
-            imagejpeg($image, $newImagePath, $quality);
-            echo "tab 3rft tnso5?";
+            echo "Gebt el image? \n";
+            var_dump(($image));
+            echo "\n"; 
+            echo imagejpeg($image, $newImagePath, $quality);
+            echo "tab 3rft tnso5? \n";
             $this->USIM_CMPS = 1;
             $this->USIM_URL = $newImagePath;
             $this->save();
-            echo "wa sayevt aho?";
+            echo "wa sayevt aho? \n";
             unlink($imagePath);
-            echo "m32ola msa7t?";
+            echo "m32ola msa7t? \n";
         }
 
 
