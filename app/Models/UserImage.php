@@ -52,8 +52,9 @@ class UserImage extends Model
         } else if ($ext == 'jpg' || $ext == 'jpeg') {
             $image = self::imagecreatefromjpegexif($imagePath);
             echo "Gebt el image? \n";
-            var_dump(($image));
-            echo "\n"; 
+            $data = getimagesize($imagePath);
+            var_dump($data);
+            echo "\n";
             echo imagejpeg($image, $newImagePath, $quality);
             echo "tab 3rft tnso5? \n";
             $this->USIM_CMPS = 1;
