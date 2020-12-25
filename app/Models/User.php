@@ -80,7 +80,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'USER_BDAY' => 'datetime',
+        'USER_BDAY' => 'datetime:Y-m-d',
     ];
 
     /**

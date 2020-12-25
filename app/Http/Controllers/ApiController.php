@@ -258,6 +258,8 @@ class ApiController extends Controller
             "id"   => "required|exists:app_users,id",
             "name" => ["required", Rule::unique('app_users', "USER_NAME")->ignore($user->USER_NAME, "USER_NAME")],
             "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
+            "type" => "required|exists:app_user_types,id",
+            "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
         ]);
         if ($validation === true) {
@@ -268,6 +270,8 @@ class ApiController extends Controller
             $user->USER_NOTE = $request->note;
             $user->USER_CODE = $request->code;
             $user->USER_MOBN = $request->mobn;
+            $user->USER_GRUP_ID = $request->group;
+            $user->USER_USTP_ID = $request->type;
 
             $user->save();
             if ($request->hasFile('photo')) {
