@@ -352,7 +352,10 @@ class ApiController extends Controller
         }
     }
 
-
+    public function getUserPayments($id){
+        $user = User::findOrFail($id);
+        return $this->getApiMessage(true, $user->payments);
+    }
 
     public function getUserByFaceID(Request $request)
     {
