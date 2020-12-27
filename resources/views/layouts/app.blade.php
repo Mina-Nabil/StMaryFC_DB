@@ -202,7 +202,8 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor" style="font-family: 'Oregano' ; font-size:33px">{{config('app.name')}} Dashboard</h4>
+                        <h4 class="text-themecolor" style="font-family: 'Oregano' ; font-size:33px">
+                            <a href="/">{{config('app.name')}} Dashboard</a></h4>
                     </div>
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
