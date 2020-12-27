@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Payment extends Model
 {
-    protected $dates = ['PYMT_DATE'];
+    protected $dates = ['PYMT_DATE:d-m-Y'];
     protected $table = "payments";
     public $timestamps = false;
 
