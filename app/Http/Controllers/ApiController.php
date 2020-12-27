@@ -354,7 +354,7 @@ class ApiController extends Controller
 
     public function getUserPayments($id){
         $user = User::findOrFail($id);
-        return $this->getApiMessage(true, $user->payments);
+        return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->get());
     }
 
     public function getUserByFaceID(Request $request)
