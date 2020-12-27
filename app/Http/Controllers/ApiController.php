@@ -270,7 +270,7 @@ class ApiController extends Controller
             $user->USER_CODE = $request->code;
             $user->USER_MOBN = $request->mobn;
             $user->USER_GRUP_ID = $request->group;
-            
+
             $user->save();
             if ($request->hasFile('photo')) {
                 try {
@@ -352,9 +352,13 @@ class ApiController extends Controller
         }
     }
 
-    public function getUserPayments($id){
-        $user = User::findOrFail($id);
-        return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->get());
+    public function getUserPayments($id)
+    {
+        $user = User::find($id);
+        if ($user)
+            return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->get());
+        else
+            return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
 
     public function getUserByFaceID(Request $request)
