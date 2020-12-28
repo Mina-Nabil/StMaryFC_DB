@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//events routes
+Route::get('events/{id}', "EventsController@details");
+Route::get('events/all', "EventsController@all");
+Route::get('events/add', "EventsController@add");
+Route::post('events/insert', "EventsController@insert");
+Route::get('events/delete/{id}', "EventsController@delete");
+Route::post('events/attach', "EventsController@attachUsers");
+
+
 //Payments routes
 Route::get('payments/show', "PaymentsController@month");
 Route::get('payments/due', "PaymentsController@due");

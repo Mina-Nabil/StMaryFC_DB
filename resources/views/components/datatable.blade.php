@@ -45,6 +45,8 @@
                         <td>{{ $item->{$att['foreign'][0]}->{$att['foreign'][1]} ?? '' }}</td>
                         @elseif(array_key_exists('sumForeign', $att))
                         <td>{{ $item->{$att['sumForeign']['rel']}->sum($att['sumForeign']['att'])  }}</td>
+                        @elseif(array_key_exists('countForeign', $att))
+                        <td>{{ $item->{$att['countForeign']['rel']}->count()  }}</td>
                         @elseif(array_key_exists('url', $att))
                         <td><a href="{{ url($att['url'][0]) }}">{{ $item->{$att['url']['att']}  }}</a></td>
                         @elseif(array_key_exists('remoteURL', $att))

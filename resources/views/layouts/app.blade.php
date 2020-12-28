@@ -164,6 +164,13 @@
                                 <li><a href="{{url('attendance/add')}}">Take Attendance</a></li>
                             </ul>
                         </li>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                                <i class="fas fa-bus"></i><span class="hide-menu">Events</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{url('events/all')}}">Show</a></li>
+                                <li><a href="{{url('events/add')}}">Add</a></li>
+                            </ul>
+                        </li>
 
                         <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fas fa-meh"></i><span class="hide-menu">Users</span></a>
                             <ul aria-expanded="false" class="collapse">
