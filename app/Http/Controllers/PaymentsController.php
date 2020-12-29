@@ -75,12 +75,7 @@ class PaymentsController extends Controller
             "date" => 'required',
             "amount" => 'required'
         ]);
-        DB::transaction(function () use ($request) {
-            Payment::insertPayment($request->date, $request->userID, $request->amount, $request->note);
-            $startDate =  (new DateTime($request->date))->format('Y-m-01');
-            $endDate =  (new DateTime($request->date))->format('Y-m-t');
-            Attendance::setPaid($request->userID, $startDate, $endDate);
-        });
+        $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
         return redirect('payments/show');
     }
 

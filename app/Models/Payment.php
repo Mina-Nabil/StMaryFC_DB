@@ -46,4 +46,14 @@ class Payment extends Model
             ->get()->count();
         return ($noOfPayments > 0) ? true : false;
     }
+
+    public static function addPayment($id, $amount, $date, $note=null){
+
+        return DB::transaction(function () use ($id, $amount, $date, $note) {
+            Payment::insertPayment($date, $id, $amount, $note);
+            $startDate =  (new DateTime($date))->format('Y-m-01');
+            $endDate =  (new DateTime($date))->format('Y-m-t');
+            Attendance::setPaid($id, $startDate, $endDate);
+        });
+    }
 }

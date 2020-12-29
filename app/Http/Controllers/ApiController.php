@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Group;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -359,6 +362,22 @@ class ApiController extends Controller
             return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->get());
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
+    }
+
+    public function addPayment(Request $request){
+        $request->validate([
+            "userID" => 'required|exists:app_users,id',
+            "date" => 'required',
+            "amount" => 'required'
+        ]);
+        $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
+
+        if($res){
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Payment failed']);   
+        } 
+
     }
 
     public function getUserByFaceID(Request $request)
