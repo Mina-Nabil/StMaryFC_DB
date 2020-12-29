@@ -136,7 +136,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title">Add Payment</h4>
+                                <h4 class="modal-title">Change Status</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <form action="{{ url('orders/change/quantity') }}" method=post>
@@ -148,9 +148,10 @@
                                     <div class="form-group col-md-12 m-t-0">
                                         <h5>Status</h5>
                                         <select class="select2 m-b-10 " style="width: 100%" id=eventLoader>
-                                            <option value="1" >Reserved</option>
-                                            <option value="2" >Attended</option>
-                                            <option value="3" >Cancelled</option>
+                                            <option value="0" >None</option>
+                                            <option value="1" >Paid</option>
+                                            <option value="2" >Received</option>
+                                            <option value="3" >Ok</option>
                                         </select>
                                     </div>
 
