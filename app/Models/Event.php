@@ -17,7 +17,7 @@ class Event extends Model
 
     function users()
     {
-        return $this->belongsToMany('App\Models\Users', 'events_attendance', 'EVAT_USER_ID', 'EVAT_EVNT_ID')
+        return $this->belongsToMany('App\Models\User', 'events_attendance', 'EVAT_USER_ID', 'EVAT_EVNT_ID')
             ->withPivot('EVAT_STTS');
     }
 
@@ -31,19 +31,20 @@ class Event extends Model
 
     function addUser(User $user, $status = 0)
     {
-        //0 7agaz bas - 1 7agaz w geh - 2 7agaz w cancel
+        //1 7agaz bas - 2 7agaz w geh - 3 7agaz w cancel
         $this->users()->attach($user->id, ['EVAT_STTS' => $status]);
     }
 
     function getEventAttendance()
     {
-        return DB::table('app_users')
-            ->leftJoin('event_attendance', 'EVAT_USER_ID', '=', 'app_users.id')
+        return DB::table('app_users')->join('groups', 'USER_GRUP_ID', '=', 'groups.id')
+            ->leftJoin('events_attendance', 'EVAT_USER_ID', '=', 'app_users.id')
             ->leftJoin('events', 'EVAT_EVNT_ID', '=', 'events.id')
             ->leftJoin('event_payments', 'EVPY_EVNT_ID', '=', 'events.id')
-            ->selectRaw('EVNT_NAME, USER_NAME, SUM(EVPY_AMNT) as EVPY_PAID, EVAT_STTS')
+            ->selectRaw('EVNT_NAME, USER_NAME, SUM(EVPY_AMNT) as EVPY_PAID, EVAT_STTS, GRUP_NAME, app_users.id as USER_ID, events.id as EVNT_ID')
             ->orderByRaw('ABS(USER_CODE)')
-            ->groupBy('app_users.id', 'events.id')
+            ->groupBy('app_users.id', 'events.id', 'EVAT_EVNT_ID')
+            ->whereNull('deleted_at')
             ->get();
     }
 

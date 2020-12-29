@@ -75,13 +75,25 @@ class PaymentsController extends Controller
             "date" => 'required',
             "amount" => 'required'
         ]);
-        DB::transaction(function () use ($request) {
-            Payment::insertPayment($request->date, $request->userID, $request->amount, $request->note);
-            $startDate =  (new DateTime($request->date))->format('Y-m-01');
-            $endDate =  (new DateTime($request->date))->format('Y-m-t');
-            Attendance::setPaid($request->userID, $startDate, $endDate);
-        });
-        return redirect('payments/show');
+
+        $paymentType = $request->type ?? 1;
+
+        if($paymentType==1){
+            //normal monthly payment
+            DB::transaction(function () use ($request) {
+                Payment::insertPayment($request->date, $request->userID, $request->amount, $request->note);
+                $startDate =  (new DateTime($request->date))->format('Y-m-01');
+                $endDate =  (new DateTime($request->date))->format('Y-m-t');
+                Attendance::setPaid($request->userID, $startDate, $endDate);
+            });
+            return redirect('payments/show');
+        } elseif ($paymentType){
+            //event payment
+
+            return back();
+        }
+
+
     }
 
     public function getUnpaidDays($userID)

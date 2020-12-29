@@ -11,16 +11,16 @@ class EventsController extends Controller
     public function all()
     {
         $data['items'] = Event::with("users", "payments")->get();
-        $data['title'] = "Groups";
+        $data['title'] = "Events";
         $data['subTitle'] = "Check all Created Events";
-        $data['cols'] = ['Date', 'Event', 'Price', 'Subscribers', 'Paid', 'Delete', 'Comment'];
+        $data['cols'] = ['Date', 'Event', 'Price', 'Subscribers', 'Paid', 'Comment'];
         $data['atts'] = [
             ['date'         =>      ['att' => 'EVNT_DATE']],
             ['dynamicUrl'   =>      ['att' => 'EVNT_NAME', '0' => 'events/', 'val' => 'id']],
             'EVNT_PRCE',
             ['sumForeign'   =>      ['rel' => 'payments', 'att' => 'EVPY_AMNT']],
             ['countForeign' =>      ['rel' => 'users']],
-            ['del' => ['url' => 'events/delete/', 'att' => 'id']],
+            ['comment' => ['att' => 'EVNT_CMNT']],
         ];
 
         return view('events.show', $data);
@@ -30,7 +30,24 @@ class EventsController extends Controller
     {
         $event = Event::with("users", "payments")->findOrFail($id);
         $data['attendance']     = $event->getEventAttendance();
+
+        //load events tab
+        $data['events'] = Event::all();
+        
+        //reservation tab
         $data['users']          = User::all();
+        $data['registeredIDs'] = $event->users->pluck('id');
+
+
+        //payment tab
+        $data['addPaymentURL'] = url('payments/insert');
+
+        //settings tab
+        $data['formTitle']  =   "Update Event Data";
+        $data['formURL']    =   url('events/update');
+
+        $data['event'] = $event;
+
         return view('events.details', $data);
     }
 
@@ -40,7 +57,7 @@ class EventsController extends Controller
         ]);
 
         $event = Event::findOrFail($request->eventID);
-        $event->users()->attach($request->users);
+        $event->users()->attach($request->users, ['EVAT_STTS', 1]);
         return back();
     }
 
@@ -64,9 +81,31 @@ class EventsController extends Controller
         return redirect('events/' . $event->id);
     }
 
+    public function update(Request $request)
+    {
+
+        $request->validate([
+            "id"    => "required",
+            "name" =>   "required",
+            "date" =>   "required",
+            "price" =>  "required",
+        ]);
+
+        $event = Event::findOrFail($request->id);
+
+        $event->EVNT_NAME = $request->name;
+        $event->EVNT_PRCE = $request->price;
+        $event->EVNT_DATE = $request->date;
+        $event->EVNT_CMNT = $request->comment;
+
+        $event->save();
+        return redirect('events/' . $event->id);
+    }
+
     public function add()
     {
-        $data['insertURL'] = "events/insert";
+        $data['formURL'] = "events/insert";
+        $data['formTitle'] = "Create New Event";
         return view('events.add', $data);
     }
 
