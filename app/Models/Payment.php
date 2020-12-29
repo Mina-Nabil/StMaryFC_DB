@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -47,13 +48,19 @@ class Payment extends Model
         return ($noOfPayments > 0) ? true : false;
     }
 
-    public static function addPayment($id, $amount, $date, $note=null){
+    public static function addPayment($id, $amount, $date, $note = null)
+    {
 
-        return DB::transaction(function () use ($id, $amount, $date, $note) {
-            Payment::insertPayment($date, $id, $amount, $note);
-            $startDate =  (new DateTime($date))->format('Y-m-01');
-            $endDate =  (new DateTime($date))->format('Y-m-t');
-            Attendance::setPaid($id, $startDate, $endDate);
-        });
+        try {
+            DB::transaction(function () use ($id, $amount, $date, $note) {
+                Payment::insertPayment($date, $id, $amount, $note);
+                $startDate =  (new DateTime($date))->format('Y-m-01');
+                $endDate =  (new DateTime($date))->format('Y-m-t');
+                Attendance::setPaid($id, $startDate, $endDate);
+            });
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
     }
 }
