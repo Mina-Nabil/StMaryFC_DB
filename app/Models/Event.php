@@ -17,7 +17,7 @@ class Event extends Model
 
     function users()
     {
-        return $this->belongsToMany('App\Models\User', 'events_attendance', 'EVAT_USER_ID', 'EVAT_EVNT_ID')
+        return $this->belongsToMany('App\Models\User', 'events_attendance', 'EVAT_EVNT_ID', 'EVAT_USER_ID')
             ->withPivot('EVAT_STTS');
     }
 
@@ -37,20 +37,24 @@ class Event extends Model
 
     function getEventAttendance()
     {
-        return DB::table('app_users')->join('groups', 'USER_GRUP_ID', '=', 'groups.id')
-            ->leftJoin('events_attendance', 'EVAT_USER_ID', '=', 'app_users.id')
-            ->leftJoin('events', 'EVAT_EVNT_ID', '=', 'events.id')
-            ->leftJoin('event_payments', 'EVPY_EVNT_ID', '=', 'events.id')
-            ->selectRaw('EVNT_NAME, USER_NAME, SUM(EVPY_AMNT) as EVPY_PAID, EVAT_STTS, GRUP_NAME, app_users.id as USER_ID, events.id as EVNT_ID')
+        return DB::table('app_users', 'u1')->join('groups', 'USER_GRUP_ID', '=', 'groups.id')
+            ->leftJoin('events_attendance', function ($join) {
+                $join->on('EVAT_USER_ID', '=', 'u1.id');
+                $join->where('EVAT_EVNT_ID', '=', $this->id) ;
+            })
+            ->leftJoin('events', function ($join){
+                $join->on('EVAT_EVNT_ID' , '=', 'events.id') ;
+                $join->where('events.id', '=', $this->id) ;
+            })->selectRaw("EVNT_NAME, USER_NAME, (SELECT SUM(EVPY_AMNT) from event_payments where EVPY_USER_ID = u1.id AND EVPY_EVNT_ID = {$this->id} ) as EVPY_USER_AMNT  , EVAT_STTS, GRUP_NAME, u1.id as USER_ID, events.id as EVNT_ID")
             ->orderByRaw('ABS(USER_CODE)')
-            ->groupBy('app_users.id', 'events.id', 'EVAT_EVNT_ID')
+            ->groupBy('u1.id', 'events.id', 'EVAT_EVNT_ID')
             ->whereNull('deleted_at')
             ->get();
     }
 
     function deleteAll(){
         DB::table('events_attendance')->where('EVAT_EVNT_ID', $this->id)->delete();
-        DB::table('event_payments')->where('ECPY_EVNT_ID', $this->id)->delete();
+        DB::table('event_payments')->where('EVPY_EVNT_ID', $this->id)->delete();
         $this->delete();
     }
 }

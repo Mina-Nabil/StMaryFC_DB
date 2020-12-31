@@ -9,6 +9,13 @@
                 <h4 class="card-title">{{ $formTitle }}</h4>
                 <form class="form pt-3" method="post" action="{{ url($formURL) }}" enctype="multipart/form-data">
                     @csrf
+                    <label>Payment Type</label>
+                    <div class="input-group mb-3">
+                        <select class="form-control select m-b-10 " style="width: 100%" name=type id=typeSel onchange="typeChanged(typeSel)">
+                            <option value="1">Monthly Payment</option>
+                            <option value="2">Event Payment</option>
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <label>User*</label>
@@ -22,20 +29,39 @@
                         </div>
                         <small class="text-danger">{{$errors->first('userID')}}</small>
                     </div>
+                    <div id=eventDiv style="display: none">
+
+                    <div class="form-group">
+                        <label>Event*</label>
+                        <div class="input-group mb-3">
+                            <select name=eventID class="select2 form-control custom-select" style="width: 100%; height:36px;"  required>
+                                <option value="" disabled selected>Pick From Available Events</option>
+                                @foreach($events as $event)
+                                <option value="{{ $event->id }}">{{$event->EVNT_NAME}} - {{$event->EVNT_DATE}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <small class="text-danger">{{$errors->first('eventID')}}</small>
+                        <input name=return value=1 type="hidden">
+                    </div>
+                    </div>
+
+                    <div id=normalDiv>
+                        <div class="form-group">
+                            <label>Payment For</label>
+                            <div class="input-group mb-3">
+                                <input type="month" value="{{ now()->format('Y-m')}}" class="form-control" placeholder="Pick a date" name=date required />
+                            </div>
+                            <small class="text-danger">{{$errors->first('date')}}</small>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label>Payment Amount</label>
                         <div class="input-group mb-3">
-                            <input type="number" step=0.01  class="form-control" placeholder="Recieved Value" name=amount required />
+                            <input type="number" step=0.01 class="form-control" placeholder="Recieved Value" name=amount required />
                         </div>
                         <small class="text-danger">{{$errors->first('amount')}}</small>
-                    </div>
-                    <div class="form-group">
-                        <label>Payment For</label>
-                        <div class="input-group mb-3">
-                            <input type="month" value="{{ now()->format('Y-m')}}" class="form-control" placeholder="Pick a date" name=date required />
-                        </div>
-                        <small class="text-danger">{{$errors->first('date')}}</small>
                     </div>
                     {{-- <div class="form-group">
                         <label>Covering Days</label>
@@ -66,7 +92,24 @@
 
 @section('js_content')
 <script>
-//     function getDueDays(callerID) {
+
+    function typeChanged(selectaya){
+        typeID = selectaya.value;
+        normalDiv = document.getElementById('normalDiv')
+        eventDiv = document.getElementById('eventDiv')
+        if(typeID==1){
+
+            eventDiv.style="display:none";
+            normalDiv.style="display:block";
+
+        }else if(typeID==2){
+
+            eventDiv.style="display:block";
+            normalDiv.style="display:none";
+        }
+    }
+
+    //     function getDueDays(callerID) {
 //     userID = callerID.options[callerID.selectedIndex].value;
 //     var http = new XMLHttpRequest();
 //     var url = "{{url('payments/get/unpaid/')}}" + '/' +  userID;

@@ -21,7 +21,8 @@ Route::get('events/{id}', "EventsController@details");
 Route::post('events/insert', "EventsController@insert");
 Route::post('events/update', "EventsController@update");
 Route::get('events/delete/{id}', "EventsController@delete");
-Route::post('events/attach', "EventsController@attachUsers");
+Route::post('events/attach', "EventsController@attachUser");
+Route::post('events/detach', "EventsController@detachUser");
 
 
 //Payments routes

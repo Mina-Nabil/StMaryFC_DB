@@ -4,22 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
     public function all()
     {
-        $data['items'] = Event::with("users", "payments")->get();
+        $data['items'] = Event::with("users", "payments")->orderByDesc('events.id')->get();
         $data['title'] = "Events";
         $data['subTitle'] = "Check all Created Events";
         $data['cols'] = ['Date', 'Event', 'Price', 'Subscribers', 'Paid', 'Comment'];
         $data['atts'] = [
-            ['date'         =>      ['att' => 'EVNT_DATE']],
+            'EVNT_DATE',
             ['dynamicUrl'   =>      ['att' => 'EVNT_NAME', '0' => 'events/', 'val' => 'id']],
             'EVNT_PRCE',
-            ['sumForeign'   =>      ['rel' => 'payments', 'att' => 'EVPY_AMNT']],
             ['countForeign' =>      ['rel' => 'users']],
+            ['sumForeign'   =>      ['rel' => 'payments', 'att' => 'EVPY_AMNT']],
             ['comment' => ['att' => 'EVNT_CMNT']],
         ];
 
@@ -33,10 +34,12 @@ class EventsController extends Controller
 
         //load events tab
         $data['events'] = Event::all();
-        
+
         //reservation tab
         $data['users']          = User::all();
         $data['registeredIDs'] = $event->users->pluck('id');
+        $data['setStatusURL'] = url('events/attach');
+        $data['deleteAttendanceURL'] = url('events/detach');
 
 
         //payment tab
@@ -51,14 +54,45 @@ class EventsController extends Controller
         return view('events.details', $data);
     }
 
-    public function attachUsers(Request $request){
+    public function attachUser(Request $request)
+    {
         $request->validate([
-            "eventID"
+            "eventID" => "required",
+            "userID" => "required",
+            "status" => "required",
         ]);
 
         $event = Event::findOrFail($request->eventID);
-        $event->users()->attach($request->users, ['EVAT_STTS', 1]);
-        return back();
+        $exists = $event->users->contains($request->userID);
+        if($request->status == 0){
+            $this->detachUser($request);
+            return;
+        }
+        if (!$exists)
+            try {
+                $event->users()->attach($request->userID, ['EVAT_STTS' => $request->status]);
+                echo 1;
+            } catch (Exception $e) {
+                echo 0;
+            }
+        else
+            try {
+                echo $event->users()->updateExistingPivot($request->userID, [
+                    "EVAT_STTS" => $request->status
+                ]);
+            } catch (Exception $e) {
+                echo 0;
+            }
+    }
+
+    public function detachUser(Request $request)
+    {
+        $request->validate([
+            "eventID"   => "required",
+            "userID" => "required",
+        ]);
+        $event = Event::findOrFail($request->eventID);
+        echo $event->users()->detach($request->userID);
     }
 
     public function insert(Request $request)
@@ -109,10 +143,10 @@ class EventsController extends Controller
         return view('events.add', $data);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $event = Event::findOrFail($id);
         $event->deleteAll();
         return redirect('events/all');
     }
-
 }
