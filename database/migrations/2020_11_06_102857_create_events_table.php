@@ -22,12 +22,6 @@ class CreateEventsTable extends Migration
             $table->double('EVNT_CMNT')->nullable();
         });
 
-        Schema::create('events_groups', function (Blueprint $table){
-            $table->id();
-            $table->foreignId('EVGP_EVNT_ID')->constrained('events');
-            $table->foreignId('EVGP_GRUP_ID')->constrained('groups');
-        });
-
         Schema::create('events_attendance', function (Blueprint $table){
             $table->id();
             $table->foreignId('EVAT_EVNT_ID')->constrained('events');

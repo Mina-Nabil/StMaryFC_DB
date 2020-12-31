@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Event;
+use App\Models\EventPayment;
 use App\Models\Payment;
 use App\Models\User;
 use DateTime;
@@ -56,6 +58,7 @@ class PaymentsController extends Controller
     public function addPayment()
     {
         $data['users'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
+        $data['events'] = Event::all();
         $data['formTitle'] = "Add New Payment";
         $data['formURL'] = url("payments/insert");
         return view('payments.add', $data);
@@ -72,11 +75,24 @@ class PaymentsController extends Controller
     {
         $request->validate([
             "userID" => 'required|exists:app_users,id',
-            "date" => 'required',
-            "amount" => 'required'
+            "amount" => 'required',
+            "date" => 'required_if:type,1',
+            "eventID" => 'required_if:type,2',
+            "type"  => "required"
         ]);
-        $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
-        return redirect('payments/show');
+
+
+        if ($request->type == 1) {
+            //normal monthly payment
+            $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
+            return redirect('payments/show');
+        } elseif ($request->type == 2) {
+            //event payment
+            echo EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            if ($request->return)
+                return back();
+        }
+
     }
 
     public function getUnpaidDays($userID)
