@@ -367,7 +367,7 @@ class ApiController extends Controller
 
     public function getUserEventPayments($id)
     {
-        $payments = EventPayment::with(['user:id,USER_NAME,' => function ($query,$id) {
+        $payments = EventPayment::with(['user:id,USER_NAME' => function ($query,$id) {
             $query->where('id', '=', $id);
         }], 'events:id,EVNT_NAME')->get();
         if ($payments)
