@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class EventPayment extends Model
 {
     protected $table = "event_payments";
 
-    protected $casts = [];
-
-    protected $dates = ['created_at:d-M-Y'];
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-M-y');
+    }
 
     function event()
     {
