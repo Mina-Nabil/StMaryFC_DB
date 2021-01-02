@@ -369,7 +369,7 @@ class ApiController extends Controller
     {
         $payments = EventPayment::with(['user:id,USER_NAME,' => function ($query,$id) {
             $query->where('id', '=', $id);
-        }], 'events:id,EVNT_NAME')->find($id);
+        }], 'events:id,EVNT_NAME')->get();
         if ($payments)
             return $this->getApiMessage(true, $payments);
         else
