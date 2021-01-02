@@ -10,7 +10,12 @@ class EventPayment extends Model
 
     function event()
     {
-        return $this->belongsTo('App/Models/Event');
+        return $this->belongsTo('App/Models/Event', "EVPY_EVNT_ID");
+    }
+    
+    function user()
+    {
+        return $this->belongsTo('App/Models/User', "EVPY_USER_ID");
     }
 
     public static function addPayment($userID, $eventID, $amount)

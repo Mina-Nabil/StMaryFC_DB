@@ -38,6 +38,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Payment', "PYMT_USER_ID");
     }
 
+    public function eventPayments(){
+        return $this->hasMany('App\Models\EventPayment', "EVPY_USER_ID");
+    }
+
     public function getLatestAttendance(){
         return Attendance::where('ATND_USER_ID', $this->id)->orderByDesc('ATND_DATE')->limit(200)->get();
     }

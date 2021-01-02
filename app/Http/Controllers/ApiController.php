@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\EventPayment;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\User;
@@ -364,20 +365,43 @@ class ApiController extends Controller
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
 
-    public function addPayment(Request $request){
+    public function getUserEventPayments($id)
+    {
+        $payments = EventPayment::with(['user:id,USER_NAME,' => function ($query,$id) {
+            $query->where('id', '=', $id);
+        }], 'events:id,EVNT_NAME')->find($id);
+        if ($payments)
+            return $this->getApiMessage(true, $payments);
+        else
+            return $this->getApiMessage(false, ['error' => 'invalid user id']);
+    }
+
+    public function addPayment(Request $request)
+    {
         $request->validate([
             "userID" => 'required|exists:app_users,id',
-            "date" => 'required',
-            "amount" => 'required'
+            "amount" => 'required',
+            "date" => 'required_if:type,1',
+            "eventID" => 'required_if:type,2',
+            "type"  => "required"
         ]);
-        $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
 
-        if($res){
+        if ($request->type == 1) {
+            //normal monthly payment
+            $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
+            return redirect('payments/show');
+        } elseif ($request->type == 2) {
+            //event payment
+            $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            if ($request->return)
+                return back();
+        }
+
+        if ($res) {
             return $this->getApiMessage(true);
         } else {
-            return $this->getApiMessage(false, ['error' => 'Payment failed']);   
-        } 
-
+            return $this->getApiMessage(false, ['error' => 'Payment failed']);
+        }
     }
 
     public function getUserByFaceID(Request $request)

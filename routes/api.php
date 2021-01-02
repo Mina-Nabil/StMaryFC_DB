@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/current/user', 'ApiController@getCurren
 Route::middleware('auth:sanctum')->get('/user/by/id/{id}', 'ApiController@getUserByID');
 Route::middleware('auth:sanctum')->get('/get/users', 'ApiController@getUsers');
 Route::middleware('auth:sanctum')->get('/get/user/payments/{id}', 'ApiController@getUserPayments');
+Route::middleware('auth:sanctum')->get('/get/user/event/payments/{id}', 'ApiController@getUserEventPayments');
 Route::middleware('auth:sanctum')->post('/user/by/face', 'ApiController@getUserByFaceID');
 Route::middleware('auth:sanctum')->post('/search/name', 'ApiController@searchByName');
 Route::middleware('auth:sanctum')->post('/add/user', 'ApiController@addUser');
