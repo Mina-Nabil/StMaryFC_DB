@@ -9,6 +9,11 @@ class EventPayment extends Model
 {
     protected $table = "event_payments";
 
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-dTH:i:sZ', $date)->format('Y-m-d');
+    }
+
     function event()
     {
         return $this->belongsTo('App\Models\Event', "EVPY_EVNT_ID");
