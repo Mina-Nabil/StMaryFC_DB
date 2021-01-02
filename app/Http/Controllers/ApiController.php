@@ -382,7 +382,7 @@ class ApiController extends Controller
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
             "date" => 'required_if:type,1',
-            "eventID" => 'required_if:type,2',
+            "eventID" => 'required_if:type,2|exists:events,id',
             "type"  => "required"
         ]);
 
