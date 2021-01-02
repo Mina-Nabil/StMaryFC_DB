@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Event;
 use App\Models\EventPayment;
 use App\Models\Group;
 use App\Models\Payment;
@@ -363,6 +364,14 @@ class ApiController extends Controller
             return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->orderByDesc('payments.id')->get());
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
+    }
+
+    public function getEvents(){
+        $events = Event::orderByDesc('id')->get();
+        if ($events)
+        return $this->getApiMessage(true, $events);
+    else
+        return $this->getApiMessage(false, ['error' => 'Cant load events']);
     }
 
     public function getUserEventPayments($id)
