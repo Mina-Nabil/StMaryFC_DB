@@ -8,6 +8,8 @@ class EventPayment extends Model
 {
     protected $table = "event_payments";
 
+    protected $dates = ['created_at:d-M-Y'];
+
     function event()
     {
         return $this->belongsTo('App\Models\Event', "EVPY_EVNT_ID");
