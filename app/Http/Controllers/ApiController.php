@@ -13,6 +13,7 @@ use App\Models\UserType;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -379,7 +380,7 @@ class ApiController extends Controller
     {
         $payments = EventPayment::with('user:id,USER_NAME', 'event:id,EVNT_NAME')->where('EVPY_USER_ID', $id)->get();
         if ($payments)
-            return $this->getApiMessage(true, $payments);
+            return $this->getApiMessage(true, $this->makeLikePayment3shanMickeyBeh($payments));
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
@@ -485,6 +486,19 @@ class ApiController extends Controller
         foreach ($users as $key => $user) {
             $user->USIM_URL = $user->USIM_URL ? url(Storage::url($user->USIM_URL)) : NULL;
         }
+    }
+
+    private function makeLikePayment3shanMickeyBeh($payments){
+        $ret = new Collection();
+        foreach($payments as $payment){
+            $ret->add([
+                "id" => $payments->id,
+                "PYMT_AMNT" => $payment->EVPY_AMNT,
+                "PYMT_DATE" => $payment->created_at->format('Y-m-d'),
+                "PYMT_USER_ID" => $payment->EVPY_USER_ID,
+            ]);
+        }
+        return $ret;
     }
 }
 
