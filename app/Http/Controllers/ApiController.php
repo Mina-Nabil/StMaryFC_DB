@@ -389,7 +389,7 @@ class ApiController extends Controller
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
             "date" => 'required_if:type,1',
-            "eventID" => 'required_if:type,2|exists:events,id',
+            "eventID" => 'required_if:type,2',
             "type"  => "required"
         ]);
 
@@ -398,6 +398,9 @@ class ApiController extends Controller
             $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
             return redirect('payments/show');
         } elseif ($request->type == 2) {
+            $request->validate([
+                "eventID" => "exists:events,id"
+            ]);
             //event payment
             $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
             if ($request->return)
