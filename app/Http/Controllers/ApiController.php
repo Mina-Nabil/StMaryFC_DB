@@ -253,7 +253,7 @@ class ApiController extends Controller
     public function editUser(Request $request)
     {
 
-        $request->validate([
+        $validation = $this->validateRequest($request, [
             'id' => 'required'
         ]);
 
@@ -299,7 +299,7 @@ class ApiController extends Controller
     public function changePassword(Request $request)
     {
 
-        $request->validate([
+        $validation = $this->validateRequest($request, [
             'id' => 'required'
         ]);
 
@@ -329,7 +329,7 @@ class ApiController extends Controller
 
     public function changeEmail(Request $request)
     {
-        $request->validate([
+        $validation = $this->validateRequest($request, [
             'id' => 'required'
         ]);
 
@@ -366,12 +366,13 @@ class ApiController extends Controller
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
 
-    public function getEvents(){
+    public function getEvents()
+    {
         $events = Event::orderByDesc('id')->get();
         if ($events)
-        return $this->getApiMessage(true, $events);
-    else
-        return $this->getApiMessage(false, ['error' => 'Cant load events']);
+            return $this->getApiMessage(true, $events);
+        else
+            return $this->getApiMessage(false, ['error' => 'Cant load events']);
     }
 
     public function getUserEventPayments($id)
@@ -385,7 +386,7 @@ class ApiController extends Controller
 
     public function addPayment(Request $request)
     {
-        $request->validate([
+        $this->validateRequest($request, [
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
             "date" => 'required_if:type,1',
