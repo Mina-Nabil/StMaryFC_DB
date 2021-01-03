@@ -492,7 +492,7 @@ class ApiController extends Controller
         $ret = new Collection();
         foreach($payments as $payment){
             $ret->add([
-                "id" => $payments->id,
+                "id" => $payment->id,
                 "PYMT_AMNT" => $payment->EVPY_AMNT,
                 "PYMT_DATE" => $payment->created_at->format('Y-m-d'),
                 "PYMT_USER_ID" => $payment->EVPY_USER_ID,
