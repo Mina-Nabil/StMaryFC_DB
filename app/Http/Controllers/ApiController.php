@@ -397,15 +397,12 @@ class ApiController extends Controller
         if ($request->type == 1) {
             //normal monthly payment
             $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
-            return redirect('payments/show');
         } elseif ($request->type == 2) {
             $request->validate([
                 "eventID" => "exists:events,id"
             ]);
             //event payment
             $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
-            if ($request->return)
-                return back();
         }
 
         if ($res) {
