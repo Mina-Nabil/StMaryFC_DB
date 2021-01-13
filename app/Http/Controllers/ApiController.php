@@ -284,6 +284,7 @@ class ApiController extends Controller
                     $newImage->USIM_URL = $request->photo->store('images/users/' . $user->USER_NAME, 'public');
                     $newImage->USIM_USER_ID = $user->id;
                     $newImage->save();
+                    $newImage->compress();
                     $user->USER_MAIN_IMGE = $newImage->id;
                     $user->save();
                 } catch (Exception $e) {
