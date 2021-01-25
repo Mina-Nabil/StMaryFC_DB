@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class Payment extends Model
 {
@@ -44,7 +45,7 @@ class Payment extends Model
         $startDate = $date->format('Y-m-01');
         $endDate = $date->format('Y-m-t');
         $noOfPayments = DB::table("payments")->where('PYMT_USER_ID', $userID)->whereBetween('PYMT_DATE', [$startDate, $endDate])
-            ->get()->count();
+                        ->get()->count();
         return ($noOfPayments > 0) ? true : false;
     }
 
@@ -57,10 +58,29 @@ class Payment extends Model
                 $startDate =  (new DateTime($date))->format('Y-m-01');
                 $endDate =  (new DateTime($date))->format('Y-m-t');
                 Attendance::setPaid($id, $startDate, $endDate);
+                $user = User::findOrFail($id);
+                self::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, (new DateTime($date))->format('M-Y'));
             });
         } catch (Exception $e) {
             return false;
         }
         return true;
+    }
+
+    public static function sendSMS($name, $mob, $amount, $month){
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Accept-Language' => 'en-US',
+        ])->post('https://smssmartegypt.com/sms/api/json/', [
+            'username' => 'mina9492@hotmail.com',
+            'password' => 'mina4ever',
+            'sendername' => 'St Mary Football Academy',
+            'mobiles' => $mob,
+            'message' => "Payment Receipt: 
+             Name:     {$name}  
+             Amount:   {$amount}
+             For:    {$month}   ",
+        ]);
     }
 }
