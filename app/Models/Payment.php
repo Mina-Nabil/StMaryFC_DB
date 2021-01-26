@@ -59,7 +59,6 @@ class Payment extends Model
                 Attendance::setPaid($id, $startDate, $endDate);
                 $user = User::findOrFail($id);
                 $ret = self::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
-                dd($ret);
             });
         } catch (Exception $e) {
             return false;
@@ -74,6 +73,6 @@ class Payment extends Model
             'sendername' => 'Academy',
             'mobiles' => $mob,
             'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. Amount paid is {$amount} EGP. ",
-        ])->throw()->json();;
+        ]);
     }
 }
