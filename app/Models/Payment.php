@@ -51,7 +51,6 @@ class Payment extends Model
 
     public static function addPayment($id, $amount, $date, $note = null)
     {
-        $ret = "";
         try {
             DB::transaction(function () use ($id, $amount, $date, $note, $ret) {
                 Payment::insertPayment($date, $id, $amount, $note);
@@ -64,7 +63,7 @@ class Payment extends Model
         } catch (Exception $e) {
             return false;
         }
-        return $ret;
+        return true;
     }
 
     public static function sendSMS($name, $mob, $amount, $month){
