@@ -52,7 +52,7 @@ class Payment extends Model
     public static function addPayment($id, $amount, $date, $note = null)
     {
         try {
-            DB::transaction(function () use ($id, $amount, $date, $note, $ret) {
+            DB::transaction(function () use ($id, $amount, $date, $note) {
                 Payment::insertPayment($date, $id, $amount, $note);
                 $startDate =  (new DateTime($date))->format('Y-m-01');
                 $endDate =  (new DateTime($date))->format('Y-m-t');
