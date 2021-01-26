@@ -58,7 +58,7 @@ class Payment extends Model
                 $endDate =  (new DateTime($date))->format('Y-m-t');
                 Attendance::setPaid($id, $startDate, $endDate);
                 $user = User::findOrFail($id);
-                $ret = self::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, (new DateTime($date))->format('M-Y'));
+                $ret = self::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
                 dd($ret);
             });
         } catch (Exception $e) {
