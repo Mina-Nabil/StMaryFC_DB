@@ -61,7 +61,6 @@ class Payment extends Model
                 self::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, (new DateTime($date))->format('M-Y'));
             });
         } catch (Exception $e) {
-            throw $e;
             return false;
         }
         return true;
