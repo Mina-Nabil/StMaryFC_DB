@@ -72,7 +72,7 @@ class Payment extends Model
             'password' => 'mina4ever',
             'sendername' => 'Academy',
             'mobiles' => $mob,
-            'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. Amount paid is {$amount} EGP. ",
+            'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. ",
         ]);
     }
 }
