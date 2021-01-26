@@ -75,12 +75,9 @@ class Payment extends Model
         ])->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
-            'sendername' => 'St Mary Football Academy',
+            'sendername' => 'Academy',
             'mobiles' => $mob,
-            'message' => "Payment Receipt: 
-             Name:     {$name}  
-             Amount:   {$amount}
-             For:    {$month}   ",
+            'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. Amount paid is {$amount} EGP. ",
         ]);
     }
 }
