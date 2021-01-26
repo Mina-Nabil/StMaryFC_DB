@@ -69,11 +69,7 @@ class Payment extends Model
     }
 
     public static function sendSMS($name, $mob, $amount, $month){
-        return Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-            'Accept-Language' => 'en-US',
-        ])->asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
             'sendername' => 'Academy',
