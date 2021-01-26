@@ -72,7 +72,7 @@ class Payment extends Model
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'Accept-Language' => 'en-US',
-        ])->post('https://smssmartegypt.com/sms/api/json/', [
+        ])->asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
             'sendername' => 'Academy',
