@@ -51,24 +51,25 @@ class Payment extends Model
 
     public static function addPayment($id, $amount, $date, $note = null)
     {
-
+        $ret = "";
         try {
-            DB::transaction(function () use ($id, $amount, $date, $note) {
+            DB::transaction(function () use ($id, $amount, $date, $note, $ret) {
                 Payment::insertPayment($date, $id, $amount, $note);
                 $startDate =  (new DateTime($date))->format('Y-m-01');
                 $endDate =  (new DateTime($date))->format('Y-m-t');
                 Attendance::setPaid($id, $startDate, $endDate);
                 $user = User::findOrFail($id);
-                self::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, (new DateTime($date))->format('M-Y'));
+                $ret = self::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, (new DateTime($date))->format('M-Y'));
+                dd($ret);
             });
         } catch (Exception $e) {
             return false;
         }
-        return true;
+        return $ret;
     }
 
     public static function sendSMS($name, $mob, $amount, $month){
-        $response = Http::withHeaders([
+        return Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
             'Accept-Language' => 'en-US',
@@ -76,7 +77,7 @@ class Payment extends Model
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
             'sendername' => 'Academy',
-            'mobiles' => $mob . "",
+            'mobiles' => "{$mob}",
             'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. Amount paid is {$amount} EGP. ",
         ]);
     }
