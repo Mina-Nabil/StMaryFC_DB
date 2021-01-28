@@ -72,7 +72,13 @@ class Payment extends Model
             'password' => 'mina4ever',
             'sendername' => 'Academy',
             'mobiles' => $mob,
-            'message' => "StMary Football Academy Thanks you for the payment covering {$month} for {$name}. ",
+            'message' => "St. Mary Rehab Football Academy
+
+            {$name}
+            Payment Received {$amount} LE
+            {$month}
+            
+            Thank you",
         ]);
     }
 }
