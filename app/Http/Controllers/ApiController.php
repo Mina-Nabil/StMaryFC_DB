@@ -363,7 +363,7 @@ class ApiController extends Controller
     {
         $user = User::find($id);
         if ($user)
-            return $this->getApiMessage(true, $user->payments()->whereRaw('PYMT_DATE >= DATE_SUB(NOW(), INTERVAL 24 MONTH')->orderByDesc('payments.id')->get());
+            return $this->getApiMessage(true, $user->payments()->whereRaw('PYMT_DATE >= DATE_SUB(NOW(), INTERVAL 24 MONTH)')->orderByDesc('payments.id')->get());
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
