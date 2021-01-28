@@ -363,7 +363,7 @@ class ApiController extends Controller
     {
         $user = User::find($id);
         if ($user)
-            return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) = YEAR(NOW())')->orderByDesc('payments.id')->get());
+            return $this->getApiMessage(true, $user->payments()->whereRaw('YEAR(PYMT_DATE) => YEAR(NOW())-1')->orderByDesc('payments.id')->get());
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }
