@@ -28,7 +28,7 @@
                                 icon: "success",
                             })
                             var rowAho = document.getElementById('row' + id);
-                            rowAho.style.display = "hidden"
+                            rowAho.style.display = "none"
                         } catch(e) {
                         
                         }
