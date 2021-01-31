@@ -24,7 +24,7 @@
                     if (this.readyState == 4 && this.status == 200 && this.responseText == "1") {
                         try {
                             Swal.fire({
-                                text: "Attendance deleted, please refresh to update the view",
+                                text: "Attendance deleted",
                                 icon: "success",
                             })
                             var rowAho = document.getElementById('row' + id);
