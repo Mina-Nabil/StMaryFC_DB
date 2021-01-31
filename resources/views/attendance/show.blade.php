@@ -26,7 +26,7 @@
                             Swal.fire({
                                 text: "Attendance deleted, please refresh to update the view",
                                 icon: "success",
-                            )}
+                            })
                             var row = document.getElementById('row' + id);
                             row.style = "display: hidden"
                         } catch(e) {
