@@ -16,10 +16,8 @@
         }).then((isConfirm) => {
             if(isConfirm.value){
 
-
-    
                 var http = new XMLHttpRequest();
-                var url = "{{$deleteAttendanceURL}}" + id ;  
+                var url = "{{$deleteAttendanceURL}}" + "/" + id ;  
                 http.open('POST', url, true);
 
                 http.onreadystatechange = function(ret) {
