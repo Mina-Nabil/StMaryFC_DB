@@ -94,8 +94,7 @@ class AttendanceController extends Controller
 
     public function deleteAttendance($id)
     {
-        Attendance::where('id', $id)->delete();
-        return back()->withInput();
+        return Attendance::where('id', $id)->delete();
     }
     //////attendance array
     protected $data;
