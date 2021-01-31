@@ -119,6 +119,6 @@ class AttendanceController extends Controller
                 ['delJs'  =>  ['att' => 'id', 'func' => 'deleteAttendace']]
             ];
 
-        $this->data['deleteAttendanceURL'] = url('delete/attendance/') ;
+        $this->data['deleteAttendanceURL'] = url('attendance/delete') ;
     }
 }
