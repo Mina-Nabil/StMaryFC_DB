@@ -89,6 +89,7 @@ class ApiController extends Controller
                     ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
                     ["USER_NAME", "LIKE", "% " . $value . "%", 'or'],
                     ["USER_NAME", "LIKE", $value . "%", 'or'],
+                    ["YEAR(USER_BDAY)", "=", $value ,'or'],
                 ]);
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
