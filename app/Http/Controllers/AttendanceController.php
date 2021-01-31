@@ -95,7 +95,7 @@ class AttendanceController extends Controller
     public function deleteAttendance($id)
     {
         Attendance::where('id', $id)->delete();
-        return back()->withInput();;
+        return back()->withInput();
     }
     //////attendance array
     protected $data;
@@ -116,7 +116,9 @@ class AttendanceController extends Controller
                 ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']], 
                 'GRUP_NAME',
                 ['verified' => ['att' => 'ATND_DATE', 'isVerified' => 'ATND_PAID']],
-                ['del'  =>  ['att' => 'id', 'url' => 'attendance/delete/']]
+                ['delJs'  =>  ['att' => 'id', 'func' => 'deleteAttendace']]
             ];
+
+        $this->data['deleteAttendanceURL'] = url('delete/attendance/') ;
     }
 }
