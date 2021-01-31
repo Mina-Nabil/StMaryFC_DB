@@ -176,7 +176,7 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('users/show')}}">All App Users</a></li>
                                 <li><a href="{{url('users/show/1')}}">Admins</a></li>
-                                <li><a href="{{url('users/show/2')}}">Kids</a></li>
+                                <li><a href="{{url('users/show/2')}}">Players</a></li>
                                 <li><a href="{{url('users/add')}}">Add New User</a></li>
                             </ul>
                         </li>
