@@ -18,7 +18,7 @@
 
                 var http = new XMLHttpRequest();
                 var url = "{{$deleteAttendanceURL}}" + "/" + id ;  
-                http.open('POST', url, true);
+                http.open('GET', url);
 
                 http.onreadystatechange = function(ret) {
                     if (this.readyState == 4 && this.status == 200) {
