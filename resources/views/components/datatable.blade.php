@@ -33,7 +33,7 @@
                 <tbody>
 
                     @foreach($items as $item)
-                    <tr>
+                    <tr @isset($item->id) id="row{{$item->id}}" @endisset >
                         @foreach($atts as $att)
 
                         @if(is_array($att))

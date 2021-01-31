@@ -23,7 +23,11 @@
                 http.onreadystatechange = function(ret) {
                     if (this.readyState == 4 && this.status == 200) {
                         try {
-                            location.reload();
+                            Swal.fire({
+                                text: "Attendance deleted, please refresh to update the view",
+                                icon: "success",
+                            )}
+                            $('#row' + id).css("display", "hidden")
                         } catch(e) {
                         
                         }
