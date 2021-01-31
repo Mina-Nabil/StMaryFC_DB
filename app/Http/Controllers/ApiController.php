@@ -89,13 +89,13 @@ class ApiController extends Controller
                     " GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}' OR USER_NAME LIKE '{$value}%' OR YEAR(USER_BDAY) = ? " , [$value]
                 );
             }
-            echo $users->toSql();
-            // $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
-            // if ($users) {
-            //     $this->adjustImageUrl($users);
-            //     return $this->getApiMessage(true, $users);
-            // } else
-            //     return $this->getApiMessage(false);
+  
+            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
+            if ($users) {
+                $this->adjustImageUrl($users);
+                return $this->getApiMessage(true, $users);
+            } else
+                return $this->getApiMessage(false);
         }
     }
 
