@@ -85,12 +85,9 @@ class ApiController extends Controller
                 ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
                 (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
             foreach ($arguments as $value) {
-                $users = $users->where([
-                    ["GRUP_NAME",  "LIKE",  $value . "%", 'or'],
-                    ["USER_NAME", "LIKE", "% " . $value . "%", 'or'],
-                    ["USER_NAME", "LIKE", $value . "%", 'or'],
-                ]);
-                $users = $users->orWhereRaw("YEAR(USER_BDAY) = " . $value ) ;
+                $users = $users->whereRaw(
+                    "GRUP_NAME LIKE {$value}% OR USER_NAME LIKE % {$value} USER_NAME LIKE {$value}% OR YEAR(USER_BDAY) = {$value}"
+                );
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
             if ($users) {
