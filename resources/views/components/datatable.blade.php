@@ -42,7 +42,7 @@
                         @elseif(array_key_exists('del', $att))
                         <td><div onclick="confirmAndGoTo('{{url( $att['del']['url'] . $item->{$att['del']['att']})}}', 'delete this row')" ><img src="{{ asset('images/del.png') }}" width=25 height=25></div></td>
                         @elseif(array_key_exists('delJs', $att))
-                        <td><div onclick="{{$att['delJs']['func']}}({{$att['delJs']['att']}})" ><img src="{{ asset('images/del.png') }}" width=25 height=25></div></td>
+                        <td><div onclick="{{$att['delJs']['func']}}({{$item->$att['delJs']['att']}})" ><img src="{{ asset('images/del.png') }}" width=25 height=25></div></td>
                         @elseif(array_key_exists('foreign', $att))
                         <td>{{ $item->{$att['foreign'][0]}->{$att['foreign'][1]} ?? '' }}</td>
                         @elseif(array_key_exists('sumForeign', $att))
