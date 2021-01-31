@@ -21,7 +21,7 @@
                 http.open('GET', url);
 
                 http.onreadystatechange = function(ret) {
-                    if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == 4 && this.status == 200 && this.responseText == "1") {
                         try {
                             Swal.fire({
                                 text: "Attendance deleted, please refresh to update the view",
