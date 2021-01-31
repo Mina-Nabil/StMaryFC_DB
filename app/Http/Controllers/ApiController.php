@@ -90,7 +90,7 @@ class ApiController extends Controller
                     ["USER_NAME", "LIKE", "% " . $value . "%", 'or'],
                     ["USER_NAME", "LIKE", $value . "%", 'or'],
                 ]);
-                $users = $users->orWhereRaw("YEAR(USER_BDAY) = " . $value )
+                $users = $users->orWhereRaw("YEAR(USER_BDAY) = " . $value ) ;
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
             if ($users) {
