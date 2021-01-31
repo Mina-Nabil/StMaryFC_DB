@@ -86,7 +86,7 @@ class ApiController extends Controller
                 (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
             foreach ($arguments as $value) {
                 $users = $users->whereRaw(
-                    " GRUP_NAME LIKE '?%' OR USER_NAME LIKE '%?%' OR YEAR(USER_BDAY) = ? " , [$value, $value, $value]
+                    " GRUP_NAME LIKE '?%' OR USER_NAME LIKE '%?' OR USER_NAME LIKE '?%' OR YEAR(USER_BDAY) = ? " , [$value, $value, $value, $value]
                 );
             }
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
