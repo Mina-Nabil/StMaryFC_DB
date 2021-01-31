@@ -3,27 +3,37 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        <x-datatable  id="myTable" :title="$title" :subtitle="$subTitle" :cols="$cols" :items="$items" :atts="$atts" />
+        <x-datatable id="myTable" :title="$title" :subtitle="$subTitle" :cols="$cols" :items="$items" :atts="$atts" />
     </div>
 </div>
 
-<script> 
-
+<script>
     function deleteAttendace(id) {
-        var http = new XMLHttpRequest();
-        var url = "{{$deleteAttendanceURL}}" ;  
-        http.open('POST', url, true);
+        Swal.fire({
+        text: "Are you sure you want to " + action + "?",
+        icon: "warning",
+        showCancelButton: true,
+        }).then((isConfirm) => {
+            if(isConfirm.value){
 
-        http.onreadystatechange = function(ret) {
-            if (this.readyState == 4 && this.status == 200) {
-                try {
-                    location.reload();
-                } catch(e) {
-                  
-                }
+
+    
+                var http = new XMLHttpRequest();
+                var url = "{{$deleteAttendanceURL}}" ;  
+                http.open('POST', url, true);
+
+                http.onreadystatechange = function(ret) {
+                    if (this.readyState == 4 && this.status == 200) {
+                        try {
+                            location.reload();
+                        } catch(e) {
+                        
+                        }
+                    }
+                };
+                http.send();
             }
-        };
-        http.send();
+        })
     }
 
 </script>
