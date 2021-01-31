@@ -27,7 +27,8 @@
                                 text: "Attendance deleted, please refresh to update the view",
                                 icon: "success",
                             )}
-                            $('#row' + id).css("display", "hidden")
+                            var row = document.getElementById('row' + id);
+                            row.style = "display: hidden"
                         } catch(e) {
                         
                         }
