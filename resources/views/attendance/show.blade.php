@@ -10,7 +10,7 @@
 <script>
     function deleteAttendace(id) {
         Swal.fire({
-        text: "Are you sure you want to " + action + "?",
+        text: "Are you sure you want to delete the attendace?",
         icon: "warning",
         showCancelButton: true,
         }).then((isConfirm) => {
@@ -19,7 +19,7 @@
 
     
                 var http = new XMLHttpRequest();
-                var url = "{{$deleteAttendanceURL}}" ;  
+                var url = "{{$deleteAttendanceURL}}" + id ;  
                 http.open('POST', url, true);
 
                 http.onreadystatechange = function(ret) {
