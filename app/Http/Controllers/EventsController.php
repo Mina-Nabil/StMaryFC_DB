@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Event;
+use App\Models\EventPayment;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -40,6 +42,7 @@ class EventsController extends Controller
         $data['registeredIDs'] = $event->users->pluck('id');
         $data['setStatusURL'] = url('events/attach');
         $data['deleteAttendanceURL'] = url('events/detach');
+        $data['removePaymentURL'] = url('events/payments/delete');
 
 
         //payment tab
@@ -64,7 +67,7 @@ class EventsController extends Controller
 
         $event = Event::findOrFail($request->eventID);
         $exists = $event->users->contains($request->userID);
-        if($request->status == 0){
+        if ($request->status == 0) {
             $this->detachUser($request);
             return;
         }
@@ -141,6 +144,16 @@ class EventsController extends Controller
         $data['formURL'] = "events/insert";
         $data['formTitle'] = "Create New Event";
         return view('events.add', $data);
+    }
+
+    public function deletePayments(Request $request)
+    {
+        $request->validate([
+            "eventID" => "required",
+            "userID" => "required",
+        ]);
+
+        echo EventPayment::deletePayments($request->userID, $request->eventID);
     }
 
     public function delete($id)

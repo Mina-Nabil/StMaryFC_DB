@@ -25,9 +25,14 @@ class EventPayment extends Model
         $payment->EVPY_USER_ID = $userID;
         $payment->EVPY_EVNT_ID = $eventID;
         $payment->EVPY_AMNT = $amount;
-        $user = User::findOrFail($userID);
-        $event = Event::findOrFail($eventID);
+        // $user = User::findOrFail($userID);
+        // $event = Event::findOrFail($eventID);
         // Payment::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, $event->EVNT_NAME);
         return $payment->save();
+    }
+
+    public static function deletePayments($userID, $eventID)
+    {
+        return self::where([['EVPY_USER_ID', $userID], ['EVPY_EVNT_ID', $eventID]])->delete();
     }
 }

@@ -104,6 +104,7 @@
                                                     <div class="dropdown-menu">
                                                         <button class="open-statusModal dropdown-item" data-toggle="modal" data-id="{{$item->USER_ID}}" data-target="#statusModal">Set Status</button>
                                                         <button class=" open-payModal dropdown-item" data-toggle="modal" data-id="{{$item->USER_ID}}" data-target="#payModal">Pay</button>
+                                                        <button class="dropdown-item" onclick="deletePayments('{{$item->EVNT_ID}}', '{{$item->USER_ID}}')">Delete Payments</button>
                                                         @if($item->EVAT_STTS)
                                                         <button class="dropdown-item" onclick="deleteAttendance('{{$item->USER_ID}}')">Remove</button>
                                                         @endif
@@ -261,6 +262,34 @@
             text: "Oops Something wrong.. Please try again",
             title: "Error",
             icon: "error",
+            }); 
+        }
+        };
+        http.send(formdata);
+    }
+
+    function deletePayments(eventID, userID){
+
+        var http = new XMLHttpRequest();
+        var url = "{{$removePaymentURL}}";
+        var formdata = new FormData();
+        formdata.append("eventID", eventID);
+        formdata.append("userID", userID);
+        formdata.append('_token','{{ csrf_token() }}');
+        http.open('POST', url, true);
+
+        http.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200 && parseInt(this.responseText)>0) {
+            Swal.fire({
+            text: "Player Payments deleted",
+            icon: "success",
+            });
+            var statusLabel = document.getElementById("paid-" + userID )
+            statusLabel.innerHTML="0"
+        } else {
+            Swal.fire({
+            text: "No change :)",
+            icon: "warning",
             }); 
         }
         };
