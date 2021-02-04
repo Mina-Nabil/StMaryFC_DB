@@ -368,11 +368,11 @@ class ApiController extends Controller
         $attendance = $user->getOverviewAttendance($request->months);
 
         $payments = $payments->mapWithKeys(function ($row){
-            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_PYMT];
+            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_PAID];
         });
 
         $attendance = $attendance->mapWithKeys(function ($row){
-            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_AMNT];
+            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_ATND];
         });
 
  
