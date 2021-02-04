@@ -364,7 +364,9 @@ class ApiController extends Controller
         ]);
 
         $user = User::findOrFail($request->userID);
-        return $this->getApiMessage(true, $user->getLatestPayments($request->months));
+        $payments =  $user->getLatestPayments($request->months);
+        $attendance = $user->getLatestAttendance($request->months);
+        return $this->getApiMessage(true, $attendance);
     }
 
     public function getUserPayments($id)

@@ -64,6 +64,10 @@ class User extends Authenticatable
 
     }
 
+    public function getOverviewAttendance($months=1){
+        return $this->attendance()->whereRaw(" ATND_DATE > DATE_SUB(NOW(),  Interval {$months} Month) ")
+                    ->groupByRaw(" MONTH(ATND_DATE) ")->groupByRaw("YEAR(ATND_DATE) ")->selectRaw(" MONTH(ATND_DATE) as OVRV_MNTH , YEAR(ATND_DATE) as OVRV_YEAR, COUNT(attendance.id) as OVRV_ATND ")->get();
+    }
 
 
     /**
