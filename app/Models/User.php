@@ -59,13 +59,13 @@ class User extends Authenticatable
     }
 
     public function getLatestPayments($months=1){
-        return $this->payments()->whereRaw(" PYMT_DATE > DATE_SUB(NOW(),  Interval {$months} Month) ")
+        return $this->payments()->whereRaw(" PYMT_DATE >= DATE_SUB(NOW(),  Interval {$months} Month) ")
                     ->groupByRaw(" MONTH(PYMT_DATE) ")->groupByRaw("YEAR(PYMT_DATE) ")->selectRaw(" MONTH(PYMT_DATE) as OVRV_MNTH , YEAR(PYMT_DATE) as OVRV_YEAR, SUM(PYMT_AMNT) as OVRV_PAID ")->get();
 
     }
 
     public function getOverviewAttendance($months=1){
-        return $this->attendance()->whereRaw(" ATND_DATE > DATE_SUB(NOW(),  Interval {$months} Month) ")
+        return $this->attendance()->whereRaw(" ATND_DATE >= DATE_SUB(NOW(),  Interval {$months} Month) ")
                     ->groupByRaw(" MONTH(ATND_DATE) ")->groupByRaw("YEAR(ATND_DATE) ")->selectRaw(" MONTH(ATND_DATE) as OVRV_MNTH , YEAR(ATND_DATE) as OVRV_YEAR, COUNT(attendance.id) as OVRV_ATND ")->get();
     }
 
