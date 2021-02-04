@@ -376,7 +376,7 @@ class ApiController extends Controller
         });
 
  
-        return $this->getApiMessage(true, $attendance);
+        return $this->getApiMessage(true, $payments);
     }
 
     public function getUserPayments($id)
