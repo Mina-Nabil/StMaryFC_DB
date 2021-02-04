@@ -358,6 +358,15 @@ class ApiController extends Controller
         }
     }
 
+    public function getUserOverview(Request $request){
+        $request->validate([
+            "userID" => "required",
+        ]);
+
+        $user = User::findOrFail($request->userID);
+        return $this->getApiMessage(true, $user->getLatestPayments($request->months));
+    }
+
     public function getUserPayments($id)
     {
         $user = User::find($id);

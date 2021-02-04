@@ -58,6 +58,12 @@ class User extends Authenticatable
         return $this->payments()->whereRaw("MONTH(PYMT_DATE) = MONTH(CURDATE())")->sum('PYMT_AMNT');
     }
 
+    public function getLatestPayments($months=1){
+        return $this->payments()->whereRaw(" MONTH(PYMT_DATE) > DATE_SUB(PYMT_DATE,  Interval {$months} Month) ")
+                    ->groupByRaw(" MONTH(PYMT_DATE) ")->groupByRaw("YEAR(PYMT_DATE) ")->selectRaw("SUM(PYMT_AMNT)")->get();
+
+    }
+
 
 
     /**
