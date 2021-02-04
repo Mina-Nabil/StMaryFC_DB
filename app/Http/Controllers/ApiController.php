@@ -366,7 +366,17 @@ class ApiController extends Controller
         $user = User::findOrFail($request->userID);
         $payments =  $user->getLatestPayments($request->months);
         $attendance = $user->getOverviewAttendance($request->months);
-        return $this->getApiMessage(true, $attendance->merge($payments));
+
+        $payments = $payments->mapWithKeys(function ($row){
+            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_PYMT];
+        });
+
+        $attendance = $attendance->mapWithKeys(function ($row){
+            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => $row->OVRV_AMNT];
+        });
+
+ 
+        return $this->getApiMessage(true, $attendance));
     }
 
     public function getUserPayments($id)
