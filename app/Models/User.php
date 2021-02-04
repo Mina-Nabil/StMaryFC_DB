@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function getLatestPayments($months=1){
         return $this->payments()->whereRaw(" MONTH(PYMT_DATE) > DATE_SUB(PYMT_DATE,  Interval {$months} Month) ")
-                    ->groupByRaw(" MONTH(PYMT_DATE) ")->groupByRaw("YEAR(PYMT_DATE) ")->selectRaw("SUM(PYMT_AMNT)")->get();
+                    ->groupByRaw(" MONTH(PYMT_DATE) ")->groupByRaw("YEAR(PYMT_DATE) ")->selectRaw(" MONTH(PYMT_DATE) , YEAR(PYMT_DATE) , SUM(PYMT_AMNT)")->get();
 
     }
 
