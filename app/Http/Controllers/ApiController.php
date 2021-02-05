@@ -375,8 +375,8 @@ class ApiController extends Controller
             return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => ["A" => $row->OVRV_ATND]];
         });
 
- 
-        return $this->getApiMessage(true, $payments);
+        $merged = array_merge($payments, $attendance);
+        return $this->getApiMessage(true, $merged);
     }
 
     public function getUserPayments($id)
