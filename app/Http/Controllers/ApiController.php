@@ -380,11 +380,7 @@ class ApiController extends Controller
         $merged = $attendance->toArray();
 
         foreach ($payments as $key => $row) {
-            if (key_exists($key, $merged)) {
-                array_push($merged[$key], $row);
-            } else {
-                $merged[$key] = $row;
-            }
+            $merged[$key]["P"] = $row['P'];
         }
 
         return $this->getApiMessage(true, $merged);
