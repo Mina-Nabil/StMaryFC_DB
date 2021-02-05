@@ -370,17 +370,28 @@ class ApiController extends Controller
         $attendance = $user->getOverviewAttendance($request->months);
 
         $payments = $payments->mapWithKeys(function ($row) {
-            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => ["P" => $row->OVRV_PAID]];
+            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => [
+                "Month" => $this->getMonthName($row->OVRV_MNTH),
+                "Year" => $row->OVRV_YEAR,
+                "P" => $row->OVRV_PAID
+            ]];
         });
 
         $attendance = $attendance->mapWithKeys(function ($row) {
-            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => ["A" => $row->OVRV_ATND]];
+            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => [
+                "Month" => $this->getMonthName($row->OVRV_MNTH),
+                "Year" => $row->OVRV_YEAR,
+                "A" => $row->OVRV_ATND
+            ]];
         });
 
         $merged = $attendance->toArray();
 
         foreach ($payments as $key => $row) {
-            $merged[$key]["P"] = $row['P'];
+            if (key_exists($key, $merged))
+                $merged[$key]["P"] = $row['P'];
+            else
+                $merged[$key] = $row;
         }
 
         return $this->getApiMessage(true, $merged);
