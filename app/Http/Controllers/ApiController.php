@@ -90,7 +90,8 @@ class ApiController extends Controller
                 );
             }
   
-            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
+            // $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
+            $users = $users->toSql();
             if ($users) {
                 $this->adjustImageUrl($users);
                 return $this->getApiMessage(true, $users);
