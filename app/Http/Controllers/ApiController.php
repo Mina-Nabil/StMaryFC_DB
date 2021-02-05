@@ -86,10 +86,11 @@ class ApiController extends Controller
                 (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
             foreach ($arguments as $value) {
                 $users = $users->whereRaw(
-                    " ( GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}' OR USER_NAME LIKE '{$value}%' OR YEAR(USER_BDAY) = ? ) " , [$value]
+                    " ( GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}' OR USER_NAME LIKE '{$value}%' OR YEAR(USER_BDAY) = ? ) ",
+                    [$value]
                 );
             }
-  
+
             $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
             if ($users) {
                 $this->adjustImageUrl($users);
@@ -358,7 +359,8 @@ class ApiController extends Controller
         }
     }
 
-    public function getUserOverview(Request $request){
+    public function getUserOverview(Request $request)
+    {
         $request->validate([
             "userID" => "required",
         ]);
@@ -367,16 +369,25 @@ class ApiController extends Controller
         $payments =  $user->getLatestPayments($request->months);
         $attendance = $user->getOverviewAttendance($request->months);
 
-        $payments = $payments->mapWithKeys(function ($row){
-            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => ["P" => $row->OVRV_PAID]];
+        $payments = $payments->mapWithKeys(function ($row) {
+            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => ["P" => $row->OVRV_PAID]];
         });
 
-        $attendance = $attendance->mapWithKeys(function ($row){
-            return [$row->OVRV_MNTH ."-". $row->OVRV_YEAR => ["A" => $row->OVRV_ATND]];
+        $attendance = $attendance->mapWithKeys(function ($row) {
+            return [$row->OVRV_MNTH . "-" . $row->OVRV_YEAR => ["A" => $row->OVRV_ATND]];
         });
 
-        $merged = array_merge($payments->toArray(), $attendance->toArray());
-        return $this->getApiMessage(true, $payments);
+        $merged = $attendance->toArray();
+
+        foreach ($payments as $key => $row) {
+            if (key_exists($key, $merged)) {
+                array_push($merged[$key], $row);
+            } else {
+                $merged[$key] = $row;
+            }
+        }
+
+        return $this->getApiMessage(true, $merged);
     }
 
     public function getUserPayments($id)
@@ -509,9 +520,10 @@ class ApiController extends Controller
         }
     }
 
-    private function makeLikePayment3shanMickeyBeh($payments){
+    private function makeLikePayment3shanMickeyBeh($payments)
+    {
         $ret = new Collection();
-        foreach($payments as $payment){
+        foreach ($payments as $payment) {
             $ret->add([
                 "id" => $payment->id,
                 "PYMT_AMNT" => $payment->EVPY_AMNT,
