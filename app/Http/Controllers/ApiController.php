@@ -376,7 +376,7 @@ class ApiController extends Controller
         });
 
         $merged = array_merge($payments->toArray(), $attendance->toArray());
-        return $this->getApiMessage(true, $merged);
+        return $this->getApiMessage(true, $payments);
     }
 
     public function getUserPayments($id)
