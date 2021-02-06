@@ -394,7 +394,7 @@ class ApiController extends Controller
                 $merged[$key] = $row;
         }
 
-        return $this->getApiMessage(true, array($merged));
+        return $this->getApiMessage(true, $merged);
     }
 
     public function getUserPayments($id)
