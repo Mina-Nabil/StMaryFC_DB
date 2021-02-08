@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Event;
 use App\Models\EventPayment;
+use App\Models\EventsAttendance;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\User;
