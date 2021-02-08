@@ -23,7 +23,7 @@ class EventPayment extends Model
 
     function attendance()
     {
-        return $this->hasManyThrough(Attendance::class, Event::class, "EVPY_EVNT_ID", "EVAT_EVNT_ID");
+        return $this->hasManyThrough("events_attendance", Event::class, "EVPY_EVNT_ID", "EVAT_EVNT_ID");
     }
 
     public static function addPayment($userID, $eventID, $amount)
