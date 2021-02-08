@@ -21,9 +21,10 @@ class EventPayment extends Model
         return $this->belongsTo('App\Models\User', "EVPY_USER_ID");
     }
 
-    function attendance()
-    {
-        return $this->hasOneThrough(EventsAttendance::class, Event::class, "EVPY_EVNT_ID", "EVAT_EVNT_ID");
+    public static function getUserEventPayments($userID){
+        self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
+            ->join("events_attendance", 'EVAT_EVNT_ID', '=', 'events.id')->select("EVNT_NAME", "EVAT_STTS", "USER_NAME", "EVPY_AMNT")
+            ->where("EVPY_USER_ID", $userID)->get()  ;
     }
 
     public static function addPayment($userID, $eventID, $amount)
