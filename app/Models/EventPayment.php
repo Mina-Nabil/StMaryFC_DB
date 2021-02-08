@@ -27,7 +27,7 @@ class EventPayment extends Model
         $payment->EVPY_AMNT = $amount;
         $user = User::findOrFail($userID);
         $event = Event::findOrFail($eventID);
-        Payment::sendSMS($user->USER_MOBN, $user->USER_NAME, $amount, $event->EVNT_NAME);
+        Payment::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, $event->EVNT_NAME);
         return $payment->save();
     }
 
