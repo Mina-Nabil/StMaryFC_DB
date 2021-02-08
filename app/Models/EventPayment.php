@@ -22,7 +22,7 @@ class EventPayment extends Model
     }
 
     public static function getUserEventPayments($userID){
-        self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
+        return self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
             ->join("events_attendance", 'EVAT_EVNT_ID', '=', 'events.id')->select("EVNT_NAME", "EVAT_STTS", "USER_NAME", "event_payments.*")
             ->where("EVPY_USER_ID", $userID)->get()  ;
     }
