@@ -9,6 +9,8 @@ class EventPayment extends Model
 {
     protected $table = "event_payments";
 
+    public $state;
+
     function event()
     {
         return $this->belongsTo('App\Models\Event', "EVPY_EVNT_ID");
@@ -17,6 +19,11 @@ class EventPayment extends Model
     function user()
     {
         return $this->belongsTo('App\Models\User', "EVPY_USER_ID");
+    }
+
+    function attendance()
+    {
+        return $this->hasManyThrough(Attendance::class, Event::class, "EVPY_EVNT_ID", "EVAT_EVNT_ID");
     }
 
     public static function addPayment($userID, $eventID, $amount)
