@@ -537,7 +537,7 @@ class ApiController extends Controller
                 "PYMT_AMNT" => $payment->EVPY_AMNT,
                 "PYMT_DATE" => $payment->created_at->format('Y-m-d'),
                 "PYMT_USER_ID" => $payment->EVPY_USER_ID,
-                "EVNT_NAME" => $payment->EVNT_NAME . "(" . EventsAttendance::getStatusName($payment->EVAT_STTS) . ")",
+                "EVNT_NAME" => $payment->EVNT_NAME . " (" . EventsAttendance::getStatusName($payment->EVAT_STTS) . ")",
             ]);
         }
         return $ret;
