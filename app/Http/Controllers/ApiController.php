@@ -49,6 +49,15 @@ class ApiController extends Controller
             return $this->getApiMessage(false);
     }
 
+    public function getNextUserID(){
+        $maxCode = User::selectRaw("MAX(USER_CODE) as maxCode")->get()->first()->maxCode;
+        if ($maxCode) {
+            return $this->getApiMessage(true, $maxCode + 1);
+        } else
+            return $this->getApiMessage(false);
+
+    }
+
     public function getUsers()
     {
         $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')

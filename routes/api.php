@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->post('/edit/user/email', 'ApiController@chang
 Route::middleware('auth:sanctum')->post('/edit/user', 'ApiController@editUser');
 Route::middleware('auth:sanctum')->post('/add/payment', 'ApiController@addPayment');
 Route::middleware('auth:sanctum')->post('/get/overview', 'ApiController@getUserOverview');
+Route::middleware('auth:sanctum')->post('/get/next/code', 'ApiController@getNextUserID');
 
 //groups
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
