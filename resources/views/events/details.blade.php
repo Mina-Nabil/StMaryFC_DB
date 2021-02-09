@@ -68,10 +68,12 @@
                             <div class="table-responsive m-t-5">
                                 <table id="myTable" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
                                     <thead>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                        <th>Paid</th>
-                                        <th>Actions</th>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Status</th>
+                                            <th>Paid</th>
+                                            <th>Actions</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($attendance as $item)
