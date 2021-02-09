@@ -420,7 +420,7 @@ class ApiController extends Controller
     {
         $payments = EventPayment::getUserEventPayments($id);
         if ($payments)
-            return $this->getApiMessage(true, $this->makeLikePayment3shanMickeyBeh($payments));
+            return $this->getApiMessage(true, $payments);
         else
             return $this->getApiMessage(false, ['error' => 'invalid user id']);
     }

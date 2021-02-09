@@ -27,7 +27,7 @@ class EventPayment extends Model
             ->join('events_attendance', function ($join) {
                 $join->on('EVAT_USER_ID', '=', 'app_users.id')->on('EVAT_EVNT_ID', '=', 'events.id');
             })->select("EVNT_NAME", "EVAT_STTS", "USER_NAME", "event_payments.*")
-            ->where("EVPY_USER_ID", $userID)->get();
+            ->where("EVPY_USER_ID", $userID)->toSql();
     }
 
     public static function addPayment($userID, $eventID, $amount)
