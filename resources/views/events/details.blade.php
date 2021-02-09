@@ -66,7 +66,7 @@
                     <div class="card-body">
                         <div class="card-body">
                             <div class="table-responsive m-t-5">
-                                <table id="itemsTable" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
+                                <table id="myTable" class="table color-bordered-table table-striped full-color-table full-primary-table hover-table" data-display-length='-1' data-order="[]">
                                     <thead>
                                         <th>Name</th>
                                         <th>Status</th>
