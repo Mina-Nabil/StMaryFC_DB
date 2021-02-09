@@ -24,7 +24,7 @@ class EventPayment extends Model
     public static function getUserEventPayments($userID){
         return self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
             ->join("events_attendance", 'EVAT_USER_ID', '=', 'app_users.id')->select("EVNT_NAME", "EVAT_STTS", "USER_NAME", "event_payments.*")
-            ->where("EVPY_USER_ID", $userID)->groupBy("event_payments.id")->get()  ;
+            ->where("EVPY_USER_ID", $userID)->toSql()  ;
     }
 
     public static function addPayment($userID, $eventID, $amount)
