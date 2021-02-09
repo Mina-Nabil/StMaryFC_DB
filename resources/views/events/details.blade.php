@@ -77,9 +77,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach($attendance as $item)
-
                                         <tr id="row{{$item->USER_ID}}">
-
                                             <td>{{$item->GRUP_NAME}}: {{$item->USER_NAME}}</td>
                                             <td id="status{{$item->USER_ID}}">
                                                 @switch($item->EVAT_STTS)
@@ -111,10 +109,8 @@
                                                         <button class="dropdown-item" onclick="deleteAttendance('{{$item->USER_ID}}')">Remove</button>
                                                         @endif
                                                     </div>
-
                                                 </div>
                                             </td>
-
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -399,5 +395,24 @@
   
 
 });
+
+</script>
+<script>
+    $(function () {
+            $(function () {
+
+                var table = $('#myTable').DataTable({
+                    "displayLength": 25,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'excel',
+                            title: 'St Mary Football Academy',
+                            footer: true,
+                        }
+                    ]
+                });
+            })
+        })
 </script>
 @endsection
