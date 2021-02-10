@@ -410,7 +410,7 @@ class ApiController extends Controller
             else
                 $merged[$key] = $row;
         }
-        ksort($merged, SORT_NUMERIC);
+        krsort($merged, SORT_NUMERIC);
         return $this->getApiMessage(true, $merged);
     }
 
