@@ -132,7 +132,7 @@
                     buttons: [
                         {
                             extend: 'excel',
-                            title: 'Genuine Giant',
+                            title: 'St Mary Football Academy',
                             footer: true,
                         }
                     ]
