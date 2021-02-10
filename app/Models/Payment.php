@@ -45,7 +45,7 @@ class Payment extends Model
         $startDate = $date->format('Y-m-01');
         $endDate = $date->format('Y-m-t');
         $noOfPayments = DB::table("payments")->where('PYMT_USER_ID', $userID)->whereBetween('PYMT_DATE', [$startDate, $endDate])
-                        ->get()->count();
+            ->get()->count();
         return ($noOfPayments > 0) ? true : false;
     }
 
@@ -66,21 +66,26 @@ class Payment extends Model
         return true;
     }
 
-    public function refund() {
+    public function refund()
+    {
 
         $user = User::findOrFail($this->PYMT_USER_ID);
         self::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
         return $this->delete();
     }
 
-    public static function sendSMS($name, $mob, $amount, $month, $refund=false){
+    public static function sendSMS($name, $mob, $amount, $month, $refund = false)
+    {
         $message = "St. Mary Rehab Football Academy \n";
-        if($refund) $message .= "[REFUND] \n";
-        $message .= "{$name}
-        Payment Received {$amount} LE
-        {$month}
+        if ($refund) $message .= "[REFUND] \n";
+        $message .= "{$name} ";
+        if ($refund)
+            $message .= "Refund Amount {$amount} LE";
+        else
+            $message .= "Payment Received {$amount} LE";
+        $message .= "{$month}
         
-        Thank you" ;
+        Thank you";
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
