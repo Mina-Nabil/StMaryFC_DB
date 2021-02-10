@@ -183,7 +183,6 @@
 
 
                         <li> <a href="{{url('groups/show')}}"><i class=" fas fa-graduation-cap"></i><span class="hide-menu">Groups</span></a>
-                        <li> <a href="{{url('dash/users/all')}}"><i class=" fas fa-users"></i><span class="hide-menu">Managers</span></a>
 
                         </li>
 

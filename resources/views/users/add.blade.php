@@ -99,7 +99,7 @@
                             </div>
                             <input type="text" class="form-control" name=mail placeholder="Username" value="{{ (isset($user)) ? $user->USER_MAIL : old('mail')}}">
                         </div>
-                        <small class="text-danger">{{$errors->first('mail') != "" ? $errors->first('mail') : "Required if type is admin"}}</small>
+                        <small class="text-danger">{{$errors->first('mail') != "" ? $errors->first('mail') : "Required if type is admin or coach"}}</small>
 
                     </div>
 
@@ -112,7 +112,7 @@
                             </div>
                             <input type="text" class="form-control" name=password placeholder="Password" aria-label="Password" aria-describedby="basic-addon33" @if($isPassNeeded) required @endif>
                         </div>
-                        <small class="text-danger">{{$errors->first('password') != "" ? $errors->first('password') : "Required if type is admin"}}</small>
+                        <small class="text-danger">{{$errors->first('password') != "" ? $errors->first('password') : "Required if type is admin or coach"}}</small>
 
                     </div>
 

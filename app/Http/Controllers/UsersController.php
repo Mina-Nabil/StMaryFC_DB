@@ -37,8 +37,8 @@ class UsersController extends Controller
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
-            "mail" => "required_if:type,1|nullable",
-            "password" => "required_if:type,1|nullable",
+            "mail" => "required_if:type,1,3|nullable",
+            "password" => "required_if:type,1,3|nullable",
         ]);
 
         $user = new User();
@@ -91,7 +91,7 @@ class UsersController extends Controller
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
-            "mail" => "required_if:type,1"
+            "mail" => "required_if:type,1,3"
         ]);
 
         $user->USER_NAME = $request->name;
