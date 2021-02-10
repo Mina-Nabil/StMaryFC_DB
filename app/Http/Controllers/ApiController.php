@@ -403,14 +403,14 @@ class ApiController extends Controller
         });
 
         $merged = $attendance->toArray();
-        arsort($merged, SORT_NUMERIC);
+
         foreach ($payments as $key => $row) {
             if (key_exists($key, $merged))
                 $merged[$key]["P"] = $row['P'];
             else
                 $merged[$key] = $row;
         }
-
+        arsort($merged, SORT_NUMERIC);
         return $this->getApiMessage(true, $merged);
     }
 
