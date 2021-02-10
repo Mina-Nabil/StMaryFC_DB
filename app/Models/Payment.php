@@ -76,11 +76,12 @@ class Payment extends Model
 
     public static function sendSMS($name, $mob, $amount, $month, $refund = false)
     {
-        $message = "St. Mary Rehab Football Academy \n";
-        if ($refund) $message .= "[REFUND] \n";
+        if ($refund) $message = "[REFUND] \n";
+        else
+            $message = "St. Mary Rehab Football Academy \n";
         $message .= "{$name} \n";
         if ($refund)
-            $message .= "Refund Amount {$amount} LE \n";
+            $message .= "Refund {$amount} LE \n";
         else
             $message .= "Payment Received {$amount} LE \n";
         $message .= "{$month}
