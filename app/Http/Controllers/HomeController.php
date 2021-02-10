@@ -36,7 +36,7 @@ class HomeController extends Controller
         $data['first'] = true;
 
         if (isset($userName)) {
-            if (Auth::attempt(array('USER_NAME' => $userName, 'password' => $passWord, 'USER_MNGR' => 1), true)) {
+            if (Auth::attempt(array('USER_MAIL' => $userName, 'password' => $passWord, 'USER_USTP_ID' => 1), true)) {
                 return redirect('/home');
             } else {
                 $data['first'] = false;

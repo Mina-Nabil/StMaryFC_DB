@@ -41,6 +41,11 @@ class DatabaseSeeder extends Seeder
             "USTP_NAME" => "Player"
         ]);
 
+        DB::table('app_user_types')->insert([
+            'id' => 3,
+            "USTP_NAME" => "Coach"
+        ]);
+
         DB::table('groups')->insert([
             'id' => 1,
             "GRUP_NAME" => "Admins"
