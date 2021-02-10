@@ -459,7 +459,10 @@ class ApiController extends Controller
                 "eventID" => "exists:events,id"
             ]);
             //event payment
-            $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            if ($request->amount > 0)
+                $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            else 
+                $res = true;
             if (isset($request->eventState) && $request->eventState > 0) {
                 Event::attachUser($request->eventID, $request->userID, $request->eventState);
             }
