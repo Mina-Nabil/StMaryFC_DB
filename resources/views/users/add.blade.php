@@ -27,12 +27,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label>User Name*</label>
+                        <label>Full Name*</label>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon11"><i class="ti-user"></i></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Username" name=name value="{{ (isset($user)) ? $user->USER_NAME : old('name')}}" required>
+                            <input type="text" class="form-control" placeholder="Full Name" name=name value="{{ (isset($user)) ? $user->USER_NAME : old('name')}}" required>
                         </div>
                         <small class="text-danger">{{$errors->first('name')}}</small>
                     </div>
