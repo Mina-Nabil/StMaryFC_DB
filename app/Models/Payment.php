@@ -58,7 +58,7 @@ class Payment extends Model
                 $endDate =  (new DateTime($date))->format('Y-m-t');
                 Attendance::setPaid($id, $startDate, $endDate);
                 $user = User::findOrFail($id);
-                // self::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
+                self::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
             });
         } catch (Exception $e) {
             return false;
@@ -66,19 +66,27 @@ class Payment extends Model
         return true;
     }
 
-    public static function sendSMS($name, $mob, $amount, $month){
+    public function refund() {
+
+        $user = User::findOrFail($this->PYMT_USER_ID);
+        self::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
+        return $this->delete();
+    }
+
+    public static function sendSMS($name, $mob, $amount, $month, $refund=false){
+        $message = "St. Mary Rehab Football Academy \n";
+        if($refund) $message += "[REFUND] \n";
+        $message += "{$name}
+        Payment Received {$amount} LE
+        {$month}
+        
+        Thank you" ;
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',
             'sendername' => 'Academy',
             'mobiles' => $mob,
-            'message' => "St. Mary Rehab Football Academy
-
-            {$name}
-            Payment Received {$amount} LE
-            {$month}
-            
-            Thank you",
+            'message' => $message,
         ]);
     }
 }

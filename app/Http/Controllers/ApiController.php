@@ -49,18 +49,18 @@ class ApiController extends Controller
             return $this->getApiMessage(false);
     }
 
-    public function getNextUserID(){
+    public function getNextUserID()
+    {
         $allCodes = User::select("USER_CODE")->get();
         $max = 0;
-        foreach($allCodes as $code){
-            if(is_numeric($code->USER_CODE) && $code->USER_CODE > $max ) 
+        foreach ($allCodes as $code) {
+            if (is_numeric($code->USER_CODE) && $code->USER_CODE > $max)
                 $max = $code->USER_CODE;
         }
         if ($max) {
-            return $this->getApiMessage(true, $max + 1 );
+            return $this->getApiMessage(true, $max + 1);
         } else
             return $this->getApiMessage(false);
-
     }
 
     public function getUsers()
@@ -466,6 +466,36 @@ class ApiController extends Controller
             return $this->getApiMessage(true);
         } else {
             return $this->getApiMessage(false, ['error' => 'Payment failed']);
+        }
+    }
+
+    public function deleteUserPayment(Request $request)
+    {
+        $this->validate($request, [
+            "paymentID" => "required|exists:payments,id"
+        ]);
+
+        $payment = Payment::findOrFail($request->paymentID);
+        $res = $payment->refund();
+        if ($res) {
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Refund failed']);
+        }
+    }
+
+    public function deleteEventPayment(Request $request)
+    {
+        $this->validate($request, [
+            "paymentID" => "required|exists:payments,id"
+        ]);
+
+        $payment = EventPayment::findOrFail($request->paymentID);
+        $res = $payment->refund();
+        if ($res) {
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Refund failed']);
         }
     }
 

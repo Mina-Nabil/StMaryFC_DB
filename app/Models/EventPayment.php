@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class EventPayment extends Model
@@ -45,5 +46,12 @@ class EventPayment extends Model
     public static function deletePayments($userID, $eventID)
     {
         return self::where([['EVPY_USER_ID', $userID], ['EVPY_EVNT_ID', $eventID]])->delete();
+    }
+
+    public function refund() {
+
+        $user = User::findOrFail($this->EVPY_USER_ID);
+        Payment::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->EVPY_AMNT, (new DateTime($this->EVPY_DATE))->format('M-Y'), true);
+        return $this->delete();
     }
 }

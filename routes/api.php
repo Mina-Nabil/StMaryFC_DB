@@ -37,6 +37,8 @@ Route::middleware('auth:sanctum')->post('/edit/user', 'ApiController@editUser');
 Route::middleware('auth:sanctum')->post('/add/payment', 'ApiController@addPayment');
 Route::middleware('auth:sanctum')->post('/get/overview', 'ApiController@getUserOverview');
 Route::middleware('auth:sanctum')->get('/get/next/code', 'ApiController@getNextUserID');
+Route::middleware('auth:sanctum')->post('/delete/payment', 'ApiController@deleteUserPayment');
+Route::middleware('auth:sanctum')->post('/delete/event/payment', 'ApiController@deleteEventPayment');
 
 //groups
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
