@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -50,6 +51,27 @@ class Event extends Model
             ->groupBy('u1.id', 'events.id', 'EVAT_EVNT_ID')
             ->whereNull('deleted_at')
             ->get();
+    }
+
+    static function attachUser($eventID, $userID, $status){
+        $event = Event::findOrFail($eventID);
+        $exists = $event->users->contains($userID);
+    
+        if (!$exists)
+            try {
+                $event->users()->attach($userID, ['EVAT_STTS' => $status]);
+                return 1;
+            } catch (Exception $e) {
+                return 0;
+            }
+        else
+            try {
+                return $event->users()->updateExistingPivot($userID, [
+                    "EVAT_STTS" => $status
+                ]);
+            } catch (Exception $e) {
+                return 0;
+            }
     }
 
     function deleteAll(){

@@ -387,7 +387,7 @@ class ApiController extends Controller
         $attendance = $user->getOverviewAttendance($request->months);
 
         $payments = $payments->mapWithKeys(function ($row) {
-            return [$row->OVRV_YEAR*100 + $row->OVRV_MNTH   => [
+            return [$row->OVRV_YEAR * 100 + $row->OVRV_MNTH   => [
                 "Month" => $this->getMonthName($row->OVRV_MNTH),
                 "Year" => $row->OVRV_YEAR,
                 "P" => $row->OVRV_PAID
@@ -395,7 +395,7 @@ class ApiController extends Controller
         });
 
         $attendance = $attendance->mapWithKeys(function ($row) {
-            return [ $row->OVRV_YEAR*100 + $row->OVRV_MNTH  => [
+            return [$row->OVRV_YEAR * 100 + $row->OVRV_MNTH  => [
                 "Month" => $this->getMonthName($row->OVRV_MNTH),
                 "Year" => $row->OVRV_YEAR,
                 "A" => $row->OVRV_ATND
@@ -448,7 +448,7 @@ class ApiController extends Controller
             "amount" => 'required',
             "date" => 'required_if:type,1',
             "eventID" => 'required_if:type,2',
-            "type"  => "required"
+            "type"  => "required",
         ]);
 
         if ($request->type == 1) {
@@ -460,6 +460,9 @@ class ApiController extends Controller
             ]);
             //event payment
             $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            if (isset($request->eventState) && $request->eventState > 0) {
+                Event::attachUser($request->eventID, $request->userID, $request->eventState);
+            }
         }
 
         if ($res) {

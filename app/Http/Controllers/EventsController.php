@@ -65,27 +65,12 @@ class EventsController extends Controller
             "status" => "required",
         ]);
 
-        $event = Event::findOrFail($request->eventID);
-        $exists = $event->users->contains($request->userID);
         if ($request->status == 0) {
             $this->detachUser($request);
             return;
         }
-        if (!$exists)
-            try {
-                $event->users()->attach($request->userID, ['EVAT_STTS' => $request->status]);
-                echo 1;
-            } catch (Exception $e) {
-                echo 0;
-            }
-        else
-            try {
-                echo $event->users()->updateExistingPivot($request->userID, [
-                    "EVAT_STTS" => $request->status
-                ]);
-            } catch (Exception $e) {
-                echo 0;
-            }
+
+        echo Event::attachUser($request->eventID, $request->userID, $request->status);
     }
 
     public function detachUser(Request $request)
