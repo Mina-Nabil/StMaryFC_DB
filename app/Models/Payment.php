@@ -78,11 +78,11 @@ class Payment extends Model
     {
         $message = "St. Mary Rehab Football Academy \n";
         if ($refund) $message .= "[REFUND] \n";
-        $message .= "{$name} ";
+        $message .= "{$name} \n";
         if ($refund)
-            $message .= "Refund Amount {$amount} LE";
+            $message .= "Refund Amount {$amount} LE \n";
         else
-            $message .= "Payment Received {$amount} LE";
+            $message .= "Payment Received {$amount} LE \n";
         $message .= "{$month}
         
         Thank you";
