@@ -53,7 +53,7 @@ class ApiController extends Controller
         $allCodes = User::select("USER_CODE")->get();
         $max = 0;
         foreach($allCodes as $code){
-            if(is_numeric($code->USER_CODE) && $code->USER_CODE > $max) 
+            if(is_numeric($code->USER_CODE) && $code->USER_CODE > $max ) 
                 $max = $code->USER_CODE;
         }
         if ($max) {
@@ -67,7 +67,7 @@ class ApiController extends Controller
     {
         $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
-            ->where('USER_CODE', '!=', '999')
+            ->where('USER_CODE', '!=', 'A999')
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
                      (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments')
             ->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
@@ -97,7 +97,7 @@ class ApiController extends Controller
             $arguments = explode(" ", $request->name);
             $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
                 ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)
-                ->where('USER_CODE', '!=', '999')
+                ->where('USER_CODE', '!=', 'A999')
                 ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
                 ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
                 (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
