@@ -487,7 +487,7 @@ class ApiController extends Controller
     public function deleteEventPayment(Request $request)
     {
         $this->validate($request, [
-            "paymentID" => "required|exists:payments,id"
+            "paymentID" => "required|exists:event_payments,id"
         ]);
 
         $payment = EventPayment::findOrFail($request->paymentID);
