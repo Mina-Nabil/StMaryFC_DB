@@ -50,9 +50,14 @@ class ApiController extends Controller
     }
 
     public function getNextUserID(){
-        $maxCode = User::selectRaw("MAX(USER_CODE) as maxCode")->get()->first()->maxCode;
-        if ($maxCode) {
-            return $this->getApiMessage(true, $maxCode );
+        $allCodes = User::selectRaw("USER_CODE")->get();
+        $max = 0;
+        foreach($allCodes as $code){
+            if(is_numeric($code) && $code > $max) 
+                $max = $code;
+        }
+        if ($max) {
+            return $this->getApiMessage(true, $max + 1 );
         } else
             return $this->getApiMessage(false);
 
