@@ -121,14 +121,14 @@
                 <!-- User Profile-->
                 <div class="user-profile">
                     <div class="user-pro-body">
-                        @if(isset(Auth::user()->DASH_IMGE))
-                        <div><img src="{{ asset( 'storage/'. Auth::user()->DASH_IMGE ) }} " alt="user-img" class="img-circle"></div>
+                        @if(isset(Auth::user()->mainImage->USIM_URL))
+                        <div><img src="{{ asset( 'storage/'. Auth::user()->mainImage->USIM_URL ) }} " alt="user-img" class="img-circle"></div>
                         @else
                         <div><img src="{{ asset('assets/images/users/def-user.png') }} " alt="user-img" class="img-circle"></div>
                         @endif
                         <div class="dropdown">
                             <a href="javascript:void(0)" class="dropdown-toggle u-dropdown link hide-menu" data-toggle="dropdown" role="button" aria-haspopup="true"
-                                aria-expanded="false">{{ Auth::user()->DASH_USNM }} <span class="caret"></span></a>
+                                aria-expanded="false">{{ Auth::user()->USER_MAIL }} <span class="caret"></span></a>
                             <div class="dropdown-menu animated flipInY">
                                 <!-- text-->
                                 <a href="{{route('logout')}}" class="dropdown-item"><i class="fa fa-power-off"></i>

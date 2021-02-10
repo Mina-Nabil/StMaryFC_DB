@@ -10,10 +10,7 @@
                 <form class="form pt-3" method="post" action="{{ url($formURL) }}" enctype="multipart/form-data">
                     @csrf
                     <input type=hidden name=id value="{{(isset($user)) ? $user->id : ''}}">
-                    @if(isset($user->DASH_IMGE))
-                    <input type=hidden name=oldPath value="{{$user->DASH_IMGE}}">
-                    @endif
-
+                
                     <div class="form-group">
                         <label for="exampleInputEmail1">ID</label>
                         <div class="input-group mb-3">

@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'dash_users',
+            'provider' => 'users',
         ],
 
         'api' => [
@@ -69,10 +69,6 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
-        'dash_users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\DashUser::class,
         ],
 
         // 'users' => [

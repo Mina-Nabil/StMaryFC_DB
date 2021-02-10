@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +36,7 @@ class HomeController extends Controller
         $data['first'] = true;
 
         if (isset($userName)) {
-            if (Auth::attempt(array('DASH_USNM' => $userName, 'password' => $passWord), true)) {
+            if (Auth::attempt(array('USER_NAME' => $userName, 'password' => $passWord, 'USER_MNGR' => 1), true)) {
                 return redirect('/home');
             } else {
                 $data['first'] = false;

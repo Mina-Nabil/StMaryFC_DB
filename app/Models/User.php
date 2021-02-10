@@ -15,58 +15,70 @@ class User extends Authenticatable
     protected $table = "app_users";
     public $timestamps = false;
 
-    public function images(){
+    public function images()
+    {
         return $this->hasMany('App\Models\UserImage', "USIM_USER_ID");
     }
-    public function mainImage(){
+    public function mainImage()
+    {
         return $this->hasOne('App\Models\UserImage', 'id', "USER_MAIN_IMGE");
     }
 
-    public function type(){
+    public function type()
+    {
         return $this->belongsTo('App\Models\UserType', 'USER_USTP_ID');
     }
 
-    public function group(){
+    public function group()
+    {
         return $this->belongsTo('App\Models\Group', 'USER_GRUP_ID');
     }
 
-    public function attendance(){
+    public function attendance()
+    {
         return $this->hasMany('App\Models\Attendance', "ATND_USER_ID");
     }
 
-    public function payments(){
+    public function payments()
+    {
         return $this->hasMany('App\Models\Payment', "PYMT_USER_ID");
     }
 
-    public function eventPayments(){
+    public function eventPayments()
+    {
         return $this->hasMany('App\Models\EventPayment', "EVPY_USER_ID");
     }
 
-    public function getLatestAttendance(){
+    public function getLatestAttendance()
+    {
         return Attendance::where('ATND_USER_ID', $this->id)->orderByDesc('ATND_DATE')->limit(200)->get();
     }
 
-    public function getAttendedYears(){
+    public function getAttendedYears()
+    {
         return Attendance::where('ATND_USER_ID', $this->id)->selectRaw("DISTINCT YEAR(ATND_DATE) as year")->get();
     }
 
-    public function monthlyAttendance(){
-        return $this->attendance()->whereRaw("MONTH(ATND_DATE) = MONTH(CURDATE())")->count();        
+    public function monthlyAttendance()
+    {
+        return $this->attendance()->whereRaw("MONTH(ATND_DATE) = MONTH(CURDATE())")->count();
     }
 
-    public function monthlyPayment(){
+    public function monthlyPayment()
+    {
         return $this->payments()->whereRaw("MONTH(PYMT_DATE) = MONTH(CURDATE())")->sum('PYMT_AMNT');
     }
 
-    public function getLatestPayments($months=1){
+    public function getLatestPayments($months = 1)
+    {
         return $this->payments()->whereRaw(" PYMT_DATE >= DATE_SUB(NOW(),  Interval {$months} Month) ")
-                    ->groupByRaw(" OVRV_MNTH ")->groupByRaw(" OVRV_YEAR ")->selectRaw(" MONTH(PYMT_DATE) as OVRV_MNTH , YEAR(PYMT_DATE) as OVRV_YEAR, SUM(PYMT_AMNT) as OVRV_PAID ")->get();
-
+            ->groupByRaw(" OVRV_MNTH ")->groupByRaw(" OVRV_YEAR ")->selectRaw(" MONTH(PYMT_DATE) as OVRV_MNTH , YEAR(PYMT_DATE) as OVRV_YEAR, SUM(PYMT_AMNT) as OVRV_PAID ")->get();
     }
 
-    public function getOverviewAttendance($months=1){
+    public function getOverviewAttendance($months = 1)
+    {
         return $this->attendance()->whereRaw(" ATND_DATE >= DATE_SUB(NOW(),  Interval {$months} Month) ")
-                    ->groupByRaw(" OVRV_MNTH ")->groupByRaw(" OVRV_YEAR ")->selectRaw(" MONTH(ATND_DATE) as OVRV_MNTH , YEAR(ATND_DATE) as OVRV_YEAR, COUNT(attendance.id) as OVRV_ATND ")->get();
+            ->groupByRaw(" OVRV_MNTH ")->groupByRaw(" OVRV_YEAR ")->selectRaw(" MONTH(ATND_DATE) as OVRV_MNTH , YEAR(ATND_DATE) as OVRV_YEAR, COUNT(attendance.id) as OVRV_ATND ")->get();
     }
 
 
@@ -104,7 +116,7 @@ class User extends Authenticatable
      */
     public function username()
     {
-        return 'USER_NAME';
+        return 'USER_MAIL';
     }
 
     /**
@@ -117,14 +129,15 @@ class User extends Authenticatable
         return $this->USER_PASS;
     }
 
-        // this is a recommended way to declare event handlers
-        public static function boot() {
-            parent::boot();
-    
-            static::deleting(function($user) { // before delete() method call this
-                 $user->attendance()->delete();
-                 $user->payments()->delete();
-                 // do the rest of the cleanup...
-            });
-        }
+    // this is a recommended way to declare event handlers
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) { // before delete() method call this
+            $user->attendance()->delete();
+            $user->payments()->delete();
+            // do the rest of the cleanup...
+        });
+    }
 }
