@@ -68,7 +68,6 @@ class Payment extends Model
 
     public function refund()
     {
-
         $user = User::findOrFail($this->PYMT_USER_ID);
         self::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
         return $this->delete();

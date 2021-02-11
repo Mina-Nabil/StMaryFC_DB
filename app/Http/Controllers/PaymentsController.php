@@ -67,7 +67,7 @@ class PaymentsController extends Controller
     public function delete($id)
     {
         $payment = Payment::findOrFail($id);
-        $payment->delete();
+        $payment->refund();
         return back();
     }
 

@@ -45,7 +45,9 @@ class EventPayment extends Model
 
     public static function deletePayments($userID, $eventID)
     {
-        return self::where([['EVPY_USER_ID', $userID], ['EVPY_EVNT_ID', $eventID]])->delete();
+        $eventPayments = self::where([['EVPY_USER_ID', $userID], ['EVPY_EVNT_ID', $eventID]])->get();
+        foreach($eventPayments as $payment)
+            $payment->refund();
     }
 
     public function refund() {
