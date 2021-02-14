@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +25,7 @@ class Attendance extends Model
             ->whereBetween('ATND_DATE', [$from, $to]);
         if ($user != 0) {
             $query = $query->where('ATND_USER_ID', $user);
-        }
-        else if ($group != 0) {
+        } else if ($group != 0) {
             $query = $query->where('USER_GRUP_ID', $group);
         }
         return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'USER_NAME', 'GRUP_NAME', 'ATND_USER_ID')
@@ -53,13 +53,16 @@ class Attendance extends Model
 
     public static function takeAttendace($userID, $date)
     {
-        $isPaid = Payment::didPayMonth($userID, $date);
+        if (!self::hasAttendance($userID, $date)) {
 
-        return self::insert([
-            'ATND_DATE' => $date,
-            'ATND_PAID' => ($isPaid) ? 1 : 0,
-            'ATND_USER_ID' => $userID,
-        ]);
+            $isPaid = Payment::didPayMonth($userID, $date);
+
+            return self::insert([
+                'ATND_DATE' => $date,
+                'ATND_PAID' => ($isPaid) ? 1 : 0,
+                'ATND_USER_ID' => $userID,
+            ]);
+        } else return 0;
     }
 
     public static function setPaid($userID, $startDate, $endDate)
@@ -72,5 +75,10 @@ class Attendance extends Model
     public static function getUnpaidDays($userID)
     {
         return DB::table('attendance')->where([['ATND_USER_ID', '=', $userID], ['ATND_PAID', '=',  0]])->selectRaw('id, DATE_FORMAT(ATND_DATE, "%d-%M") as date')->get();
+    }
+
+    public static function hasAttendance($userID, $date)
+    {
+        return  DB::table('attendance')->whereDate('ATND_DATE', $date)->where('ATND_USER_ID', $userID)->count();
     }
 }
