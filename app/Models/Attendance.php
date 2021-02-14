@@ -79,6 +79,6 @@ class Attendance extends Model
 
     public static function hasAttendance($userID, $date)
     {
-        return  DB::table('attendance')->whereDate('ATND_DATE', $date)->where('ATND_USER_ID', $userID)->count();
+        return  DB::table('attendance')->whereDate('ATND_DATE', $date)->where('ATND_USER_ID', $userID)->get()->count();
     }
 }
