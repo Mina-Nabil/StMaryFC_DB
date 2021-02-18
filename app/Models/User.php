@@ -85,8 +85,8 @@ class User extends Authenticatable
     public static function overviewQuery($from, $to)
     {
         return DB::table("app_users", "t1")->join("groups", "groups.id", '=', 'USER_GRUP_ID')->select("t1.*", 'groups.GRUP_NAME')
-                        ->selectRaw(" (SELECT SUM(PYMT_AMNT) from payments where PYMT_USER_ID = t1.id and PYMT_DATE > '{$from}' AND PYMT_DATE < '{$to}') as TotalPaid ")
-                        ->selectRaw(" (SELECT COUNT(id)    from attendance where ATND_USER_ID = t1.id and ATND_DATE > '{$from}' AND ATND_DATE < '{$to}') as A ")->toSql();
+                        ->selectRaw(" (SELECT SUM(PYMT_AMNT) from payments where PYMT_USER_ID = t1.id and PYMT_DATE => '{$from}' AND PYMT_DATE <= '{$to}') as TotalPaid ")
+                        ->selectRaw(" (SELECT COUNT(id)    from attendance where ATND_USER_ID = t1.id and ATND_DATE => '{$from}' AND ATND_DATE <= '{$to}') as A ")->toSql();
     }
 
 
