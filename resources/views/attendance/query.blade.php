@@ -23,7 +23,7 @@
                         </div>
                         <small class="text-danger">{{$errors->first('groupID')}}</small>
                     </div>
-                    @else 
+                    @elseif(isset($items)) 
                     <div class="form-group">
                         <label>User*</label>
                         <div class="input-group mb-3">

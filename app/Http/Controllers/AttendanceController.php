@@ -55,6 +55,24 @@ class AttendanceController extends Controller
         return view('attendance.query', $data);
     }
 
+    public function queryOverview()
+    {
+        $data['formTitle'] = "Overview Report";
+        $data['formURL'] = "overview/query";
+        $data['byGroup'] = false;
+        return view('attendance.query', $data);
+    }
+
+    public function overviewLoad(Request $request)
+    {
+        $request->validate([
+            "fromDate" => 'required',
+            "toDate" => 'required'
+        ]);
+        $this->initOverviewArray($request->fromDate, $request->toDate);
+        return view('attendance.show', $this->data);
+    }
+
     public function queryRes(Request $request)
     {
         $request->validate([
@@ -112,12 +130,33 @@ class AttendanceController extends Controller
         $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
-                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']], 
+                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']],
                 'GRUP_NAME',
                 ['verified' => ['att' => 'ATND_DATE', 'isVerified' => 'ATND_PAID']],
                 ['delJs'  =>  ['att' => 'id', 'func' => 'deleteAttendace']]
             ];
 
-        $this->data['deleteAttendanceURL'] = url('attendance/delete') ;
+        $this->data['deleteAttendanceURL'] = url('attendance/delete');
+    }
+
+    public function initOverviewArray($from, $to)
+    {
+        $this->data['items'] = User::overviewQuery($from, $to);
+        $this->data['title'] = "Overview Report";
+        $this->data['subTitle'] = "Check users overview";
+        $this->data['cols'] = ['#', 'Username', 'Class', "A", "Paid", "Born", 'Mob#', 'Comment'];
+        $this->data['atts'] =
+            [
+                ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
+                ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
+                'GRUP_NAME',
+                "A",
+                "P",
+                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
+                'USER_MOBN',
+                ['comment' => ['att' => 'USER_NOTE']]
+            ];
+
+        $this->data['deleteAttendanceURL'] = url('attendance/delete');
     }
 }

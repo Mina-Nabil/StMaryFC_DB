@@ -46,6 +46,8 @@ Route::get('attendance/add', "AttendanceController@newAttendance");
 Route::post('attendance/insert', "AttendanceController@insert");
 Route::post('attendance/take', "AttendanceController@takeAttendance");
 Route::get('attendance/delete/{id}','AttendanceController@deleteAttendance');
+Route::get('attendance/overview','AttendanceController@queryOverview');
+Route::post('overview/query','AttendanceController@overviewLoad');
 
 //Users routes
 Route::get("users/show/{type?}", 'UsersController@home');

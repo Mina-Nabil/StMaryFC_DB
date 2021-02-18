@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -61,12 +62,12 @@ class User extends Authenticatable
 
     public function monthlyAttendance()
     {
-        return $this->attendance()->whereRaw("MONTH(ATND_DATE) = MONTH(CURDATE())")->count();
+        return $this->attendance()->whereRaw("MONTH(ATND_DATE) = MONTH(CURDATE()) AND YEAR(ATND_DATE) = YEAR(ATND_DATE) ")->count();
     }
 
     public function monthlyPayment()
     {
-        return $this->payments()->whereRaw("MONTH(PYMT_DATE) = MONTH(CURDATE())")->sum('PYMT_AMNT');
+        return $this->payments()->whereRaw("MONTH(PYMT_DATE) = MONTH(CURDATE()) AND YEAR(ATND_DATE) = YEAR(ATND_DATE) ")->sum('PYMT_AMNT');
     }
 
     public function getLatestPayments($months = 1)
@@ -79,6 +80,13 @@ class User extends Authenticatable
     {
         return $this->attendance()->whereRaw(" ATND_DATE >= DATE_SUB(NOW(),  Interval {$months} Month) ")
             ->groupByRaw(" OVRV_MNTH ")->groupByRaw(" OVRV_YEAR ")->selectRaw(" MONTH(ATND_DATE) as OVRV_MNTH , YEAR(ATND_DATE) as OVRV_YEAR, COUNT(attendance.id) as OVRV_ATND ")->get();
+    }
+
+    public static function overviewQuery($from, $to)
+    {
+        return DB::table("app_users", "t1")->join("groups", "groups.id", '=', 'USER_GRUP_ID')->select("app_users.*", 'groups.GRUP_NAME')
+                                ->selectRaw(" (COUNT(id) from attendance where ATND_USER_ID = t1.id and ATND_DATE > {$from} AND ATND_DATE < {$to}) as A , 
+                                              (SUM(PYMT_AMNT) from payments where PYMT_USER_ID = t1.id and PYMT_DATE > {$from} AND PYMT_DATE < {$to}) as P ")->get();
     }
 
 
