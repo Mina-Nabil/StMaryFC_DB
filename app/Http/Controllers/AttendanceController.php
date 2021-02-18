@@ -151,7 +151,7 @@ class AttendanceController extends Controller
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
                 'GRUP_NAME',
                 "A",
-                "P",
+                "TotalPaid",
                  "USER_BDAY",
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
