@@ -152,7 +152,7 @@ class AttendanceController extends Controller
                 'GRUP_NAME',
                 "A",
                 "P",
-                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
+                 "USER_BDAY",
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
             ];
