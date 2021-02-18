@@ -142,7 +142,6 @@ class AttendanceController extends Controller
     public function initOverviewArray($from, $to)
     {
         $this->data['items'] = User::overviewQuery($from, $to);
-        dd($this->data['items']);
         $this->data['title'] = "Overview Report";
         $this->data['subTitle'] = "Check users overview";
         $this->data['cols'] = ['#', 'Username', 'Class', "A", "Paid", "Born", 'Mob#', 'Comment'];
