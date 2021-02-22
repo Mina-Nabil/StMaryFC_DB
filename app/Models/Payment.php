@@ -33,9 +33,12 @@ class Payment extends Model
         DB::transaction(function () use ($date, $userID, $amount, $note) {
 
             $startDate = (new DateTime($date))->format('Y-m-01');
-            DB::table('payments')->insert([
-                ["PYMT_DATE" => $startDate, "PYMT_AMNT" => $amount, "PYMT_USER_ID" => $userID, "PYMT_NOTE" => $note]
-            ]);
+            $payment = new Payment();
+            $payment->PYMT_DATE = $startDate;
+            $payment->PYMT_AMNT = $amount;
+            $payment->PYMT_USER_ID = $userID;
+            $payment->PYMT_NOTE = $note;
+            $payment->save();
         });
     }
 
