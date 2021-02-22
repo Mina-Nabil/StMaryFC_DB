@@ -216,7 +216,7 @@
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
                             <a style="font-family: 'Oswald'" href="{{url('users/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add App User</a>
-                            <a style="font-family: 'Oswald'" href="{{url('suppliers/trans/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add User Payment</a>
+                            <a style="font-family: 'Oswald'" href="{{url('payments/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Add User Payment</a>
                             <a style="font-family: 'Oswald'" href="{{url('attendance/add')}}" class="btn btn-dark d-none d-lg-block m-l-15"><i class="fa fa-plus-circle"></i> Manual Attendance
                             </a>
 
