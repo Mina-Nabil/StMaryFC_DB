@@ -191,7 +191,7 @@ class UsersController extends Controller
 
     private function initProfileArray($id, $overviewYear = null)
     {
-        $this->data['user'] = User::find($id);
+        $this->data['user'] = User::findOrFail($id);
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
         $this->data['groups'] = Group::all();
