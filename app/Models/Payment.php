@@ -12,7 +12,7 @@ class Payment extends Model
 {
     protected $dates = ['PYMT_DATE:d-m-Y'];
     protected $table = "payments";
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function user()
     {
