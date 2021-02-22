@@ -31,19 +31,19 @@
                     </div>
                     <div id=eventDiv style="display: none">
 
-                    <div class="form-group">
-                        <label>Event*</label>
-                        <div class="input-group mb-3">
-                            <select name=eventID class="select2 form-control custom-select" style="width: 100%; height:36px;"  required>
-                                <option value="" disabled selected>Pick From Available Events</option>
-                                @foreach($events as $event)
-                                <option value="{{ $event->id }}">{{$event->EVNT_NAME}} - {{$event->EVNT_DATE}}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-group">
+                            <label>Event*</label>
+                            <div class="input-group mb-3">
+                                <select name=eventID class="select2 form-control custom-select" style="width: 100%; height:36px;">
+                                    <option value="" disabled selected>Pick From Available Events</option>
+                                    @foreach($events as $event)
+                                    <option value="{{ $event->id }}">{{$event->EVNT_NAME}} - {{$event->EVNT_DATE}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <small class="text-danger">{{$errors->first('eventID')}}</small>
+                            <input name=return value=1 type="hidden">
                         </div>
-                        <small class="text-danger">{{$errors->first('eventID')}}</small>
-                        <input name=return value=1 type="hidden">
-                    </div>
                     </div>
 
                     <div id=normalDiv>
@@ -92,7 +92,6 @@
 
 @section('js_content')
 <script>
-
     function typeChanged(selectaya){
         typeID = selectaya.value;
         normalDiv = document.getElementById('normalDiv')
