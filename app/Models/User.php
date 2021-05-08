@@ -145,6 +145,7 @@ class User extends Authenticatable
         static::deleting(function ($user) { // before delete() method call this
             $user->attendance()->delete();
             $user->payments()->delete();
+            $user->images()->delete();
             // do the rest of the cleanup...
         });
     }
