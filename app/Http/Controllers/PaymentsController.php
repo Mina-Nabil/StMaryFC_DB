@@ -136,7 +136,7 @@ class PaymentsController extends Controller
         $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Delete'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']],
-            'PYMT_DATE',
+            ['date' => [ 'att' => 'PYMT_DATE', 'format' => 'M-Y']],
             'PYMT_AMNT',
             ['comment' => ['att' => 'PYMT_NOTE']],
             'created_at',
