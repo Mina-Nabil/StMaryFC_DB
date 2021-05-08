@@ -51,7 +51,7 @@ class PaymentsController extends Controller
             "toDate" => 'required'
         ]);
 
-        $isDate = $request->isDate ? 1 : 0;
+        $isDate = ($request->isDate=="on") ? 1 : 0;
 
         $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $isDate);
         return view('payments.show', $this->data);
