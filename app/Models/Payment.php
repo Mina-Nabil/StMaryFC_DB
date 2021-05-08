@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 class Payment extends Model
 {
-    protected $dates = ['PYMT_DATE:d-m-Y'];
+    protected $dates = ['PYMT_DATE:M-Y'];
     protected $table = "payments";
     public $timestamps = true;
 
