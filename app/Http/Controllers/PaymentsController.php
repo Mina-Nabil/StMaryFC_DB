@@ -123,7 +123,12 @@ class PaymentsController extends Controller
             $userTitle = "All Users";
         } else {
             $user = User::findOrFail($userID);
-            $userTitle = $user->USER_NAME . '\' Payments ';
+            if($isDate == 0){
+                $userTitle = "Showing Payments for " . $user->USER_NAME . " Filtered by Due Date ";
+            } else {
+                $userTitle = "Showing Payments for " . $user->USER_NAME . " Filtered by Creation Date ";
+            }
+            
         }
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
@@ -131,7 +136,7 @@ class PaymentsController extends Controller
         $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date','Delete'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']], 
-            'PYMT_DATE', 
+            ['date' => ['att' => 'PYMT_DATE', 'format' => 'M-Y']], 
             'PYMT_AMNT', 
             ['comment' => ['att' => 'PYMT_NOTE']],
             'created_at',
