@@ -143,6 +143,8 @@ class User extends Authenticatable
         parent::boot();
 
         static::deleting(function ($user) { // before delete() method call this
+            $user->USER_MAIN_IMGE = NULL;
+            $user->save();
             $user->attendance()->delete();
             $user->payments()->delete();
             $user->images()->delete();
