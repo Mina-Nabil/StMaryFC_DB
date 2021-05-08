@@ -51,7 +51,9 @@ class PaymentsController extends Controller
             "toDate" => 'required'
         ]);
 
-        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID);
+        $isDate = $request->isDate ? 1 : 0 ;
+
+        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $isDate);
         return view('payments.show', $this->data);
     }
 
@@ -105,11 +107,15 @@ class PaymentsController extends Controller
     //////data array
     protected $data;
 
-    private function initPaymentsArray($startDate, $endDate, $userID = 0)
+    private function initPaymentsArray($startDate, $endDate, $userID = 0, $isDate = 0)
     {
         $startDate = new DateTime($startDate);
         $endDate = new DateTime($endDate);
-        $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
+        if($isDate == 0){
+            $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
+        } else {
+            $paymentQuery = Payment::with('user')->whereBetween("created_at", [$startDate, $endDate]);
+        }
         if ($userID != 0)
             $paymentQuery = $paymentQuery->where('PYMT_USER_ID', $userID);
 

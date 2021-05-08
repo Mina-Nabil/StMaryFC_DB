@@ -25,6 +25,14 @@
                     </div>
 
                     <div class="form-group">
+                        <div class="bt-switch">
+                            <div>
+                                <input type="checkbox" data-size="large" data-on-color="info" data-off-color="success" data-on-text="Date" name="isDate" data-off-text="Due">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label>From</label>
                         <div class="input-group mb-3">
                             <input type="date" value="{{ now()->format('Y-m-01')}}" class="form-control" placeholder="Pick a date" name=fromDate required />
