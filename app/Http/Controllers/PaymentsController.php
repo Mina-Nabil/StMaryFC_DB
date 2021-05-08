@@ -51,7 +51,7 @@ class PaymentsController extends Controller
             "toDate" => 'required'
         ]);
 
-        $isDate = $request->isDate ? 1 : 0 ;
+        $isDate = $request->isDate ? 1 : 0;
 
         $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $isDate);
         return view('payments.show', $this->data);
@@ -94,7 +94,6 @@ class PaymentsController extends Controller
             if ($request->return)
                 return back();
         }
-
     }
 
     public function getUnpaidDays($userID)
@@ -111,7 +110,7 @@ class PaymentsController extends Controller
     {
         $startDate = new DateTime($startDate);
         $endDate = new DateTime($endDate);
-        if($isDate == 0){
+        if ($isDate == 0) {
             $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
         } else {
             $paymentQuery = Payment::with('user')->whereBetween("created_at", [$startDate, $endDate]);
@@ -120,24 +119,25 @@ class PaymentsController extends Controller
             $paymentQuery = $paymentQuery->where('PYMT_USER_ID', $userID);
 
         if ($userID == 0) {
-            $userTitle = "All Users";
+            $userName = "All Users";
         } else {
             $user = User::findOrFail($userID);
-            if($isDate == 0){
-                $userTitle = "Showing Payments for " . $user->USER_NAME . " Filtered by Due Date ";
-            } else {
-                $userTitle = "Showing Payments for " . $user->USER_NAME . " Filtered by Creation Date ";
-            }
-            
+            $userName = $user->USER_NAME;
+        }
+
+        if ($isDate == 0) {
+            $userTitle = "Showing Payments for " . $userName . " Filtered by Due Date ";
+        } else {
+            $userTitle = "Showing Payments for " . $userName . " Filtered by Creation Date ";
         }
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
-        $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date','Delete'];
+        $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Delete'];
         $this->data['atts'] = [
-            ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']], 
-            'PYMT_DATE', 
-            'PYMT_AMNT', 
+            ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']],
+            'PYMT_DATE',
+            'PYMT_AMNT',
             ['comment' => ['att' => 'PYMT_NOTE']],
             'created_at',
             ['del' => ['url' => 'payments/delete/', 'att' => 'id']]
