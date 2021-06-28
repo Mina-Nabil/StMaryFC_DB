@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Event;
 use App\Models\EventPayment;
 use App\Models\User;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -146,5 +147,50 @@ class EventsController extends Controller
         $event = Event::findOrFail($id);
         $event->deleteAll();
         return redirect('events/all');
+    }
+
+    public function queryPage()
+    {
+        $data['users'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
+        $data['formTitle'] = "Event Payments Report";
+        $data['formURL'] = "events/payments/report";
+        return view('events.query', $data);
+    }
+
+    public function queryRes(Request $request)
+    {
+        $request->validate([
+            "userID" => 'required',
+            "fromDate" => 'required',
+            "toDate" => 'required'
+        ]);
+
+        $from   = new DateTime($request->fromDate);
+        $to     = new DateTime($request->toDate);
+
+        $userID = $request->userID;
+
+        if ($userID == 0) {
+            $userName = "All Users";
+        } else {
+            $user = User::findOrFail($userID);
+            $userName = $user->USER_NAME;
+        }
+
+        $data['items'] =  EventPayment::report($from, $to, $request->userID);
+
+        $data['title'] =  "Payments Report -- Total: " . $data['items']->sum('EVPY_AMNT');
+        $data['subTitle'] = "Showing Payments for " . $userName . " From "  . $from->format('Y-F-d') . " to " . $to->format('Y-F-d');
+        $data['cols'] = ['User', 'Event', 'Amount', 'Date'];
+
+        $data['atts'] = [
+            ['foreignUrl' => ['events', 'EVPY_EVNT_ID', 'event', 'EVNT_NAME']],
+            ['foreignUrl' => ['users/profile', 'EVPY_USER_ID', 'user', 'USER_NAME']],
+            ['date' => [ 'att' => 'PYMT_DATE', 'format' => 'M-Y']],
+            'EVPY_AMNT',
+            'created_at',
+        ];
+
+        return view('events.show', $data);
     }
 }

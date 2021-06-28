@@ -170,6 +170,7 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{url('events/all')}}">Show</a></li>
                                 <li><a href="{{url('events/add')}}">Add</a></li>
+                                <li><a href="{{url('events/payments/report')}}">Report</a></li>
                             </ul>
                         </li>
 

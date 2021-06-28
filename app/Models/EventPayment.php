@@ -22,6 +22,26 @@ class EventPayment extends Model
         return $this->belongsTo('App\Models\User', "EVPY_USER_ID");
     }
 
+    public static function report(DateTime $from, DateTime $to, $user = 0)
+    {
+        $to = $to->format('Y-m-d 23:59:59');
+        $from = $from->format('Y-m-d 00:00:00');
+
+        $query = self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
+            ->leftJoin('events_attendance', function ($join) {
+                $join->on('EVAT_USER_ID', '=', 'app_users.id')->on('EVAT_EVNT_ID', '=', 'events.id');
+            })
+            ->whereBetween('created_at', [$from, $to])
+            ->select("EVNT_NAME", "EVAT_STTS", "USER_NAME", "event_payments.*");
+
+        if ($user > 0) {
+
+            $query = $query->where("EVPY_USER_ID", $user);
+        }
+
+        return $query->get();
+    }
+
     public static function getUserEventPayments($userID)
     {
         return self::join("app_users", "app_users.id", "=", "EVPY_USER_ID")->join("events", 'events.id', '=', 'EVPY_EVNT_ID')
@@ -46,11 +66,12 @@ class EventPayment extends Model
     public static function deletePayments($userID, $eventID)
     {
         $eventPayments = self::where([['EVPY_USER_ID', $userID], ['EVPY_EVNT_ID', $eventID]])->get();
-        foreach($eventPayments as $payment)
+        foreach ($eventPayments as $payment)
             $payment->refund();
     }
 
-    public function refund() {
+    public function refund()
+    {
 
         $user = User::findOrFail($this->EVPY_USER_ID);
         $event = Event::findOrFail($this->EVPY_EVNT_ID);
