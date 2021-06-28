@@ -112,7 +112,7 @@ class PaymentsController extends Controller
         $endDate = new DateTime($endDate);
 
      
-        $endDate = $endDate->format('Y-m-d 23:59:59');
+        $endDate = $endDate->setTime(23, 59, 59);
 
         if ($isDate == 0) {
             $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
@@ -136,7 +136,7 @@ class PaymentsController extends Controller
         }
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
-        $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate;
+        $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
         $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Delete'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']],
