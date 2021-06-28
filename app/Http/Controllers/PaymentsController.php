@@ -115,9 +115,9 @@ class PaymentsController extends Controller
         $endDate = $endDate->setTime(23, 59, 59);
 
         if ($isDate == 0) {
-            $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
+            $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate->format('Y-m-d H:i:s')]);
         } else {
-            $paymentQuery = Payment::with('user')->whereBetween("created_at", [$startDate, $endDate]);
+            $paymentQuery = Payment::with('user')->whereBetween("created_at", [$startDate, $endDate->format('Y-m-d H:i:s')]);
         }
         if ($userID != 0)
             $paymentQuery = $paymentQuery->where('PYMT_USER_ID', $userID);
