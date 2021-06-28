@@ -110,6 +110,10 @@ class PaymentsController extends Controller
     {
         $startDate = new DateTime($startDate);
         $endDate = new DateTime($endDate);
+
+     
+        $endDate = $endDate->format('Y-m-d 23:59:59');
+
         if ($isDate == 0) {
             $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
         } else {
