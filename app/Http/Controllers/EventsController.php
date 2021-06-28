@@ -186,7 +186,6 @@ class EventsController extends Controller
         $data['atts'] = [
             ['foreignUrl' => ['events', 'EVPY_EVNT_ID', 'event', 'EVNT_NAME']],
             ['foreignUrl' => ['users/profile', 'EVPY_USER_ID', 'user', 'USER_NAME']],
-            ['date' => [ 'att' => 'PYMT_DATE', 'format' => 'M-Y']],
             'EVPY_AMNT',
             'created_at',
         ];
