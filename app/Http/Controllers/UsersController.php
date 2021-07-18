@@ -137,6 +137,13 @@ class UsersController extends Controller
     }
 
 
+    public function sendReminder($id)
+    {
+        $user = User::find($id);
+        Payment::sendPaymentReminderSMS($user->USER_NAME, $user->USER_MOBN);
+        echo 1;
+    }
+
     public function delete($id)
     {
         $user = User::find($id);
@@ -214,6 +221,7 @@ class UsersController extends Controller
             ];
 
         $this->data['attendanceFormURL'] = url('attendance/take');
+        $this->data['sendReminderURL'] = url('users/send/reminder/') . $id;
 
         //Images array
         $this->data['imageFormURL'] = url('users/add/image');

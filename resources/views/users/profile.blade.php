@@ -3,6 +3,45 @@
 
 @section('content')
 
+<script>
+function confirmReminder(){
+    Swal.fire({
+        text: "Are you sure you want to send Payment Reminder?",
+        icon: "warning",
+        showCancelButton: true,
+        }).then((isConfirm) => {
+    if(isConfirm.value){
+            sendPaymentReminder();
+        }
+    });
+}
+
+function sendPaymentReminder(){
+    
+    var http = new XMLHttpRequest();
+    var url = "{{$sendReminderURL}}" ;
+ 
+    http.open('GET', url);
+
+    http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200 && this.responseText=="1") {
+        Swal.fire({
+        text: "Reminder Sent to Parent Mobile Number",
+        icon: "success",
+        });
+    } else {
+        Swal.fire({
+        text: "Oops Something wrong.. Please try again",
+        title: "Error",
+        icon: "error",
+        }); 
+    }
+    };
+    http.send();
+}
+
+</script>
+
 <div class="row">
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
@@ -68,6 +107,13 @@
                             <div class="col-12 b-r">
                                 <strong>Note</strong>
                                 <p class="text-muted">{{$user->USER_NOTE ?? ''}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class=row>
+                            <div class="col-12 b-r">
+                                <strong>Send Payment Reminder</strong>
+                                <button type="button" onclick="confirmReminder()" class="btn btn-warning mr-2">Send Payment Reminder</button>
                             </div>
                         </div>
                         <hr>

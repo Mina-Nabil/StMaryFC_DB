@@ -59,7 +59,7 @@ class EventPayment extends Model
         $payment->EVPY_AMNT = $amount;
         $user = User::findOrFail($userID);
         $event = Event::findOrFail($eventID);
-        Payment::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, $event->EVNT_NAME);
+        Payment::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $amount, $event->EVNT_NAME);
         return $payment->save();
     }
 
@@ -75,7 +75,7 @@ class EventPayment extends Model
 
         $user = User::findOrFail($this->EVPY_USER_ID);
         $event = Event::findOrFail($this->EVPY_EVNT_ID);
-        Payment::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->EVPY_AMNT, $event->EVNT_NAME, true);
+        Payment::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $this->EVPY_AMNT, $event->EVNT_NAME, true);
         return $this->delete();
     }
 }

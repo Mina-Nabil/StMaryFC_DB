@@ -61,7 +61,7 @@ class Payment extends Model
                 $endDate =  (new DateTime($date))->format('Y-m-t');
                 Attendance::setPaid($id, $startDate, $endDate);
                 $user = User::findOrFail($id);
-                self::sendSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
+                self::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
             });
         } catch (Exception $e) {
             return false;
@@ -72,11 +72,11 @@ class Payment extends Model
     public function refund()
     {
         $user = User::findOrFail($this->PYMT_USER_ID);
-        self::sendSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
+        self::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
         return $this->delete();
     }
 
-    public static function sendSMS($name, $mob, $amount, $month, $refund = false)
+    public static function sendPaymentSMS($name, $mob, $amount, $month, $refund = false)
     {
         if ($refund) $message = "[REFUND] \n";
         else
@@ -94,6 +94,22 @@ class Payment extends Model
             'password' => 'mina4ever',
             'sendername' => 'Academy',
             'mobiles' => $mob,
+            'message' => $message,
+        ]);
+    }
+
+    public static function sendPaymentReminderSMS($kidName, $parentMob)
+    {
+        $message = "Dear Parent,
+        We kindly remind you to revise 
+       {$kidName}'s balance with the Finance team.
+       
+       Thank you";
+        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+            'username' => 'mina9492@hotmail.com',
+            'password' => 'mina4ever',
+            'sendername' => 'Academy',
+            'mobiles' => $parentMob,
             'message' => $message,
         ]);
     }

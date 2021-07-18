@@ -63,6 +63,7 @@ Route::post("users/add/image", 'UsersController@attachImage');
 Route::get("users/setimage/{userID}/{imageID}", 'UsersController@setMainImage');
 Route::get("users/delete/{id}", 'UsersController@delete');
 Route::get("users/delete/image/{id}", 'UsersController@deleteImage');
+Route::get("users/send/reminder/{id}", 'UsersController@sendReminder');
 
 //Groups routes
 Route::get('groups/show', 'GroupsController@home');
