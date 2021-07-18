@@ -112,7 +112,6 @@ function sendPaymentReminder(){
                         <hr>
                         <div class=row>
                             <div class="col-12 b-r">
-                                <strong>Send Payment Reminder</strong>
                                 <button type="button" onclick="confirmReminder()" class="btn btn-warning mr-2">Send Payment Reminder</button>
                             </div>
                         </div>
