@@ -221,7 +221,7 @@ class UsersController extends Controller
             ];
 
         $this->data['attendanceFormURL'] = url('attendance/take');
-        $this->data['sendReminderURL'] = url('users/send/reminder/') . $id;
+        $this->data['sendReminderURL'] = url('users/send/reminder') . '/' . $id;
 
         //Images array
         $this->data['imageFormURL'] = url('users/add/image');
