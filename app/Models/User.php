@@ -120,6 +120,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'USER_BDAY' => 'datetime:Y-m-d',
+        'USER_BDAY' => 'datetime:Y-m-d',
     ];
 
     /**
