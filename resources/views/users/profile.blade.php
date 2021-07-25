@@ -116,7 +116,7 @@ function sendPaymentReminder(){
                             </div>
                             <div class="col-12 b-r">
                                 <strong>Latest Reminder</strong>
-                                <p class="text-muted">{{$user->USER_LTST_RMDR->format('d-M-Y H:i') ?? ''}}</p>
+                                <p class="text-muted">{{$user->USER_LTST_RMDR ? $user->USER_LTST_RMDR->format('d-M-Y H:i') : ''}}</p>
                             </div>
                         </div>
                         <hr>

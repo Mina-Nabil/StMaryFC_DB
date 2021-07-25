@@ -91,7 +91,7 @@ class User extends Authenticatable
     }
 
     public function setReminderDate(DateTime $date=null){
-        $this->USER_LTST_RMDR = $date->format("Y-m-d H:i:s") ?? date("Y-m-d H:i:s") ;
+        $this->USER_LTST_RMDR = $date ? $date->format("Y-m-d H:i:s") : date("Y-m-d H:i:s") ;
         $this->save();
     }
 
