@@ -140,6 +140,7 @@ class UsersController extends Controller
     public function sendReminder($id)
     {
         $user = User::find($id);
+        $user->setReminderDate();
         Payment::sendPaymentReminderSMS($user->USER_NAME, $user->USER_MOBN);
         echo 1;
     }
