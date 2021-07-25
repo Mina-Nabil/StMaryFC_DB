@@ -119,7 +119,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'USER_BDAY' => 'datetime:Y-m-d',
+        'USER_LTST_RMDR' => 'datetime:Y-m-d',
         'USER_BDAY' => 'datetime:Y-m-d',
     ];
 
