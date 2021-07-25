@@ -181,13 +181,14 @@ class EventsController extends Controller
 
         $data['title'] =  "Payments Report -- Total: " . $data['items']->sum('EVPY_AMNT');
         $data['subTitle'] = "Showing Payments for " . $userName . " From "  . $from->format('Y-F-d') . " to " . $to->format('Y-F-d');
-        $data['cols'] = ['User', 'Event', 'Amount', 'Date'];
+        $data['cols'] = ['User', 'Event', 'Amount', 'Date', 'Collector'];
 
         $data['atts'] = [
             ['foreignUrl' => ['events', 'EVPY_EVNT_ID', 'event', 'EVNT_NAME']],
             ['foreignUrl' => ['users/profile', 'EVPY_USER_ID', 'user', 'USER_NAME']],
             'EVPY_AMNT',
             'created_at',
+            ['foreignUrl' => ['users/profile', 'EVPY_CLCT_ID', 'collector', 'USER_NAME']],
         ];
 
         return view('events.show', $data);

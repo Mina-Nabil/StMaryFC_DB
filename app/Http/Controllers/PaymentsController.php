@@ -137,13 +137,14 @@ class PaymentsController extends Controller
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
-        $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Delete'];
+        $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Collector', 'Delete'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']],
             ['date' => [ 'att' => 'PYMT_DATE', 'format' => 'M-Y']],
             'PYMT_AMNT',
             ['comment' => ['att' => 'PYMT_NOTE']],
             'created_at',
+            ['foreignUrl' => ['users/profile', 'PYMT_CLCT_ID', 'collector', 'USER_NAME']],
             ['del' => ['url' => 'payments/delete/', 'att' => 'id']]
         ];
     }

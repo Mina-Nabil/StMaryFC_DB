@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -17,6 +18,11 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', "PYMT_USER_ID");
+    }
+
+    public function collector()
+    {
+        return $this->belongsTo('App\Models\User', "PYMT_CLCT_ID");
     }
 
     public static function getPaymentsLite($from, $to, $user = 0)
@@ -37,6 +43,7 @@ class Payment extends Model
             $payment->PYMT_DATE = $startDate;
             $payment->PYMT_AMNT = $amount;
             $payment->PYMT_USER_ID = $userID;
+            $payment->PYMT_CLCT_ID = Auth::user()->id;
             $payment->PYMT_NOTE = $note;
             $payment->save();
         });
@@ -101,10 +108,13 @@ class Payment extends Model
     public static function sendPaymentReminderSMS($kidName, $parentMob)
     {
         $message = "Dear Parent,
-        We kindly remind you to revise 
-       {$kidName}'s balance with the Finance team.
+        We kindly remind you to revise {$kidName} balance with the Finance team.
+       
+       Please contact Coach Abanob:
+       Whatsapp 01211196104
        
        Thank you";
+
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => 'mina4ever',

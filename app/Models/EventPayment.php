@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class EventPayment extends Model
 {
@@ -20,6 +21,11 @@ class EventPayment extends Model
     function user()
     {
         return $this->belongsTo('App\Models\User', "EVPY_USER_ID");
+    }
+
+    function collector()
+    {
+        return $this->belongsTo('App\Models\User', "EVPY_CLCT_ID");
     }
 
     public static function report(DateTime $from, DateTime $to, $user = 0)
@@ -55,6 +61,7 @@ class EventPayment extends Model
     {
         $payment = new EventPayment();
         $payment->EVPY_USER_ID = $userID;
+        $payment->EVPY_CLCT_ID = Auth::user()->id;
         $payment->EVPY_EVNT_ID = $eventID;
         $payment->EVPY_AMNT = $amount;
         $user = User::findOrFail($userID);
