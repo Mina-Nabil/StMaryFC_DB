@@ -124,7 +124,6 @@ function sendPaymentReminder(){
                     </div>
                 </div>
 
-
                 <div class="tab-pane" id="overview" role="tabpanel">
                     <div class="card-body">
                         <h4 class="card-title">Years Overview</h4>
