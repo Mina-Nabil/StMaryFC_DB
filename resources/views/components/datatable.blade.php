@@ -98,7 +98,7 @@
                         <td>{{ $item->{$att['urlOrStatic']['static']}  }}</td>
                         @endisset
                         @elseif(array_key_exists('foreignUrl', $att))
-                        <td><a href="{{ url($att['foreignUrl'][0] . '/' . $item->{$att['foreignUrl']['1']}) }}">{{ $item->{$att['foreignUrl'][2]}->{$att['foreignUrl'][3]}  }}</a></td>
+                        <td><a href="{{ url($att['foreignUrl'][0] . '/' . $item->{$att['foreignUrl']['1']}) }}">{{ $item->{$att['foreignUrl'][2]}->{$att['foreignUrl'][3]} ?? '' }}</a></td>
                         @elseif(array_key_exists('assetImg', $att))
                         <td>
                             <img src="{{ asset( 'storage/'. $item->{$att['assetImg']['filename']}) }}" height="36" style="width: auto" />
