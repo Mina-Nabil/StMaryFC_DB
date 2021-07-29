@@ -86,42 +86,42 @@ class Payment extends Model
 
     public static function sendPaymentSMS($name, $mob, $amount, $month, $refund = false)
     {
-        if ($refund) $message = "[REFUND] \n";
-        else
-            $message = "St. Mary Rehab Football Academy \n";
-        $message .= "{$name} \n";
-        if ($refund)
-            $message .= "Refund {$amount} LE \n";
-        else
-            $message .= "Payment Received {$amount} LE \n";
-        $message .= "{$month}
+        // if ($refund) $message = "[REFUND] \n";
+        // else
+        //     $message = "St. Mary Rehab Football Academy \n";
+        // $message .= "{$name} \n";
+        // if ($refund)
+        //     $message .= "Refund {$amount} LE \n";
+        // else
+        //     $message .= "Payment Received {$amount} LE \n";
+        // $message .= "{$month}
         
-        Thank you";
-        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $mob,
-            'message' => $message,
-        ]);
+        // Thank you";
+        // return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+        //     'username' => 'mina9492@hotmail.com',
+        //     'password' => Config::get('services.sms.key'),
+        //     'sendername' => 'Academy',
+        //     'mobiles' => $mob,
+        //     'message' => $message,
+        // ]);
     }
 
     public static function sendPaymentReminderSMS($kidName, $parentMob)
     {
-        $message = "Dear Parent,
-        We kindly remind you to revise {$kidName} balance with the Finance team.
+    //     $message = "Dear Parent,
+    //     We kindly remind you to revise {$kidName} balance with the Finance team.
        
-       Please contact Coach Abanob:
-       Whatsapp 01211196104
+    //    Please contact Coach Abanob:
+    //    Whatsapp 01211196104
        
-       Thank you";
+    //    Thank you";
 
-        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $parentMob,
-            'message' => $message,
-        ]);
+    //     return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+    //         'username' => 'mina9492@hotmail.com',
+    //         'password' => Config::get('services.sms.key'),
+    //         'sendername' => 'Academy',
+    //         'mobiles' => $parentMob,
+    //         'message' => $message,
+    //     ]);
     }
 }
