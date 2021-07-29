@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -98,7 +99,7 @@ class Payment extends Model
         Thank you";
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
-            'password' => 'mina4ever',
+            'password' => Config::get('services.sms.key'),
             'sendername' => 'Academy',
             'mobiles' => $mob,
             'message' => $message,
@@ -117,7 +118,7 @@ class Payment extends Model
 
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
-            'password' => 'mina4ever',
+            'password' => Config::get('services.sms.key'),
             'sendername' => 'Academy',
             'mobiles' => $parentMob,
             'message' => $message,
