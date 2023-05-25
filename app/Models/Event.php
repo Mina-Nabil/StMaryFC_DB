@@ -62,6 +62,7 @@ class Event extends Model
                 $event->users()->attach($userID, ['EVAT_STTS' => $status]);
                 return 1;
             } catch (Exception $e) {
+                report($e);
                 return 0;
             }
         else
@@ -70,6 +71,7 @@ class Event extends Model
                     "EVAT_STTS" => $status
                 ]);
             } catch (Exception $e) {
+                report($e);
                 return 0;
             }
     }

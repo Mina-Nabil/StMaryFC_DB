@@ -8,15 +8,18 @@ use App\Models\EventPayment;
 use App\Models\EventsAttendance;
 use App\Models\Group;
 use App\Models\Payment;
+use App\Models\PlayersCatogory;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -34,6 +37,11 @@ class ApiController extends Controller
         return $this->getApiMessage(true, Group::withCount("users as usersCount")->get());
     }
 
+    public function getCategories()
+    {
+        return $this->getApiMessage(true, PlayersCatogory::all());
+    }
+
     public function getUsertypes()
     {
         return $this->getApiMessage(true, UserType::all());
@@ -41,7 +49,7 @@ class ApiController extends Controller
 
     public function getUserByID($userID)
     {
-        $user = User::with(['group', 'type', 'mainImage'])->find($userID);
+        $user = User::with(['group', 'type', 'mainImage', 'player_category'])->find($userID);
         if ($user) {
             $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
             return $this->getApiMessage(true, $user);
@@ -282,6 +290,7 @@ class ApiController extends Controller
             "name" => ["required", Rule::unique('app_users', "USER_NAME")->ignore($user->USER_NAME, "USER_NAME")],
             "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
             "group" => "required|exists:groups,id",
+            "player_category" => "required|exists:players_categories,id",
             "birthDate" => "nullable|date",
         ]);
         if ($validation === true) {
@@ -293,6 +302,7 @@ class ApiController extends Controller
             $user->USER_CODE = $request->code;
             $user->USER_MOBN = $request->mobn;
             $user->USER_GRUP_ID = $request->group;
+            $user->players_category_id = $request->player_category;
 
             $user->save();
             if ($request->hasFile('photo')) {
@@ -309,7 +319,7 @@ class ApiController extends Controller
             }
 
             if ($user)
-                return $this->getApiMessage(true, $user->load(['group', 'type', 'mainImage']));
+                return $this->getApiMessage(true, $user->load(['group', 'type', 'mainImage', 'player_category']));
             else
                 return $this->getApiMessage(false, ['error' => 'User Modification Failed']);
         }
@@ -382,7 +392,7 @@ class ApiController extends Controller
             "userID" => "required",
         ]);
 
-        $user = User::findOrFail($request->userID);
+        $user = User::with('player_category')->findOrFail($request->userID);
         $payments =  $user->getLatestPayments($request->months);
         $attendance = $user->getOverviewAttendance($request->months);
 
@@ -394,11 +404,12 @@ class ApiController extends Controller
             ]];
         });
 
-        $attendance = $attendance->mapWithKeys(function ($row) {
+        $attendance = $attendance->mapWithKeys(function ($row) use ($user) {
             return [$row->OVRV_YEAR * 100 + $row->OVRV_MNTH  => [
                 "Month" => $this->getMonthName($row->OVRV_MNTH),
                 "Year" => $row->OVRV_YEAR,
-                "A" => $row->OVRV_ATND
+                "A" => $row->OVRV_ATND,
+                "D" => $user->player_category->getDue($row->OVRV_ATND)
             ]];
         });
 
@@ -411,7 +422,15 @@ class ApiController extends Controller
                 $merged[$key] = $row;
         }
         krsort($merged, SORT_NUMERIC);
+        Log::info($merged);
         return $this->getApiMessage(true, $merged);
+    }
+
+    public function getAttendanceDetails($id, $month, $year)
+    {
+        $month = new Carbon($year . '-' . $month . '-01');
+        $attendance = Attendance::getAttendance($month, $month->format('Y-m-t'), $id);
+        return $this->getApiMessage(true, $attendance);
     }
 
     public function getUserPayments($id)
@@ -521,7 +540,7 @@ class ApiController extends Controller
 
     public function getCurrentUser(Request $request)
     {
-        $user = $request->user()->load('group', 'type', 'mainImage');
+        $user = $request->user()->load('group', 'type', 'mainImage', 'player_category');
         $user->full_image_url =  ($user->mainImage) ? asset('storage/' . $user->mainImage->USIM_URL) : '';
 
         return $this->getApiMessage(true, $user);

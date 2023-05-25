@@ -126,7 +126,9 @@ class AttendanceController extends Controller
         else
             $this->data['items'] = Attendance::getAttendance($from, $to);
         $this->data['title'] = "Users Attendance";
-        $this->data['subTitle'] = "Check users attendance";
+        $totalNo = $this->data['items']->count();
+        $paidNo = $this->data['items']->sum('ATND_PAID');
+        $this->data['subTitle'] = "Attendance Paid {$paidNo} / {$totalNo}";
         $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
@@ -143,7 +145,9 @@ class AttendanceController extends Controller
     {
         $this->data['items'] = User::overviewQuery($from, $to);
         $this->data['title'] = "Overview Report";
-        $this->data['subTitle'] = "Check users overview";
+        $totalNo = $this->data['items']->count();
+        $paidNo = $this->data['items']->filter(fn ($u) => $u->A > 0)->count();
+        $this->data['subTitle'] = "Attendance total {$paidNo} / {$totalNo}";
         $this->data['cols'] = ['#', 'Username', 'Class', "A", "Paid", "Born", 'Mob#', 'Comment'];
         $this->data['atts'] =
             [

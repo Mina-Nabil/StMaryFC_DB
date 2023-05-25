@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Group;
 use App\Models\Payment;
+use App\Models\PlayersCatogory;
 use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserType;
@@ -78,7 +79,6 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
-
         $request->validate([
             'id' => 'required'
         ]);
@@ -203,6 +203,7 @@ class UsersController extends Controller
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
         $this->data['groups'] = Group::all();
+        $this->data['categories'] = PlayersCatogory::all();
         $this->data['years'] = $this->data['user']->getAttendedYears();
         $this->data['formTitle'] = "Add New User";
         $this->data['formURL'] = "users/update";

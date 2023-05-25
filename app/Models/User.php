@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Payment', "PYMT_USER_ID");
     }
 
+    public function player_category()
+    {
+        return $this->belongsTo(PlayersCatogory::class, 'players_category_id');
+    }
+
     public function eventPayments()
     {
         return $this->hasMany('App\Models\EventPayment', "EVPY_USER_ID");

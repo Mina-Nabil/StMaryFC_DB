@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//catgs routes
+Route::get('users/categories', [CategoriesController::class, 'index']);
+Route::post('users/categories', [CategoriesController::class, 'manage']);
+Route::post('users/categories/details', [CategoriesController::class, 'setDetails']);
+Route::get('users/categories/{id}', [CategoriesController::class, 'show']);
+Route::post('users/categories/{id}', [CategoriesController::class, 'manage']);
+Route::get('users/categories/{id}/delete', [CategoriesController::class, 'delete']);
+
 //events routes
 Route::get('events/all', "EventsController@all");
 Route::get('events/add', "EventsController@add");
@@ -23,9 +32,9 @@ Route::post('events/update', "EventsController@update");
 Route::get('events/delete/{id}', "EventsController@delete");
 Route::post('events/attach', "EventsController@attachUser");
 Route::post('events/detach', "EventsController@detachUser");
-Route::get('events/payments/report','EventsController@queryPage');
-Route::post('events/payments/report','EventsController@queryRes');
-Route::post('events/payments/delete','EventsController@deletePayments');
+Route::get('events/payments/report', 'EventsController@queryPage');
+Route::post('events/payments/report', 'EventsController@queryRes');
+Route::post('events/payments/delete', 'EventsController@deletePayments');
 
 
 //Payments routes
@@ -35,7 +44,7 @@ Route::get('payments/query', "PaymentsController@queryPage");
 Route::post('payments/query', "PaymentsController@queryRes");
 Route::get('payments/add', "PaymentsController@addPayment");
 Route::post('payments/insert', "PaymentsController@insert");
-Route::get('payments/delete/{id}','PaymentsController@delete');
+Route::get('payments/delete/{id}', 'PaymentsController@delete');
 Route::get('payments/get/unpaid/{userID}', 'PaymentsController@getUnpaidDays');
 
 //Attendance routes
@@ -47,9 +56,9 @@ Route::post('attendance/query', "AttendanceController@queryRes");
 Route::get('attendance/add', "AttendanceController@newAttendance");
 Route::post('attendance/insert', "AttendanceController@insert");
 Route::post('attendance/take', "AttendanceController@takeAttendance");
-Route::get('attendance/delete/{id}','AttendanceController@deleteAttendance');
-Route::get('attendance/overview','AttendanceController@queryOverview');
-Route::post('overview/query','AttendanceController@overviewLoad');
+Route::get('attendance/delete/{id}', 'AttendanceController@deleteAttendance');
+Route::get('attendance/overview', 'AttendanceController@queryOverview');
+Route::post('overview/query', 'AttendanceController@overviewLoad');
 
 //Users routes
 Route::get("users/show/{type?}", 'UsersController@home');

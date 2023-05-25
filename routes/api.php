@@ -19,6 +19,7 @@ Route::post('/login', 'ApiController@login');
 //attendance
 Route::middleware('auth:sanctum')->post('/take/attendance', 'ApiController@takeAttendance');
 Route::middleware('auth:sanctum')->post('/take/bulk/attendance', 'ApiController@takeBulkAttendance');
+Route::middleware('auth:sanctum')->get('/attendance/details/{id}/{year}/{month}', 'ApiController@getAttendanceDetails');
 
 
 //users&search
@@ -46,6 +47,9 @@ Route::middleware('auth:sanctum')->post('/add/group', 'ApiController@addGroup');
 Route::middleware('auth:sanctum')->get('/groups', 'ApiController@getGroups');
 Route::middleware('auth:sanctum')->post('/del/group', 'ApiController@delGroup');
 Route::middleware('auth:sanctum')->post('/toggle/group', 'ApiController@toggleGroup');
+
+//categories
+Route::middleware('auth:sanctum')->get('/categories', 'ApiController@getCategories');
 
 //events
 Route::middleware('auth:sanctum')->get('/events', 'ApiController@getEvents');

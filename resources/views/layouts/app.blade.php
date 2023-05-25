@@ -181,6 +181,7 @@
                                 <li><a href="{{url('users/show/3')}}">Coaches</a></li>
                                 <li><a href="{{url('users/show/2')}}">Players</a></li>
                                 <li><a href="{{url('users/add')}}">Add New User</a></li>
+                                <li><a href="{{url('users/categories')}}">Categories</a></li>
                             </ul>
                         </li>
 
