@@ -37,7 +37,7 @@ class UsersController extends Controller
             "code" => "required|unique:app_users,USER_CODE",
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
-            "catg" => "required|exists:player_categories,id",
+            "catg" => "required|exists:players_categories,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1,3|nullable",
             "password" => "required_if:type,1,3|nullable",
@@ -92,7 +92,7 @@ class UsersController extends Controller
             "code" => ["required", Rule::unique('app_users', "USER_CODE")->ignore($user->USER_CODE, "USER_CODE")],
             "type" => "required|exists:app_user_types,id",
             "group" => "required|exists:groups,id",
-            "catg" => "required|exists:player_categories,id",
+            "catg" => "required|exists:players_categories,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1,3"
         ]);
