@@ -181,7 +181,7 @@ class EventsController extends Controller
 
         $data['title'] =  "Payments Report -- Total: " . $data['items']->sum('EVPY_AMNT');
         $data['subTitle'] = "Showing Payments for " . $userName . " From "  . $from->format('Y-F-d') . " to " . $to->format('Y-F-d');
-        $data['cols'] = ['User', 'Event', 'Amount', 'Date', 'Collector'];
+        $data['cols'] = ['Event', 'User', 'Amount', 'Date', 'Collector'];
 
         $data['atts'] = [
             ['foreignUrl' => ['events', 'EVPY_EVNT_ID', 'event', 'EVNT_NAME']],
