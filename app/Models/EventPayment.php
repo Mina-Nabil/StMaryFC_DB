@@ -64,9 +64,6 @@ class EventPayment extends Model
         $payment->EVPY_CLCT_ID = Auth::user()->id;
         $payment->EVPY_EVNT_ID = $eventID;
         $payment->EVPY_AMNT = $amount;
-        $user = User::findOrFail($userID);
-        $event = Event::findOrFail($eventID);
-        Payment::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $amount, $event->EVNT_NAME);
         return $payment->save();
     }
 
@@ -79,10 +76,10 @@ class EventPayment extends Model
 
     public function refund()
     {
-
+        /** @var User */
         $user = User::findOrFail($this->EVPY_USER_ID);
         $event = Event::findOrFail($this->EVPY_EVNT_ID);
-        Payment::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $this->EVPY_AMNT, $event->EVNT_NAME, true);
+        $user->addToBalance($this->EVPY_AMNT, "( $event->EVNT_NAME) Refund");
         return $this->delete();
     }
 }

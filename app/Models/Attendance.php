@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 
@@ -13,11 +14,6 @@ class Attendance extends Model
     public $timestamps = false;
 
     protected $dates = ['ATND_DATE'];
-
-    public function user()
-    {
-        return $this->belongsTo("App\Models\User", "ATND_USER_ID");
-    }
 
     public static function getAttendance($from, $to, $user = 0, $group = 0)
     {
@@ -35,7 +31,6 @@ class Attendance extends Model
 
     public static function getAttendanceLite($from, $to, $user = 0)
     {
-
         $query = DB::table('attendance')->whereBetween('ATND_DATE', [$from, $to]);
         if ($user != 0) {
             $query = $query->where('ATND_USER_ID', $user);
@@ -80,5 +75,11 @@ class Attendance extends Model
     public static function hasAttendance($userID, $date)
     {
         return  DB::table('attendance')->whereDate('ATND_DATE', $date)->where('ATND_USER_ID', $userID)->get()->count();
+    }
+
+    ///relations
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo("App\Models\User", "ATND_USER_ID");
     }
 }

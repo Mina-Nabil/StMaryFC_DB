@@ -11,17 +11,15 @@
                     @csrf
 
                     <div class="form-group">
-                        <label>User*</label>
+                        <label>Group*</label>
                         <div class="input-group mb-3">
-                            <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                <option value="" disabled >Pick From Registered Users</option>
-                                <option value="0" selected>All Users</option>
-                                @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{$user->USER_NAME}}</option>
+                            <select name=groupID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
+                                @foreach($groups as $group)
+                                <option value="{{ $group->id }}">{{$group->GRUP_NAME}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <small class="text-danger">{{$errors->first('userID')}}</small>
+                        <small class="text-danger">{{$errors->first('groupID')}}</small>
                     </div>
 
                     <div class="form-group">
@@ -39,6 +37,7 @@
                         </div>
                         <small class="text-danger">{{$errors->first('toDate')}}</small>
                     </div>
+
 
                     <div class="form-group">
                         <div class="bt-switch">

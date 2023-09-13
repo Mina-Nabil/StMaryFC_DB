@@ -12,8 +12,8 @@
                     <label>Payment Type</label>
                     <div class="input-group mb-3">
                         <select class="form-control select m-b-10 " style="width: 100%" name=type id=typeSel onchange="typeChanged(typeSel)">
-                            <option value="1">Monthly Payment</option>
-                            <option value="2">Event Payment</option>
+                            <option value="1">Balance Payment</option>
+                            <option value="2">Event Registration</option>
                         </select>
                     </div>
 
@@ -43,16 +43,6 @@
                             </div>
                             <small class="text-danger">{{$errors->first('eventID')}}</small>
                             <input name=return value=1 type="hidden">
-                        </div>
-                    </div>
-
-                    <div id=normalDiv>
-                        <div class="form-group">
-                            <label>Payment For</label>
-                            <div class="input-group mb-3">
-                                <input type="month" value="{{ now()->format('Y-m')}}" class="form-control" placeholder="Pick a date" name=date required />
-                            </div>
-                            <small class="text-danger">{{$errors->first('date')}}</small>
                         </div>
                     </div>
 
@@ -94,46 +84,14 @@
 <script>
     function typeChanged(selectaya){
         typeID = selectaya.value;
-        normalDiv = document.getElementById('normalDiv')
         eventDiv = document.getElementById('eventDiv')
         if(typeID==1){
-
             eventDiv.style="display:none";
-            normalDiv.style="display:block";
-
         }else if(typeID==2){
-
             eventDiv.style="display:block";
-            normalDiv.style="display:none";
         }
     }
 
-    //     function getDueDays(callerID) {
-//     userID = callerID.options[callerID.selectedIndex].value;
-//     var http = new XMLHttpRequest();
-//     var url = "{{url('payments/get/unpaid/')}}" + '/' +  userID;
-//     http.open('GET', url, true);
-//     //Send the proper header information along with the request
-//     //http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-
-//     http.onreadystatechange = function() {
-//       if (this.readyState == 4 && this.status == 200) {
-//         try {        
-//             prices = JSON.parse(this.responseText);
-//             listtt = document.getElementById('days' );
-//             listtt.innerHTML = '';
-//             listtt.innerHTML += '<option value="0">All Month</option>';
-//             prices.forEach(element => {
-//                 listtt.innerHTML += '<option value="' + element['id'] + '">' + element['date'] + '</option>';
-//             });
-//         } catch(e){
-//             console.log(e); 
-//         }
-//       } 
-//     };
-//     http.send();
-//    }
-
+ 
 </script>
 @endsection

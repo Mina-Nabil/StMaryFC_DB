@@ -41,6 +41,7 @@ Route::post('events/payments/delete', 'EventsController@deletePayments');
 Route::get('payments/show', "PaymentsController@month");
 Route::get('payments/due', "PaymentsController@due");
 Route::get('payments/query', "PaymentsController@queryPage");
+Route::get('payments/query/group', "PaymentsController@groupQueryPage");
 Route::post('payments/query', "PaymentsController@queryRes");
 Route::get('payments/add', "PaymentsController@addPayment");
 Route::post('payments/insert', "PaymentsController@insert");

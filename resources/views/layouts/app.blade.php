@@ -150,6 +150,7 @@
                                 <li><a href="{{url('payments/due')}}">Due</a></li>
                                 <li><a href="{{url('payments/show')}}">Current Month</a></li>
                                 <li><a href="{{url('payments/query')}}">Report</a></li>
+                                <li><a href="{{url('payments/query/group')}}">Group Report</a></li>
                                 <li><a href="{{url('payments/add')}}">Add Payment</a></li>
                             </ul>
                         </li>

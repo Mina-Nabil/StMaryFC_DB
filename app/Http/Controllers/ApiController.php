@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\BalancePayment;
 use App\Models\Event;
 use App\Models\EventPayment;
 use App\Models\EventsAttendance;
@@ -17,6 +18,7 @@ use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -75,10 +77,10 @@ class ApiController extends Controller
     {
         $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
-            ->where('USER_CODE', '!=', 'A999')
+            // ->where('USER_CODE', '!=', 'A999')
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
-                     (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments')
-            ->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
+            (Select new_balance from balance_payments where balance_payments.app_users_id = app_users.id ORDER BY id desc LIMIT 1 ) as userBalance')
+            ->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "userBalance"]);
         if ($users) {
             $this->adjustImageUrl($users);
             return $this->getApiMessage(true, $users);
@@ -108,7 +110,7 @@ class ApiController extends Controller
                 ->where('USER_CODE', '!=', 'A999')
                 ->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
                 ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
-                (Select COUNT(payments.id) from payments where PYMT_USER_ID = app_users.id and MONTH(PYMT_DATE) = MONTH(CURDATE())) as monthlyPayments');
+                (Select new_balance from balance_payments where balance_payments.app_users_id = app_users.id ORDER BY id desc LIMIT 1 ) as userBalance');
             foreach ($arguments as $value) {
                 $users = $users->whereRaw(
                     " ( GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}%' OR YEAR(USER_BDAY) = ? ) ",
@@ -116,7 +118,7 @@ class ApiController extends Controller
                 );
             }
 
-            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "paymentsDue"]);
+            $users = $users->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "userBalance"]);
             if ($users) {
                 $this->adjustImageUrl($users);
                 return $this->getApiMessage(true, $users);
@@ -214,6 +216,9 @@ class ApiController extends Controller
 
     public function delGroup(Request $request)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $validation = $this->validateRequest($request, [
             "id"      => "required|exists:groups,id",
         ]);
@@ -240,6 +245,7 @@ class ApiController extends Controller
             "group" => "required|exists:groups,id",
             "birthDate" => "nullable|date",
             "mail" => "required_if:type,1|nullable|email",
+            "player_category" => "nullable|exists:players_categories,id",
             "password" => "required_if:type,1|nullable",
         ]);
         if ($validation === true) {
@@ -255,6 +261,7 @@ class ApiController extends Controller
             $user->USER_NOTE = $request->note;
             $user->USER_CODE = $request->code;
             $user->USER_MOBN = $request->mobn;
+            $user->players_category_id = $request->player_category;
 
             $user->save();
             if ($request->hasFile('photo')) {
@@ -422,7 +429,7 @@ class ApiController extends Controller
                 $merged[$key] = $row;
         }
         krsort($merged, SORT_NUMERIC);
-        Log::info($merged);
+        // Log::info($merged);
         return $this->getApiMessage(true, $merged);
     }
 
@@ -435,6 +442,9 @@ class ApiController extends Controller
 
     public function getUserPayments($id)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $user = User::find($id);
         if ($user)
             return $this->getApiMessage(true, $user->payments()->whereRaw('PYMT_DATE >= DATE_SUB(NOW(), INTERVAL 24 MONTH)')->orderByDesc('PYMT_DATE')->get());
@@ -451,8 +461,21 @@ class ApiController extends Controller
             return $this->getApiMessage(false, ['error' => 'Cant load events']);
     }
 
+    public function getBalanceEntries($id)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        User::findOrFail($id);
+        $balancePayments = BalancePayment::byUser($id)->with('collected_by_user', 'collected_by_user.type', 'collected_by_user.group', 'collected_by_user.player_category')->orderByDesc('id')->limit(25)->get();
+        return $this->getApiMessage(true, $balancePayments);
+    }
+
     public function getUserEventPayments($id)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $payments = EventPayment::getUserEventPayments($id);
         if ($payments)
             return $this->getApiMessage(true, $this->makeLikePayment3shanMickeyBeh($payments));
@@ -462,28 +485,27 @@ class ApiController extends Controller
 
     public function addPayment(Request $request)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $this->validateRequest($request, [
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
-            "date" => 'required_if:type,1',
             "eventID" => 'required_if:type,2',
+            "isSettlment" => 'required_if:type,1|boolean',
             "type"  => "required",
         ]);
 
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        $res = false;
         if ($request->type == 1) {
-            //normal monthly payment
-            $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
+            $res = $user->addToBalance($request->amount, "New Payment", $request->note ?? "User Balance Payment In", $request->isSettlment);
         } elseif ($request->type == 2) {
             $request->validate([
                 "eventID" => "exists:events,id"
             ]);
-            //event payment
-
-            $res = EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
-
-            if (isset($request->eventState) && $request->eventState > 0) {
-                Event::attachUser($request->eventID, $request->userID, $request->eventState);
-            }
+            $res = $user->payEvent($request->eventID, $request->amount, $request->eventState, $request->note);
         }
 
         if ($res) {
@@ -493,8 +515,31 @@ class ApiController extends Controller
         }
     }
 
+    public function sendReminder(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id'
+        ]);
+
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        $res = $user->sendBalanceReminder();
+
+        if ($res) {
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
+        }
+    }
+
     public function deleteUserPayment(Request $request)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $this->validate($request, [
             "paymentID" => "required|exists:payments,id"
         ]);
@@ -510,10 +555,13 @@ class ApiController extends Controller
 
     public function deleteEventPayment(Request $request)
     {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
         $this->validate($request, [
             "paymentID" => "required|exists:event_payments,id"
         ]);
-
+        /** @var EventPayment */
         $payment = EventPayment::findOrFail($request->paymentID);
         $res = $payment->refund();
         if ($res) {

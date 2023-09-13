@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Payment extends Model
 {
@@ -35,19 +36,17 @@ class Payment extends Model
         return $query->select('id', 'PYMT_AMNT')->get();
     }
 
-    public static function insertPayment($date, $userID, $amount, $note = '')
+    private static function insertPayment($date, User $user, $amount, $note = '')
     {
-        DB::transaction(function () use ($date, $userID, $amount, $note) {
-
-            $startDate = (new DateTime($date))->format('Y-m-01');
-            $payment = new Payment();
-            $payment->PYMT_DATE = $startDate;
-            $payment->PYMT_AMNT = $amount;
-            $payment->PYMT_USER_ID = $userID;
-            $payment->PYMT_CLCT_ID = Auth::user()->id;
-            $payment->PYMT_NOTE = $note;
-            $payment->save();
-        });
+        $loggedInUser = Auth::user();
+        $startDate = (new DateTime($date))->format('Y-m-01');
+        $payment = new Payment();
+        $payment->PYMT_DATE = $startDate;
+        $payment->PYMT_AMNT = $amount;
+        $payment->PYMT_USER_ID = $user->id;
+        $payment->PYMT_CLCT_ID = $loggedInUser ? $loggedInUser->id : null;
+        $payment->PYMT_NOTE = $note;
+        $payment->save();
     }
 
     public static function didPayMonth($userID, $date)
@@ -60,18 +59,18 @@ class Payment extends Model
         return ($noOfPayments > 0) ? true : false;
     }
 
-    public static function addPayment($id, $amount, $date, $note = null)
+    public static function addPayment(User $user, $amount, $date, $balanceEntryTitle)
     {
         try {
-            DB::transaction(function () use ($id, $amount, $date, $note) {
-                Payment::insertPayment($date, $id, $amount, $note);
+            DB::transaction(function () use ($user, $amount, $date, $balanceEntryTitle) {
+                Payment::insertPayment($date, $user, $amount, $balanceEntryTitle);
                 $startDate =  (new DateTime($date))->format('Y-m-01');
                 $endDate =  (new DateTime($date))->format('Y-m-t');
-                Attendance::setPaid($id, $startDate, $endDate);
-                $user = User::findOrFail($id);
-                self::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $amount, (new DateTime($date))->format('M-Y'));
+                Attendance::setPaid($user->id, $startDate, $endDate);
+                $user->addToBalance(-1 * $amount, $balanceEntryTitle);
             });
         } catch (Exception $e) {
+            report($e);
             return false;
         }
         return true;
@@ -79,13 +78,31 @@ class Payment extends Model
 
     public function refund()
     {
-        $user = User::findOrFail($this->PYMT_USER_ID);
-        self::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
-        return $this->delete();
+        try {
+            DB::transaction(function () {
+                $user = User::findOrFail($this->PYMT_USER_ID);
+                $user->addToBalance($this->PYMT_AMNT, "Refund Payment#" . $this->id, "Added after user refund");
+                self::sendPaymentSMS($user->USER_NAME, $user->USER_MOBN, $this->PYMT_AMNT, (new DateTime($this->PYMT_DATE))->format('M-Y'), true);
+                $this->delete();
+            });
+
+            return true;
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
     }
 
     public static function sendPaymentSMS($name, $mob, $amount, $month, $refund = false)
     {
+        if (!env('SEND_SMS')) {
+            Log::debug('CHECK ? OH YES');
+            return true;
+        } else {
+            Log::debug('CHECK ? OH NO');
+            return true;
+        }
+
         if ($refund) $message = "[REFUND] \n";
         else
             $message = "St. Mary Rehab Football Academy \n";

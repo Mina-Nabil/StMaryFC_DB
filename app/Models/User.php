@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DateTime;
+use Exception;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -17,6 +24,88 @@ class User extends Authenticatable
     protected $table = "app_users";
     public $timestamps = false;
 
+    //functions
+    public function addToBalance($value, $title, $desc = null, $isSettlment = false)
+    {
+        $oldBalance = 0;
+        $user = Auth::user();
+        $lastPayment = $this->balance_payments()->latest()->first();
+
+        if ($lastPayment != null) $oldBalance = $lastPayment->new_balance;
+        try {
+            DB::transaction(function () use ($value, $title, $desc, $oldBalance, $user, $isSettlment) {
+                $this->balance = $oldBalance + $value;
+                /** @var BalancePayment */
+                $balanceRec = $this->balance_payments()->create([
+                    "collected_by"  =>  $user ? $user->id : null,
+                    "value"         =>  $value,
+                    "new_balance"   =>  $oldBalance + $value,
+                    "title"         =>  $title,
+                    "is_settlment"  =>  $isSettlment,
+                    "desc"          =>  $desc,
+                ]);
+                $this->save();
+                $balanceRec->sendSms();
+            });
+            return true;
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+
+    public function sendBalanceReminder()
+    {
+        try {
+
+            $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
+
+            $balance = $latestPayment ? $latestPayment->new_balance : 0;
+            $msg = "[Reminder] 
+            Please review your balance with the Finance Team. Your current balance is $balance";
+
+            Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+                'username' => 'mina9492@hotmail.com',
+                'password' => Config::get('services.sms.key'),
+                'sendername' => 'Academy',
+                'mobiles' => $this->USER_MOBN,
+                'message' => $msg,
+            ]);
+
+            return true;
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+
+    public function payEvent($event_id, $amount, $eventState, $note)
+    {
+        try {
+            DB::transaction(function () use ($event_id, $amount, $eventState, $note) {
+                /** @var Event */
+                $event = Event::findOrFail($event_id);
+                EventPayment::addPayment($this->id, $event->id, $amount);
+
+                $this->addToBalance(-1 * $amount, "($event->EVNT_NAME) Payment", $note, false);
+
+                if (isset($eventState) && $eventState > 0) {
+                    Event::attachUser($event->id, $this->id, $eventState);
+                }
+            });
+            return true;
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+    //scopes
+    public function scopePlayers($query)
+    {
+        return $query->where('USER_USTP_ID', 2);
+    }
+
+    //relations
     public function images()
     {
         return $this->hasMany('App\Models\UserImage', "USIM_USER_ID");
@@ -39,6 +128,11 @@ class User extends Authenticatable
     public function attendance()
     {
         return $this->hasMany('App\Models\Attendance', "ATND_USER_ID");
+    }
+
+    public function balance_payments(): HasMany
+    {
+        return $this->hasMany(BalancePayment::class, "app_users_id");
     }
 
     public function payments()
@@ -91,12 +185,13 @@ class User extends Authenticatable
     public static function overviewQuery($from, $to)
     {
         return DB::table("app_users", "t1")->join("groups", "groups.id", '=', 'USER_GRUP_ID')->select("t1.*", 'groups.GRUP_NAME')
-                        ->selectRaw(" (SELECT SUM(PYMT_AMNT) from payments where PYMT_USER_ID = t1.id and PYMT_DATE >= '{$from}' AND PYMT_DATE <= '{$to}') as TotalPaid ")
-                        ->selectRaw(" (SELECT COUNT(id)    from attendance where ATND_USER_ID = t1.id and ATND_DATE >= '{$from}' AND ATND_DATE <= '{$to}') as A ")->get();
+            ->selectRaw(" (SELECT SUM(PYMT_AMNT) from payments where PYMT_USER_ID = t1.id and PYMT_DATE >= '{$from}' AND PYMT_DATE <= '{$to}') as TotalPaid ")
+            ->selectRaw(" (SELECT COUNT(id)    from attendance where ATND_USER_ID = t1.id and ATND_DATE >= '{$from}' AND ATND_DATE <= '{$to}') as A ")->get();
     }
 
-    public function setReminderDate(DateTime $date=null){
-        $this->USER_LTST_RMDR = $date ? $date->format("Y-m-d H:i:s") : date("Y-m-d H:i:s") ;
+    public function setReminderDate(DateTime $date = null)
+    {
+        $this->USER_LTST_RMDR = $date ? $date->format("Y-m-d H:i:s") : date("Y-m-d H:i:s");
         $this->save();
     }
 

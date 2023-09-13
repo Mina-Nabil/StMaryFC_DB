@@ -2,7 +2,11 @@
 
 namespace App\Console;
 
+use App\Jobs\DeductMonthlySubscription;
+use App\Models\Attendance;
+use App\Models\User;
 use App\Models\UserImage;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,15 +30,25 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // $schedule->call(function () {
+        //     echo  "Image 
+        //     CRON started \n ";
+        //     $unCompressedUserImages = UserImage::get();
+        //     foreach ($unCompressedUserImages as $image) {
+        //         echo $image->id . ": started compressing.. \n ";
+        //         $image->compress();
+        //         echo $image->id . ": Compressing DONE ================== \n ";
+        //     }
+        // })->everyMinute();
+
         $schedule->call(function () {
-            echo  "CRON started \n ";
-            $unCompressedUserImages = UserImage::get();
-            foreach ($unCompressedUserImages as $image) {
-                echo $image->id . ": started compressing.. \n ";
-                $image->compress();
-                echo $image->id . ": Compressing DONE ================== \n ";
+            $players = User::with('player_category')->players()->get();
+            $now = new Carbon();
+            $now->subMonth();
+            foreach($players as $player){
+                DeductMonthlySubscription::dispatch($player, $now->format('Y'), $now->format('m'));
             }
-        })->everyMinute();
+        })->everyMinute(1, '0:05');
     }
 
     /**

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\BalancePayment;
 use App\Models\Event;
 use App\Models\EventPayment;
+use App\Models\Group;
 use App\Models\Payment;
 use App\Models\User;
 use DateTime;
@@ -43,17 +45,24 @@ class PaymentsController extends Controller
         return view('payments.query', $data);
     }
 
+    public function groupQueryPage()
+    {
+        $data['groups'] = Group::all();
+        $data['formTitle'] = "Payments Report by group";
+        $data['formURL'] = "payments/query";
+        return view('payments.query_group', $data);
+    }
+
     public function queryRes(Request $request)
     {
         $request->validate([
-            "userID" => 'required',
+            "userID" => 'required_if:groupID,null',
+            "groupID" => 'required_if:userID,null',
             "fromDate" => 'required',
             "toDate" => 'required'
         ]);
 
-        $isDate = ($request->isDate=="on") ? 1 : 0;
-
-        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $isDate);
+        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $request->groupID, $request->onlySettlment ?? false);
         return view('payments.show', $this->data);
     }
 
@@ -78,19 +87,20 @@ class PaymentsController extends Controller
         $request->validate([
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
-            "date" => 'required_if:type,1',
             "eventID" => 'required_if:type,2',
             "type"  => "required"
         ]);
 
+        /** @var User */
+        $user = User::findOrFail($request->userID);
 
         if ($request->type == 1) {
             //normal monthly payment
-            $res = Payment::addPayment($request->userID, $request->amount, $request->date, $request->note);
+            $res = $user->addToBalance($request->amount, "User In", "User Balance Payment In", $request->note);
             return redirect('payments/show');
         } elseif ($request->type == 2) {
             //event payment
-            echo EventPayment::addPayment($request->userID, $request->eventID, $request->amount);
+            $res = $user->payEvent($request->eventID, $request->amount, $request->eventState, $request->note);
             if ($request->return)
                 return back();
         }
@@ -106,46 +116,50 @@ class PaymentsController extends Controller
     //////data array
     protected $data;
 
-    private function initPaymentsArray($startDate, $endDate, $userID = 0, $isDate = 0)
+    private function initPaymentsArray($startDate, $endDate, $userID = 0, $groupID = null, $only_settlment = false)
     {
         $startDate = new DateTime($startDate);
         $endDate = new DateTime($endDate);
 
-     
+
         $endDate = $endDate->setTime(23, 59, 59);
+        $paymentQuery = BalancePayment::with('app_user')->whereBetween("created_at", [$startDate, $endDate]);
 
-        if ($isDate == 0) {
-            $paymentQuery = Payment::with('user')->whereBetween("PYMT_DATE", [$startDate, $endDate]);
-        } else {
-            $paymentQuery = Payment::with('user')->whereBetween("created_at", [$startDate, $endDate]);
-        }
         if ($userID != 0)
-            $paymentQuery = $paymentQuery->where('PYMT_USER_ID', $userID);
+            $paymentQuery = $paymentQuery->where('app_users_id', $userID);
 
-        if ($userID == 0) {
+        if ($groupID != null) {
+            $group = Group::findOrFail($groupID);
+            $paymentQuery = $paymentQuery->join('app_users', 'app_users.id', '=', 'app_users_id')
+                ->join('groups', 'groups.id', '=', 'USER_GRUP_ID')
+                ->where('USER_GRUP_ID', $groupID);
+        }
+
+        if ($groupID != null) {
+            $userName = $group->GRUP_NAME;
+        } else if ($userID == 0) {
             $userName = "All Users";
         } else {
             $user = User::findOrFail($userID);
             $userName = $user->USER_NAME;
         }
 
-        if ($isDate == 0) {
-            $userTitle = "Showing Payments for " . $userName . " Filtered by Due Date ";
-        } else {
-            $userTitle = "Showing Payments for " . $userName . " Filtered by Creation Date ";
+        if ($only_settlment) {
+            $paymentQuery->where('is_settlment', true);
         }
+
+        $userTitle = "Showing Balance Payments for " . $userName;
+
         $this->data['items'] = $paymentQuery->get();
-        $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('PYMT_AMNT');
+        $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('value');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
-        $this->data['cols'] = ['User', 'Due', 'Amount', 'Note', 'Date', 'Collector', 'Delete'];
+        $this->data['cols'] = ['User', 'Date', 'Amount', 'Note', 'Collector'];
         $this->data['atts'] = [
-            ['foreignUrl' => ['users/profile', 'PYMT_USER_ID', 'user', 'USER_NAME']],
-            ['date' => [ 'att' => 'PYMT_DATE', 'format' => 'M-Y']],
-            'PYMT_AMNT',
-            ['comment' => ['att' => 'PYMT_NOTE']],
-            'created_at',
-            ['foreignUrl' => ['users/profile', 'PYMT_CLCT_ID', 'collector', 'USER_NAME']],
-            ['del' => ['url' => 'payments/delete/', 'att' => 'id']]
+            ['foreignUrl' => ['users/profile', 'app_users_id', 'app_user', 'USER_NAME']],
+            ['date' => ['att' => 'created_at', 'format' => 'd-M-Y']],
+            'value',
+            ['comment' => ['att' => 'note']],
+            ['foreignUrl' => ['users/profile', 'collected_by_user', 'collector', 'USER_NAME']],
         ];
     }
 }

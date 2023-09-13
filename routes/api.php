@@ -40,6 +40,8 @@ Route::middleware('auth:sanctum')->post('/get/overview', 'ApiController@getUserO
 Route::middleware('auth:sanctum')->get('/get/next/code', 'ApiController@getNextUserID');
 Route::middleware('auth:sanctum')->post('/delete/payment', 'ApiController@deleteUserPayment');
 Route::middleware('auth:sanctum')->post('/delete/event/payment', 'ApiController@deleteEventPayment');
+Route::middleware('auth:sanctum')->get('/user/balance/{id}', 'ApiController@getBalanceEntries');
+Route::middleware('auth:sanctum')->post('/send/reminder', 'ApiController@sendReminder');
 
 //groups
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');
