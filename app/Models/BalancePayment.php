@@ -37,8 +37,6 @@ class BalancePayment extends Model
                   ------------------------
         New balance :   {$this->new_balance}EGP";
 
-        Log::debug($msg);
-
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',
             'password' => Config::get('services.sms.key'),

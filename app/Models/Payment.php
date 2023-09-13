@@ -95,14 +95,6 @@ class Payment extends Model
 
     public static function sendPaymentSMS($name, $mob, $amount, $month, $refund = false)
     {
-        if (!env('SEND_SMS')) {
-            Log::debug('CHECK ? OH YES');
-            return true;
-        } else {
-            Log::debug('CHECK ? OH NO');
-            return true;
-        }
-
         if ($refund) $message = "[REFUND] \n";
         else
             $message = "St. Mary Rehab Football Academy \n";
