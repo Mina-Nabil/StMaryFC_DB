@@ -57,12 +57,14 @@ class User extends Authenticatable
     public function sendBalanceReminder()
     {
         try {
-
             $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
 
             $balance = $latestPayment ? $latestPayment->new_balance : 0;
-            $msg = "[Reminder] 
-            Please review your balance with the Finance Team. Your current balance is $balance";
+            $firstName = explode(' ', $this->USER_NAME)[0];
+            $msg = "Dear $firstName's Parent,
+            We kindly remind you that your current balance is $balance EGP.
+            Please settle your payment.
+            Thank you";
 
             Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
                 'username' => 'mina9492@hotmail.com',
@@ -77,6 +79,18 @@ class User extends Authenticatable
             report($e);
             return false;
         }
+    }
+
+    public function sendSMS($msg)
+    {
+        Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
+            'username' => 'mina9492@hotmail.com',
+            'password' => Config::get('services.sms.key'),
+            'sendername' => 'Academy',
+            'mobiles' => $this->USER_MOBN,
+            'message' => $msg,
+        ]);
+        return true;
     }
 
     public function payEvent($event_id, $amount, $eventState, $note)

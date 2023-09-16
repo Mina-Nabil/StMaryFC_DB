@@ -535,6 +535,27 @@ class ApiController extends Controller
         }
     }
 
+    public function sendSMS(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id',
+            "msg" => 'required'
+        ]);
+
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        $res = $user->sendSMS($request->msg);
+
+        if ($res) {
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
+        }
+    }
+
     public function deleteUserPayment(Request $request)
     {
         $user = Auth::user();
