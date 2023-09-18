@@ -41,6 +41,7 @@ class MigrateBalance extends Command
             $players = $players->get();
         }
         $currentMonth = Carbon::now();
+        $currentMonth->setDay(1);
         $newPriceDate = new Carbon("2023-07-01");
         /** @var User */
         foreach ($players as $p) {
