@@ -56,6 +56,7 @@ class MigrateBalance extends Command
             $latestBalancePayment = $p->balance_payments()->latest()->first();
             if($latestBalancePayment !== null) continue;
             $latestPayment = $p->payments()->latest()->first();
+            if($latestPayment == null) continue;
             $latestPaymentDate = (new Carbon($latestPayment->PYMT_DATE));
             echo "\nLast payment was on " . $latestPaymentDate->format('Y-m-d');
             $latestPaymentDate->addMonth();
