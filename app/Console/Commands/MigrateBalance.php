@@ -53,6 +53,8 @@ class MigrateBalance extends Command
                 echo "\nNo Category attached for the user.. Aborting Migtation";
                 return Command::FAILURE;
             }
+            $latestBalancePayment = $p->balance_payments()->latest()->first();
+            if($latestBalancePayment !== null) continue;
             $latestPayment = $p->payments()->latest()->first();
             $latestPaymentDate = (new Carbon($latestPayment->PYMT_DATE));
             echo "\nLast payment was on " . $latestPaymentDate->format('Y-m-d');
