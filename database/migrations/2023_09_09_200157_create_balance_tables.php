@@ -13,6 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::table("app_users", function (Blueprint $table) {
+            $table->double("balance")->default(0);
+        });
 
         Schema::create('balance_payments', function (Blueprint $table) {
             $table->id();
