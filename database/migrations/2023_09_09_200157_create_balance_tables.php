@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        
         Schema::table("app_users", function (Blueprint $table) {
             $table->double("balance")->default(0);
         });
@@ -37,9 +38,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table("app_users", function (Blueprint $table) {
-            $table->dropColumn("balance");
-        });
+        // Schema::table("app_users", function (Blueprint $table) {
+        //     $table->dropColumn("balance");
+        // });
 
         Schema::dropIfExists('balance_payments');
     }
