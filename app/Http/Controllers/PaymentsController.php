@@ -146,6 +146,8 @@ class PaymentsController extends Controller
 
         if ($only_settlment) {
             $paymentQuery->where('is_settlment', true);
+        } else {
+            $paymentQuery->where('is_settlment',false);
         }
 
         $userTitle = "Showing Balance Payments for " . $userName;
