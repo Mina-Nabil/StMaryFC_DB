@@ -184,7 +184,7 @@ class UsersController extends Controller
                 ['foreign' => ['group', 'GRUP_NAME']],
                 ['modelFunc' => ['funcName' => 'monthlyAttendance'] ] ,
                 ['modelFunc' => ['funcName' => 'monthlyPayment'] ] ,
-                ['date' => ['att' => "USER_BDAY", 'format' => 'd-M-Y']],
+                ['date' => ['att' => "USER_BDAY", 'format' => 'Y-m-d']],
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
             ];
@@ -223,7 +223,7 @@ class UsersController extends Controller
         $this->data['cols'] = ['Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
-                ['date' => ['att' => "ATND_DATE", 'format' => 'd-M-Y']],
+                ['date' => ['att' => "ATND_DATE", 'format' => 'Y-m-d']],
                 ['del'  =>  ['att' => 'id', 'url' => 'attendance/delete/']]
             ];
 

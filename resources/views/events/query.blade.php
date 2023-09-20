@@ -14,8 +14,8 @@
                         <label>User*</label>
                         <div class="input-group mb-3">
                             <select name=userID class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-                                <option value="" disabled selected>Pick From Registered Users</option>
-                                <option value="0">All Users</option>
+                                <option value="" disabled >Pick From Registered Users</option>
+                                <option value="0" selected>All Users</option>
                                 @foreach($users as $user)
                                 <option value="{{ $user->id }}">{{$user->USER_NAME}}</option>
                                 @endforeach

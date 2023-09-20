@@ -158,10 +158,10 @@ class PaymentsController extends Controller
         $this->data['cols'] = ['User', 'Date', 'Amount', 'Note', 'Collector'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'app_users_id', 'app_user', 'USER_NAME']],
-            ['date' => ['att' => 'created_at', 'format' => 'd-M-Y']],
+            ['date' => ['att' => 'created_at', 'format' => 'Y-m-d']],
             'value',
             ['comment' => ['att' => 'note']],
-            ['foreignUrl' => ['users/profile', 'collected_by_user', 'collector', 'USER_NAME']],
+            ['foreignUrl' => ['users/profile', 'collected_by', 'collected_by_user', 'USER_NAME']],
         ];
     }
 }

@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <div class="bt-switch">
                             <div>
-                                <input type="checkbox" data-size="large" data-on-color="warning" data-off-color="success" data-on-text="Settlment" name="onlySettlment" data-off-text="All">
+                                <input type="checkbox" data-size="large" data-on-color="warning" data-off-color="success" data-on-text="Settlment" name="onlySettlment" data-off-text="Balance">
                             </div>
                         </div>
                     </div>
