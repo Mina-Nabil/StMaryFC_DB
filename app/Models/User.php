@@ -119,6 +119,11 @@ class User extends Authenticatable
         return $query->where('USER_USTP_ID', 2);
     }
 
+    public function scopeDue($query)
+    {
+        return $query->where('balance', '!=', 0);
+    }
+
     //relations
     public function images()
     {

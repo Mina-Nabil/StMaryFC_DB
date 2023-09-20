@@ -28,11 +28,14 @@ class PaymentsController extends Controller
 
     public function due()
     {
-        $data['items'] = Attendance::getDuePayments();
+        $data['items'] = User::due()->get();
         $data['title'] = "Payments Due";
-        $data['subTitle'] = "Check payments to be collected";
-        $data['cols'] = ['User', 'Month'];
-        $data['atts'] = [['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']], 'paymentDue'];
+        $data['subTitle'] = "Check total due amounts";
+        $data['cols'] = ['User', 'due'];
+        $data['atts'] = [
+            ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']],
+            'balance'
+        ];
 
         return view('payments.show', $data);
     }
@@ -147,7 +150,7 @@ class PaymentsController extends Controller
         if ($only_settlment) {
             $paymentQuery->where('is_settlment', true);
         } else {
-            $paymentQuery->where('is_settlment',false);
+            $paymentQuery->where('is_settlment', false);
         }
 
         $userTitle = "Showing Balance Payments for " . $userName;
