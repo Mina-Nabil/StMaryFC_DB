@@ -113,7 +113,7 @@ class ApiController extends Controller
                 (Select new_balance from balance_payments where balance_payments.app_users_id = app_users.id ORDER BY id desc LIMIT 1 ) as userBalance');
             foreach ($arguments as $value) {
                 $users = $users->whereRaw(
-                    " ( GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}%' OR USER_MOBN LIKE '%{$value}%' OR YEAR(USER_BDAY) = ? ) ",
+                    " ( GRUP_NAME LIKE '{$value}%' OR USER_NAME LIKE '%{$value}%' OR YEAR(USER_BDAY) = ? ) ",
                     [$value]
                 );
             }
