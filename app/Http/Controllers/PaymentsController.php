@@ -29,7 +29,7 @@ class PaymentsController extends Controller
     public function due()
     {
         $data['items'] = User::due()->get();
-        $data['title'] = "Payments Due -- Total: " . $data['items']->sum('balance');
+        $data['title'] = "Payments Due -- Total: " . number_format($data['items']->sum('balance'));
         $data['subTitle'] = "Check total due amounts";
         $data['cols'] = ['User', 'due'];
         $data['atts'] = [
