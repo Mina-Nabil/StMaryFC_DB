@@ -176,14 +176,13 @@ class UsersController extends Controller
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['#', 'Username', 'Class', "A", "Paid", "Born", 'Mob#', 'Comment'];
+        $this->data['cols'] = ['#', 'Username', 'Class', "Balance", "Born", 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
                 ['foreign' => ['group', 'GRUP_NAME']],
-                ['modelFunc' => ['funcName' => 'monthlyAttendance'] ] ,
-                ['modelFunc' => ['funcName' => 'monthlyPayment'] ] ,
+                'balance',
                 ['date' => ['att' => "USER_BDAY", 'format' => 'Y-m-d']],
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
