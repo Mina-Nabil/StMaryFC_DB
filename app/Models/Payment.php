@@ -27,6 +27,15 @@ class Payment extends Model
         return $this->belongsTo('App\Models\User', "PYMT_CLCT_ID");
     }
 
+
+    public function scopeFromTo($query, $from, $to)
+    {
+        return $query->whereBetween('PYMT_DATE', [
+            $from,
+            $to
+        ]);
+    }
+
     public static function getPaymentsLite($from, $to, $user = 0)
     {
         $query = DB::table('payments')->whereBetween('PYMT_DATE', [$from, $to]);

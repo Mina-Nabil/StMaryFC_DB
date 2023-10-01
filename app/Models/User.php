@@ -124,13 +124,6 @@ class User extends Authenticatable
         return $query->where('balance', '!=', 0);
     }
 
-    public function scopeFromTo($query, $from, $to)
-    {
-        return $query->whereBetween('PYMT_DATE', [
-            $from,
-            $to
-        ]);
-    }
 
     //relations
     public function images()
@@ -164,7 +157,7 @@ class User extends Authenticatable
 
     public function payments()
     {
-        return $this->hasMany('App\Models\Payment', "PYMT_USER_ID");
+        return $this->hasMany(Payment::class, "PYMT_USER_ID");
     }
 
     public function player_category()
