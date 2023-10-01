@@ -63,12 +63,7 @@ class DeductMonthlySubscription implements ShouldQueue
         $paid = $this->user->payments()->fromTo($start, $end)->get()->sum('PYMT_AMNT');
         Log::debug('Amount Paid: ' . $paid);
 
-        $toPay = $amount - $paid;
         $date = $start;
-   
-        if ($toPay)
-            Payment::addPayment($this->user, $toPay, $date, "$start->monthName Due ($attendanceCount)");
-        else
-            Log::debug('Already paid - no sending');
+        Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)");
     }
 }
