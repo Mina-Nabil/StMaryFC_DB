@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
             $now = new Carbon();
             $now->subMonth();
             foreach($players as $player){
-                DeductMonthlySubscription::dispatch($player, $now->format('Y'), $now->format('m'));
+                DeductMonthlySubscription::dispatch($player, $now);
             }
         })->monthlyOn(1, '0:05');
     }

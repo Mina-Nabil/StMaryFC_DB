@@ -19,18 +19,17 @@ class DeductMonthlySubscription implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
-    protected $month;
-    protected $year;
+    protected $date;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(User $user, int $year, int $month)
+    public function __construct(User $user, Carbon $date)
     {
         $this->user = $user;
-        $this->month = $month;
-        $this->year = $year;
+        $this->date = $date;
     }
 
     /**
@@ -40,9 +39,10 @@ class DeductMonthlySubscription implements ShouldQueue
      */
     public function handle()
     {
-        $start = new Carbon($this->year . '-' . $this->month . '-' . "01");
+        $start = new Carbon($this->date->format('Y-m-01'));
         $end = new Carbon($start->format('Y-m-t'));
         Log::debug('===================DEDUCTIONJOB=======================');
+        Log::debug("Dates from $start to $end ");
         Log::debug('User: ' . $this->user->USER_NAME);
         $monthlyAttendance  = Attendance::getAttendanceLite($start, $end, $this->user->id);
         //check attendance count
