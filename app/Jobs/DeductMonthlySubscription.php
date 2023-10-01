@@ -65,6 +65,10 @@ class DeductMonthlySubscription implements ShouldQueue
 
         $toPay = $amount - $paid;
         $date = $start;
+        if(true) //testing
+        Log::debug("Haro7 a create payment b " . $toPay);
+        return;
+
         if ($toPay)
             Payment::addPayment($this->user, $toPay, $date, "$start->monthName Due ($attendanceCount)");
         else
