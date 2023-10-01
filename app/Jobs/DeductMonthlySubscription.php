@@ -64,6 +64,7 @@ class DeductMonthlySubscription implements ShouldQueue
         Log::debug('Amount Paid: ' . $paid);
 
         $date = $start;
-        Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)");
+        if ($amount != 0)
+            Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)");
     }
 }
