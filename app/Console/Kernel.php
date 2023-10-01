@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
                 Log::info('Adding deduction job for player ' . $player->USER_NAME);
                 DeductMonthlySubscription::dispatch($player, $now);
             }
-        })->monthlyOn(1, '07:56');
+        })->monthlyOn(1, '12:50');
     }
 
     /**
