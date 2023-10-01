@@ -9,6 +9,7 @@ use App\Models\UserImage;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -46,6 +47,7 @@ class Kernel extends ConsoleKernel
             $now = new Carbon();
             $now->subMonth();
             foreach($players as $player){
+                Log::info('Adding deduction job for player ' . $player->USER_NAME);
                 DeductMonthlySubscription::dispatch($player, $now);
             }
         })->everyMinute(1, '0:05');
