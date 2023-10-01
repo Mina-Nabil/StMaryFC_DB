@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
             foreach($players as $player){
                 DeductMonthlySubscription::dispatch($player, $now->format('Y'), $now->format('m'));
             }
-        })->everyMinute(1, '0:05');
+        })->monthlyOn(1, '0:05');
     }
 
     /**

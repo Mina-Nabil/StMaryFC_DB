@@ -48,18 +48,26 @@ class DeductMonthlySubscription implements ShouldQueue
         //check attendance count
         $attendanceCount = $monthlyAttendance->count();
         Log::debug('Attendance: ' . $attendanceCount);
-        if($attendanceCount == 0) return ;
+        if ($attendanceCount == 0) return;
 
         //check player category
         $this->user->loadMissing('player_category');
-        if($this->user->player_category == null) return null;
+        if ($this->user->player_category == null) return null;
         Log::debug('Category: ' . $this->user->player_category->title);
-        
+
         //calculate player balance
         $amount = $this->user->player_category->getDue($attendanceCount);
-        Log::debug('Amount: ' . $amount);
+        Log::debug('Amount Due: ' . $amount);
 
+        //paid amount
+        $paid = $this->user->payments()->fromTo($start, $end)->get()->sum('PYMT_AMNT');
+        Log::debug('Amount Paid: ' . $paid);
+
+        $toPay = $amount - $paid;
         $date = $start;
-        Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)" );
+        if ($toPay)
+            Payment::addPayment($this->user, $toPay, $date, "$start->monthName Due ($attendanceCount)");
+        else
+            Log::debug('Already paid - no sending');
     }
 }
