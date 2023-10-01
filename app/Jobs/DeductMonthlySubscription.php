@@ -59,13 +59,9 @@ class DeductMonthlySubscription implements ShouldQueue
         $amount = $this->user->player_category->getDue($attendanceCount);
         Log::debug('Amount Due: ' . $amount);
 
-        //paid amount
-        $paid = $this->user->payments()->fromTo($start, $end)->get()->sum('PYMT_AMNT');
-        Log::debug('Amount Paid: ' . $paid);
-
         $date = $start;
 
-        if ($amount != 0)
+        if (is_numeric($amount) &&  $amount != 0)
             Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)");
     }
 }

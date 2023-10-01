@@ -43,14 +43,14 @@ class Kernel extends ConsoleKernel
         // })->everyMinute();
 
         $schedule->call(function () {
-            $players = User::with('player_category')->players()->get();
+            $players = User::with('player_category')->get();
             $now = new Carbon();
             $now->subMonth();
             foreach($players as $player){
                 Log::info('Adding deduction job for player ' . $player->USER_NAME);
                 DeductMonthlySubscription::dispatch($player, $now);
             }
-        })->monthlyOn(1, '00:01');
+        })->monthlyOn(1, '13:45');
     }
 
     /**
