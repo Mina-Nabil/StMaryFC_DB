@@ -31,10 +31,10 @@ class BalancePayment extends Model
         $oldBalance = $this->new_balance - $this->value;
         $msg = "Balance Update 
              {$this->app_user->USER_NAME}
-        Old Balance     : {$oldBalance}EGP
-        {$this->title}  : {$this->value}EGP
+        Old Balance       : {$oldBalance}EGP
+        {$this->title}    : {$this->value}EGP
                   ------------------------
-        New balance :   {$this->new_balance}EGP";
+        New balance       : {$this->new_balance}EGP";
 
         return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
             'username' => 'mina9492@hotmail.com',

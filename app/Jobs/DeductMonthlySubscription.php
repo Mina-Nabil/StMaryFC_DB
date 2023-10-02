@@ -62,6 +62,6 @@ class DeductMonthlySubscription implements ShouldQueue
         $date = $start;
 
         if (is_numeric($amount) &&  $amount != 0)
-            Payment::addPayment($this->user, $amount, $date, "$start->monthName Due ($attendanceCount)");
+            Payment::addPayment($this->user, $amount, $date, "$start->shortEnglishMonth Atnd $attendanceCount");
     }
 }
