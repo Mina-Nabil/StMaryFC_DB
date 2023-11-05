@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Providers\WhatsappServiceProvider;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
-
+use Twilio\TwiML\Voice\Pay;
 
 class User extends Authenticatable
 {
@@ -66,13 +67,7 @@ class User extends Authenticatable
 
             Thank you";
 
-            Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-                'username' => 'mina9492@hotmail.com',
-                'password' => Config::get('services.sms.key'),
-                'sendername' => 'Academy',
-                'mobiles' => $this->USER_MOBN,
-                'message' => $msg,
-            ]);
+            Payment::sendSMS($this->USER_MOBN, $msg);
 
             return true;
         } catch (Exception $e) {
@@ -83,13 +78,7 @@ class User extends Authenticatable
 
     public function sendSMS($msg)
     {
-        Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $this->USER_MOBN,
-            'message' => $msg,
-        ]);
+        Payment::sendSMS($this->USER_MOBN, $msg);
         return true;
     }
 

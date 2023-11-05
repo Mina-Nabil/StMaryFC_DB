@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class Payment extends Model
 {
@@ -115,13 +116,8 @@ class Payment extends Model
         $message .= "{$month}
         
         Thank you";
-        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $mob,
-            'message' => $message,
-        ]);
+
+        return self::sendSMS($mob, $message);
     }
 
     public static function sendPaymentReminderSMS($kidName, $parentMob)
@@ -133,13 +129,21 @@ class Payment extends Model
        Whatsapp 01211196104
        
        Thank you";
+        return self::sendSMS($parentMob, $message);
+    }
 
-        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $parentMob,
-            'message' => $message,
+    public static function sendSMS($mob, $message)
+    {
+        $res = Http::asForm()->post('https://smsvas.vlserv.com/KannelSending/service.asmx/SendSMS', [
+            'UserName' => 'dotstory',
+            'Password' => Config::get('services.sms.key'),
+            'SMSText' => $message,
+            'SMSLang' => 'e',
+            'SMSSender' => 'Academy',
+            'SMSReceiver' => $mob
         ]);
+        Log::info("SMS CALLED");
+        Log::info($res);
+        return $res;
     }
 }

@@ -35,14 +35,7 @@ class BalancePayment extends Model
         {$this->title}    : {$this->value}EGP
                   ------------------------
         New balance       : {$this->new_balance}EGP";
-
-        return Http::asForm()->post('https://smssmartegypt.com/sms/api/json/', [
-            'username' => 'mina9492@hotmail.com',
-            'password' => Config::get('services.sms.key'),
-            'sendername' => 'Academy',
-            'mobiles' => $this->app_user->USER_MOBN,
-            'message' => $msg,
-        ]);
+        return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
     }
 
     //scopes
