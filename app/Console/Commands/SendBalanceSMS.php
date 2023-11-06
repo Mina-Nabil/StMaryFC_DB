@@ -35,12 +35,12 @@ class MigrateBalance extends Command
     {
         $now = Carbon::now();
         $latestBalancePayments = BalancePayment::whereDate('created_at', '>=', $now->format('Y-m-01'))->get();
-        Log::info($latestBalancePayments);
+        // Log::info($latestBalancePayments);
 
-        // /** @var BalancePayment */
-        // foreach($latestBalancePayments as $pymt){
-        //     $pymt->sendSms();
-        // }
-        // return Command::SUCCESS;
+        /** @var BalancePayment */
+        foreach($latestBalancePayments as $pymt){
+            $pymt->sendSms();
+        }
+        return Command::SUCCESS;
     }
 }
