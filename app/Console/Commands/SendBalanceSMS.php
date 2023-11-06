@@ -8,6 +8,7 @@ use App\Models\PlayersCatogory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class MigrateBalance extends Command
 {
@@ -34,10 +35,12 @@ class MigrateBalance extends Command
     {
         $now = Carbon::now();
         $latestBalancePayments = BalancePayment::whereDate('created_at', '>=', $now->format('Y-m-01'))->get();
-        /** @var BalancePayment */
-        foreach($latestBalancePayments as $pymt){
-            $pymt->sendSms();
-        }
-        return Command::SUCCESS;
+        Log::info($latestBalancePayments);
+
+        // /** @var BalancePayment */
+        // foreach($latestBalancePayments as $pymt){
+        //     $pymt->sendSms();
+        // }
+        // return Command::SUCCESS;
     }
 }
