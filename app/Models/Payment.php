@@ -139,7 +139,7 @@ class Payment extends Model
             'Password' => Config::get('services.sms.key'),
             'SMSText' => $message,
             'SMSLang' => 'e',
-            'SMSSender' => 'dot',
+            'SMSSender' => 'dott',
             'SMSReceiver' => $mob
         ]);
         Log::info("SMS CALLED");
