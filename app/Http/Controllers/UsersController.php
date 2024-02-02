@@ -169,21 +169,23 @@ class UsersController extends Controller
     private function initDataArray($type)
     {
         if ($type == 0) {
-            $this->data['items'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
+            $this->data['items'] = User::with('group', 'player_category', 'type')->orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         } else {
             $this->data['items'] = User::where('USER_USTP_ID', $type)->orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         }
 
         $this->data['title'] = "Dashboard Users";
         $this->data['subTitle'] = "Manage All Dashboard Users";
-        $this->data['cols'] = ['#', 'Username', 'Class', "Balance", "Born", 'Mob#', 'Comment'];
+        $this->data['cols'] = ['#', 'Username', 'Class', "Category", "Type", "Balance", "Born", 'Mob#', 'Comment'];
         $this->data['atts'] =
             [
                 ['dynamicUrl' => ['att' => 'USER_CODE', '0' => 'users/profile/', 'val' => 'id']],
                 ['dynamicUrl' => ['att' => 'USER_NAME', '0' => 'users/profile/', 'val' => 'id']],
                 ['foreign' => ['group', 'GRUP_NAME']],
-                'balance',
-                ['date' => ['att' => "USER_BDAY", 'format' => 'Y-m-d']],
+                ['foreign' => ['player_category', 'title']],
+                ['foreign' => ['type', 'USTP_NAME']],
+                ['number' => ['att' => 'balance']],
+                ['date' => ['att' => "USER_BDAY", 'format' => 'Y-F-d']],
                 'USER_MOBN',
                 ['comment' => ['att' => 'USER_NOTE']]
             ];
@@ -222,7 +224,7 @@ class UsersController extends Controller
         $this->data['cols'] = ['Attendance Dates', 'Delete'];
         $this->data['atts'] =
             [
-                ['date' => ['att' => "ATND_DATE", 'format' => 'Y-m-d']],
+                ['date' => ['att' => "ATND_DATE", 'format' => 'Y-F-d H:i']],
                 ['del'  =>  ['att' => 'id', 'url' => 'attendance/delete/']]
             ];
 

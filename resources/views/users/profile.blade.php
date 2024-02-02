@@ -156,7 +156,6 @@ function sendPaymentReminder(){
                                 <thead>
                                     <th>Month</th>
                                     <th>Attendances</th>
-                                    <th>Paid</th>
                                 </thead>
                                 <tbody>
                                     @foreach($overItems as $item)
@@ -164,7 +163,6 @@ function sendPaymentReminder(){
                                     <tr>
                                         <td>{{$item[0]}}</td>
                                         <td>{{$item[1]}}</td>
-                                        <td>{{number_format($item[2],2)}}</td>
                                     </tr>
 
                                     @endforeach

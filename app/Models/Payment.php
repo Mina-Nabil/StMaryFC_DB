@@ -134,6 +134,7 @@ class Payment extends Model
 
     public static function sendSMS($mob, $message)
     {
+        if (!env('SEND_SMS')) return;
         $res = Http::asForm()->post('https://smsvas.vlserv.com/KannelSending/service.asmx/SendSMS', [
             'UserName' => 'dotstory',
             'Password' => Config::get('services.sms.key'),

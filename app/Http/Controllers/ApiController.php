@@ -77,7 +77,7 @@ class ApiController extends Controller
     {
         $users = User::join("groups", "groups.id", '=', 'USER_GRUP_ID')->leftJoin('app_user_images', 'app_user_images.id', '=', 'USER_MAIN_IMGE')
             ->where('GRUP_ACTV', 1)->where('USER_ACTV', 1)->select(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL"])
-            ->where('USER_CODE', '!=', 'A999')
+            // ->where('USER_CODE', '!=', 'A999')
             ->selectRaw('(Select COUNT(ATND_DATE) from attendance where ATND_USER_ID = app_users.id and DATE(ATND_DATE) = CURDATE() )  as isAttended,
             (Select new_balance from balance_payments where balance_payments.app_users_id = app_users.id ORDER BY id desc LIMIT 1 ) as userBalance')
             ->get(["app_users.id", "USER_NAME", "GRUP_NAME", "USIM_URL", "isAttended", "userBalance"]);
@@ -527,6 +527,26 @@ class ApiController extends Controller
         /** @var User */
         $user = User::findOrFail($request->userID);
         $res = $user->sendBalanceReminder();
+
+        if ($res) {
+            return $this->getApiMessage(true);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
+        }
+    }
+
+    public function sendLastUpdate(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id'
+        ]);
+
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        $res = $user->sendLastUpdate();
 
         if ($res) {
             return $this->getApiMessage(true);

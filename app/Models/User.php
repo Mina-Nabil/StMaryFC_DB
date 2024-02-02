@@ -76,6 +76,17 @@ class User extends Authenticatable
         }
     }
 
+    public function sendLastUpdate()
+    {
+        try {
+            $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
+            return $latestPayment?->sendSms();
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+
     public function sendSMS($msg)
     {
         Payment::sendSMS($this->USER_MOBN, $msg);
@@ -90,7 +101,7 @@ class User extends Authenticatable
                 $event = Event::findOrFail($event_id);
                 EventPayment::addPayment($this->id, $event->id, $amount);
 
-                $this->addToBalance(-1 * $amount, "($event->EVNT_NAME) Payment", $note, false);
+                $this->addToBalance(-1 * $amount, "($event->EVNT_NAME) Subsc.", $note, false);
 
                 if (isset($eventState) && $eventState > 0) {
                     Event::attachUser($event->id, $this->id, $eventState);
@@ -106,6 +117,10 @@ class User extends Authenticatable
     public function scopePlayers($query)
     {
         return $query->where('USER_USTP_ID', 2);
+    }
+    public function scopeCoachesAndAdmins($query)
+    {
+        return $query->whereIn('USER_USTP_ID', [1, 3]);
     }
 
     public function scopeDue($query)

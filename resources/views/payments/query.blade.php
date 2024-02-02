@@ -25,6 +25,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Collector</label>
+                        <div class="input-group mb-3">
+                            <select name=collectorID class="select2 form-control custom-select" style="width: 100%; height:36px;" >
+                                <option value="" disabled >Pick From Coaches and Admins</option>
+                                <option value="0" selected>All Users</option>
+                                @foreach($collectors as $c)
+                                <option value="{{ $c->id }}">{{$c->USER_NAME}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <small class="text-danger">{{$errors->first('collectorID')}}</small>
+                    </div>
+
+                    <div class="form-group">
                         <label>From</label>
                         <div class="input-group mb-3">
                             <input type="date" value="{{ now()->format('Y-m-01')}}" class="form-control" placeholder="Pick a date" name=fromDate required />

@@ -30,7 +30,6 @@
                         <small class="text-danger">{{$errors->first('userID')}}</small>
                     </div>
                     <div id=eventDiv style="display: none">
-
                         <div class="form-group">
                             <label>Event*</label>
                             <div class="input-group mb-3">
@@ -43,6 +42,15 @@
                             </div>
                             <small class="text-danger">{{$errors->first('eventID')}}</small>
                             <input name=return value=1 type="hidden">
+                        </div>
+                    </div>
+                    <div id=balanceDiv >
+                        <div class="form-group">
+                            <div class="bt-switch">
+                                <div>
+                                    <input type="checkbox" data-size="large" data-on-color="warning" data-off-color="success" data-on-text="Settlment" name="isSettlement" data-off-text="Balance">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -85,10 +93,13 @@
     function typeChanged(selectaya){
         typeID = selectaya.value;
         eventDiv = document.getElementById('eventDiv')
+        balanceDiv = document.getElementById('balanceDiv')
         if(typeID==1){
             eventDiv.style="display:none";
+            balanceDiv.style="display:block";
         }else if(typeID==2){
             eventDiv.style="display:block";
+            balanceDiv.style="display:none";
         }
     }
 

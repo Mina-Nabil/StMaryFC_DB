@@ -12,6 +12,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PaymentsController extends Controller
 {
@@ -43,6 +44,7 @@ class PaymentsController extends Controller
     public function queryPage()
     {
         $data['users'] = User::orderByRaw("ABS(USER_CODE), USER_CODE")->get();
+        $data['collectors'] = User::coachesAndAdmins()->orderByRaw("ABS(USER_CODE), USER_CODE")->get();
         $data['formTitle'] = "Payments Report";
         $data['formURL'] = "payments/query";
         return view('payments.query', $data);
@@ -65,7 +67,7 @@ class PaymentsController extends Controller
             "toDate" => 'required'
         ]);
 
-        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $request->groupID, $request->onlySettlment ?? false);
+        $this->initPaymentsArray($request->fromDate, $request->toDate, $request->userID, $request->groupID, $request->onlySettlment ?? false, $request->collectorID);
         return view('payments.show', $this->data);
     }
 
@@ -87,6 +89,7 @@ class PaymentsController extends Controller
 
     public function insert(Request $request)
     {
+
         $request->validate([
             "userID" => 'required|exists:app_users,id',
             "amount" => 'required',
@@ -99,7 +102,7 @@ class PaymentsController extends Controller
 
         if ($request->type == 1) {
             //normal monthly payment
-            $res = $user->addToBalance($request->amount, "User In", "User Balance Payment In", $request->note);
+            $res = $user->addToBalance($request->amount, "User In", $request->note, $request->isSettlement ? true : false);
             return redirect('payments/show');
         } elseif ($request->type == 2) {
             //event payment
@@ -119,14 +122,18 @@ class PaymentsController extends Controller
     //////data array
     protected $data;
 
-    private function initPaymentsArray($startDate, $endDate, $userID = 0, $groupID = null, $only_settlment = false)
+    private function initPaymentsArray($startDate, $endDate, $userID = 0, $groupID = null, $only_settlment = false, $collector_id = false)
     {
         $startDate = new DateTime($startDate);
         $endDate = new DateTime($endDate);
 
 
         $endDate = $endDate->setTime(23, 59, 59);
-        $paymentQuery = BalancePayment::with('app_user')->whereBetween("created_at", [$startDate, $endDate]);
+        $paymentQuery = BalancePayment::with('app_user')
+            ->when($collector_id, function ($q, $c_id) {
+                $q->where("collected_by", $c_id);
+            })
+            ->whereBetween("created_at", [$startDate, $endDate]);
 
         if ($userID != 0)
             $paymentQuery = $paymentQuery->where('app_users_id', $userID);
@@ -148,12 +155,14 @@ class PaymentsController extends Controller
         }
 
         if ($only_settlment) {
+            $type = "Settlement";
             $paymentQuery->where('is_settlment', true);
         } else {
+            $type = "Balance";
             $paymentQuery->where('is_settlment', false);
         }
 
-        $userTitle = "Showing Balance Payments for " . $userName;
+        $userTitle = "Showing $type Payments for " . $userName;
 
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('value');
@@ -161,7 +170,7 @@ class PaymentsController extends Controller
         $this->data['cols'] = ['User', 'Date', 'Amount', 'Note', 'Collector'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'app_users_id', 'app_user', 'USER_NAME']],
-            ['date' => ['att' => 'created_at', 'format' => 'Y-m-d']],
+            ['date' => ['att' => 'created_at', 'format' => 'Y-F-d H:i']],
             'value',
             ['comment' => ['att' => 'note']],
             ['foreignUrl' => ['users/profile', 'collected_by', 'collected_by_user', 'USER_NAME']],
