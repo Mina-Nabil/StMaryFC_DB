@@ -132,10 +132,10 @@ class AttendanceController extends Controller
         $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Taken By', 'Delete'];
         $this->data['atts'] =
             [
-                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']],
+                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'ATND_NAME']],
                 'GRUP_NAME',
                 ['verified' => ['att' => 'ATND_DATE', 'isVerified' => 'ATND_PAID']],
-                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_TAKN_ID', 'shownAtt' => 'USER_NAME']],
+                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_TAKN_ID', 'shownAtt' => 'TAKN_NAME']],
                 ['delJs'  =>  ['att' => 'id', 'func' => 'deleteAttendace']]
             ];
 

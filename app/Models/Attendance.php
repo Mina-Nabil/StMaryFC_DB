@@ -18,14 +18,19 @@ class Attendance extends Model
 
     public static function getAttendance($from, $to, $user = 0, $group = 0)
     {
-        $query = DB::table('attendance')->join('app_users', 'app_users.id', '=', 'ATND_USER_ID')->join('groups', 'groups.id', '=', 'USER_GRUP_ID')
+        $query = DB::table('attendance')
+        ->join('app_users', 'app_users.id', '=', 'ATND_USER_ID')
+        ->leftjoin('app_users as taken_users', 'taken_users.id', '=', 'ATND_TAKN_ID')
+        ->join('groups', 'groups.id', '=', 'app_users.USER_GRUP_ID')
             ->whereBetween('ATND_DATE', [$from, $to]);
         if ($user != 0) {
             $query = $query->where('ATND_USER_ID', $user);
         } else if ($group != 0) {
             $query = $query->where('USER_GRUP_ID', $group);
         }
-        return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'USER_NAME', 'GRUP_NAME', 'ATND_USER_ID')
+        return $query->select('attendance.id', 'ATND_DATE', 'ATND_PAID', 'GRUP_NAME', 'ATND_USER_ID', 'ATND_TAKN_ID')
+        ->selectRaw('app_users.USER_NAME as ATND_NAME')
+        ->selectRaw('taken_users.USER_NAME as TAKN_NAME')
             ->orderByDesc('ATND_DATE')
             ->get();
     }
