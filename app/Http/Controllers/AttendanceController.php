@@ -129,12 +129,13 @@ class AttendanceController extends Controller
         $totalNo = $this->data['items']->count();
         $paidNo = $this->data['items']->sum('ATND_PAID');
         $this->data['subTitle'] = "Attendance Paid {$paidNo} / {$totalNo}";
-        $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Delete'];
+        $this->data['cols'] = ['User', 'Class', 'Attendance Dates', 'Taken By', 'Delete'];
         $this->data['atts'] =
             [
                 ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']],
                 'GRUP_NAME',
                 ['verified' => ['att' => 'ATND_DATE', 'isVerified' => 'ATND_PAID']],
+                ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_TAKN_ID', 'shownAtt' => 'USER_NAME']],
                 ['delJs'  =>  ['att' => 'id', 'func' => 'deleteAttendace']]
             ];
 

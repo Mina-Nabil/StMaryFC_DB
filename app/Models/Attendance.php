@@ -6,6 +6,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Attendance extends Model
@@ -56,6 +57,7 @@ class Attendance extends Model
                 'ATND_DATE' => $date,
                 'ATND_PAID' => ($isPaid) ? 1 : 0,
                 'ATND_USER_ID' => $userID,
+                'ATND_TAKN_ID' => Auth::id(),
             ]);
         } else return 0;
     }
@@ -78,8 +80,12 @@ class Attendance extends Model
     }
 
     ///relations
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo("App\Models\User", "ATND_USER_ID");
+    }
+    public function taken_by(): BelongsTo
+    {
+        return $this->belongsTo("App\Models\User", "ATND_TAKN_ID");
     }
 }
