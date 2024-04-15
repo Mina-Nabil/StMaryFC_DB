@@ -34,7 +34,7 @@ class PaymentsController extends Controller
         $data['subTitle'] = "Check total due amounts";
         $data['cols'] = ['User', 'due'];
         $data['atts'] = [
-            ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'ATND_USER_ID', 'shownAtt' => 'USER_NAME']],
+            ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'id', 'shownAtt' => 'USER_NAME']],
             'balance'
         ];
 
