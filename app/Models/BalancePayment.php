@@ -34,7 +34,8 @@ class BalancePayment extends Model
         Old Balance       : {$oldBalance}EGP
         {$this->title}    : {$this->value}EGP
                   ------------------------
-        New balance       : {$this->new_balance}EGP";
+        New balance       : {$this->new_balance}EGP 
+        Till {$now->format('d-M-Y')}";
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
     }
 
