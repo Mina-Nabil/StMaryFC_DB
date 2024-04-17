@@ -31,6 +31,7 @@ class PaymentsController extends Controller
     {
         $data['selected_group'] = $req->group_id ?? 0;
         $data['items'] = User::due($data['selected_group'])->get();
+        $data['groups'] = Group::all();
         $data['title'] = "Payments Due -- Total: " . number_format($data['items']->sum('balance'));
         $data['subTitle'] = "Check total due amounts";
         $data['cols'] = ['User', 'due'];
