@@ -134,6 +134,7 @@ class PaymentsController extends Controller
         $endDate = $endDate->setTime(23, 59, 59);
         $paymentQuery = BalancePayment::with('app_user')
             ->when($collector_id, function ($q, $c_id) {
+                if ($c_id == -1) $c_id = NULL;
                 $q->where("collected_by", $c_id);
             })
             ->whereBetween("created_at", [$startDate, $endDate]);
