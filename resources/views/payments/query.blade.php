@@ -30,6 +30,7 @@
                             <select name=collectorID class="select2 form-control custom-select" style="width: 100%; height:36px;" >
                                 <option value="" disabled >Pick From Coaches and Admins</option>
                                 <option value="0" selected>All Users</option>
+                                <option value="-1" selected>System</option>
                                 @foreach($collectors as $c)
                                 <option value="{{ $c->id }}">{{$c->USER_NAME}}</option>
                                 @endforeach

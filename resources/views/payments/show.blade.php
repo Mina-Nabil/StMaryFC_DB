@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @if ($showDueFilter)
+    @if (isset($showDueFilter) && $showDueFilter)
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
