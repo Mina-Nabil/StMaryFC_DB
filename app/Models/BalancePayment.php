@@ -29,13 +29,19 @@ class BalancePayment extends Model
         $now = new Carbon($this->created_at);
         $this->loadMissing('app_user');
         $oldBalance = $this->new_balance - $this->value;
-        $msg = "Balance Update 
+        $is_monthly_balance_update = str_contains($this->title, "Atnd");
+        $is_new_payment = str_contains($this->title, "New Payment");
+        $messageTitle = $is_monthly_balance_update ? str_replace("Atnd", "Attendance", $this->title) : (($is_new_payment) ? str_replace("New Payment", "Payment Receipt", $this->title) :
+            $this->title);
+        $msg = "$messageTitle 
              {$this->app_user->USER_NAME}
         Old Balance       : {$oldBalance}EGP
         {$this->title}    : {$this->value}EGP
                   ------------------------
-        New balance       : {$this->new_balance}EGP 
-        Till {$now->format('d-M-Y')}";
+        New balance       : {$this->new_balance}EGP ";
+        if ($is_monthly_balance_update) {
+            $msg .= "Till {$now->format('d-M-Y')}";
+        }
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
     }
 
