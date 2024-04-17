@@ -62,7 +62,8 @@ class User extends Authenticatable
             $now = new Carbon($this->created_at);
             $balance = $latestPayment ? $latestPayment->new_balance : 0;
             $firstName = explode(' ', $this->USER_NAME)[0];
-            $msg = "Dear $firstName's Parent,
+            $msg = "Remidner
+            Dear $firstName's Parent,
             We kindly remind you that your current balance is $balance EGP 
             till {$now->format('d-M-Y')}
 
@@ -124,8 +125,11 @@ class User extends Authenticatable
         return $query->whereIn('USER_USTP_ID', [1, 3]);
     }
 
-    public function scopeDue($query)
+    public function scopeDue($query, $group_id = null)
     {
+        $query->when($group_id, function ($q, $g) {
+            $q->where('USER_GRUP_ID', $g);
+        });
         return $query->where('balance', '!=', 0);
     }
 

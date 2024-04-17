@@ -27,9 +27,10 @@ class PaymentsController extends Controller
         return view('payments.show', $this->data);
     }
 
-    public function due()
+    public function due(Request $req)
     {
-        $data['items'] = User::due()->get();
+        $data['selected_group'] = $req->group_id ?? 0;
+        $data['items'] = User::due()->get($data['selected_group']);
         $data['title'] = "Payments Due -- Total: " . number_format($data['items']->sum('balance'));
         $data['subTitle'] = "Check total due amounts";
         $data['cols'] = ['User', 'due'];
@@ -37,6 +38,7 @@ class PaymentsController extends Controller
             ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'id', 'shownAtt' => 'USER_NAME']],
             'balance'
         ];
+        $data['showDueFilter'] = true;
 
         return view('payments.show', $data);
     }

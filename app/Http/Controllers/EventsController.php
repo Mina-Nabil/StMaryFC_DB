@@ -189,6 +189,7 @@ class EventsController extends Controller
             'EVPY_AMNT',
             'created_at',
             ['foreignUrl' => ['users/profile', 'EVPY_CLCT_ID', 'collector', 'USER_NAME']],
+            // ['comment' => ['att' =>'EVPY_NOTE']],
         ];
 
         return view('events.show', $data);
