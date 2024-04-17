@@ -18,6 +18,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <button type="submit" class="btn btn-success mr-2">Submit</button>
                     </div>
                 </div>
             </div>
