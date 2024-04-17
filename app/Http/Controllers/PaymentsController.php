@@ -30,7 +30,7 @@ class PaymentsController extends Controller
     public function due(Request $req)
     {
         $data['selected_group'] = $req->group_id ?? 0;
-        $data['items'] = User::due()->get($data['selected_group']);
+        $data['items'] = User::due($data['selected_group'])->get();
         $data['title'] = "Payments Due -- Total: " . number_format($data['items']->sum('balance'));
         $data['subTitle'] = "Check total due amounts";
         $data['cols'] = ['User', 'due'];

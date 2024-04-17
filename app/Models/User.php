@@ -127,8 +127,8 @@ class User extends Authenticatable
 
     public function scopeDue($query, $group_id = null)
     {
-        $query->when($group_id != 0, function ($q, $g) use ($group_id){
-            $q->where('USER_GRUP_ID', "=" ,$group_id);
+        $query->when($group_id, function ($q, $g){
+            $q->where('USER_GRUP_ID', "=" ,$g);
         });
         return $query->where('balance', '!=', 0);
     }
