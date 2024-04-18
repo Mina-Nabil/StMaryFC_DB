@@ -64,8 +64,8 @@ class User extends Authenticatable
             $firstName = explode(' ', $this->USER_NAME)[0];
             $msg = "Remidner
             Dear $firstName's Parent,
+            
             We kindly remind you that your current balance is $balance EGP 
-            till {$now->format('d-M-Y')}
 
             Thank you";
 
