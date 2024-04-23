@@ -64,9 +64,7 @@ class User extends Authenticatable
             $firstName = explode(' ', $this->USER_NAME)[0];
             $msg = "Reminder
             Dear $firstName's Parent,
-            
             We kindly remind you that your current balance is $balance EGP 
-
             Thank you";
 
             Payment::sendSMS($this->USER_MOBN, $msg);

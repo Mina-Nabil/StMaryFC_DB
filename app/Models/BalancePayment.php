@@ -35,10 +35,10 @@ class BalancePayment extends Model
             $this->title);
         $msg = "$messageTitle 
              {$this->app_user->USER_NAME}
-        Old Balance       : {$oldBalance}EGP
-        {$this->title}    : {$this->value}EGP
+        Old Balance       : {$oldBalance} EGP
+        {$this->title}    : {$this->value} EGP
                   ------------------------
-        New balance       : {$this->new_balance}EGP ";
+        New balance       : {$this->new_balance} EGP ";
         if ($is_monthly_balance_update) {
             $msg .= "Till {$now->format('d-M-Y')}";
         }
