@@ -570,7 +570,7 @@ class ApiController extends Controller
 
         if ($res) {
             return $this->getApiMessage(true, [
-                'update_message' => $res,
+                'update_message' => "test",
                 'number' => $user->USER_MOBN
             ]);
         } else {
