@@ -24,7 +24,7 @@ class Attendance extends Model
         ->join('groups', 'groups.id', '=', 'app_users.USER_GRUP_ID')
             ->whereBetween('ATND_DATE', [$from, $to]);
         if ($user != 0) {
-            $query = $query->where('app_users.ATND_USER_ID', $user);
+            $query = $query->where('attendance.ATND_USER_ID', $user);
         } else if ($group != 0) {
             $query = $query->where('app_users.USER_GRUP_ID', $group);
         }

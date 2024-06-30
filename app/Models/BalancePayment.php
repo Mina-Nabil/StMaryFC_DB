@@ -22,7 +22,12 @@ class BalancePayment extends Model
         'new_balance', 'title', 'desc'
     ];
 
-    public function sendSms()
+    public function getSms()
+    {
+        return self::sendSms(true);
+    }
+
+    public function sendSms($return_text_only = false)
     {
         if ($this->is_settlment) return;
 
@@ -42,6 +47,7 @@ class BalancePayment extends Model
         if ($is_monthly_balance_update) {
             $msg .= "Till {$now->format('d-M-Y')}";
         }
+        if ($return_text_only) return $msg;
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
     }
 

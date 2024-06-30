@@ -87,6 +87,17 @@ class User extends Authenticatable
         }
     }
 
+    public function getLastUpdate()
+    {
+        try {
+            $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
+            return $latestPayment?->getSms();
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+
     public function sendSMS($msg)
     {
         Payment::sendSMS($this->USER_MOBN, $msg);
@@ -279,7 +290,9 @@ class User extends Authenticatable
             $user->USER_MAIN_IMGE = NULL;
             $user->save();
             $user->attendance()->delete();
+            $user->balance_payments()->delete();
             $user->payments()->delete();
+            $user->eventPayments()->delete();
             $user->images()->delete();
             // do the rest of the cleanup...
         });

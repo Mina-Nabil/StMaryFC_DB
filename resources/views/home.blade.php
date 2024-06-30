@@ -30,6 +30,11 @@
                                 <a style="font-family: 'Oswald'" href="{{url('users/show')}}" class="btn btn-dark d-lg-block m-15"><i class="fa fa-plus-circle"></i> All App Users</a>
                             </div>
                         </div>
+                        <div class=col-6>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a style="font-family: 'Oswald'" href="{{url('attendance/overview')}}" class="btn btn-dark d-lg-block m-15"><i class="fa fa-plus-circle"></i> Attendance Overview</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
