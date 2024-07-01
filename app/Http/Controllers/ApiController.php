@@ -594,7 +594,7 @@ class ApiController extends Controller
         $user = User::findOrFail($request->userID);
 
         /** @var BalancePayment */
-        $update = BalancePayment::findOrFail($request->id);
+        $update = BalancePayment::findOrFail($request->balanceID);
         $res = $update->getSms();
         Log::info($res);
         if ($res) {
