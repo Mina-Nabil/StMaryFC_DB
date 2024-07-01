@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->post('/delete/event/payment', 'ApiController@
 Route::middleware('auth:sanctum')->get('/user/balance/{id}', 'ApiController@getBalanceEntries');
 Route::middleware('auth:sanctum')->post('/send/reminder', 'ApiController@sendReminder');
 Route::middleware('auth:sanctum')->post('/send/last/update', 'ApiController@sendLastUpdate');
+Route::middleware('auth:sanctum')->post('/get/update/{id}', 'ApiController@sendBalanceUpdate');
 Route::middleware('auth:sanctum')->post('/get/last/update', 'ApiController@getLastUpdate');
 Route::middleware('auth:sanctum')->post('/send/sms', 'ApiController@sendSMS');
 

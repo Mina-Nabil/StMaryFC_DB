@@ -578,6 +578,32 @@ class ApiController extends Controller
         }
     }
 
+    public function getBalanceUpdate($id, Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id'
+        ]);
+
+        /** @var BalancePayment */
+        $user = User::findOrFail($request->userID);
+
+        /** @var BalancePayment */
+        $update = BalancePayment::findOrFail($id);
+        $res = $update->getSms();
+
+        if ($res) {
+            return $this->getApiMessage(true, [
+                'update_message' => $res,
+                'number' => $user->USER_MOBN
+            ]);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
+        }
+    }
+
     public function sendSMS(Request $request)
     {
         $user = Auth::user();
