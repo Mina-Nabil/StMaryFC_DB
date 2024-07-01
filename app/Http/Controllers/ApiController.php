@@ -555,6 +555,29 @@ class ApiController extends Controller
         }
     }
 
+    public function getBalanceReminder(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID" => 'required|exists:app_users,id'
+        ]);
+
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        $res = $user->getReminder();
+
+        if ($res) {
+            return $this->getApiMessage(true, [
+                'reminder_message' => $res,
+                'number' => $user->USER_MOBN
+            ]);
+        } else {
+            return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
+        }
+    }
+
     public function getLastUpdate(Request $request)
     {
         $user = Auth::user();
@@ -592,13 +615,12 @@ class ApiController extends Controller
 
         /** @var User */
         $user = User::findOrFail($request->userID);
-        Log::info($user);
 
         /** @var BalancePayment */
         $update = BalancePayment::findOrFail($request->balanceID);
-        Log::info($update);
+
         $res = $update->getSms();
-        Log::info($res);
+
         if ($res) {
             return $this->getApiMessage(true, [
                 'update_message' => $res,

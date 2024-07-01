@@ -87,6 +87,28 @@ class User extends Authenticatable
         }
     }
 
+    public function getReminder()
+    {
+        try {
+            $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
+            $now = new Carbon($this->created_at);
+            $balance = $latestPayment ? $latestPayment->new_balance : 0;
+            $firstName = explode(' ', $this->USER_NAME)[0];
+            $msg = `               REMINDER    
+                    ............................................
+
+                    Dear $firstName 's  Parent,
+                    we kindly remind you
+                    that your current
+                    balance is  $balance EGP`;
+
+            return $msg;
+        } catch (Exception $e) {
+            report($e);
+            return false;
+        }
+    }
+
     public function getLastUpdate()
     {
         try {
