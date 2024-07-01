@@ -70,6 +70,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label>User Category*</label>
+                        <div class="input-group mb-3">
+                            <select name=catg class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
+                                <option value="" disabled selected>Pick From Users Categories</option>
+                                @foreach($categories as $catg)
+                                <option value="{{ $catg->id }}" @if(isset($user) && $catg->id == $user->player_category_id)
+                                    selected
+                                    @elseif($catg->id == old('catg'))
+                                    selected
+                                    @endif
+                                    >{{$catg->title}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <small class="text-danger">{{$errors->first('catg')}}</small>
+                    </div>
+
+                    <div class="form-group">
                         <label>Birth Date</label>
                         <div class="input-group mb-3">
                             <input type="date" value="{{$user->USER_BDAY ?? now()->format('Y-m-d')}}" class="form-control" placeholder="Pick a date" name=birthDate required />

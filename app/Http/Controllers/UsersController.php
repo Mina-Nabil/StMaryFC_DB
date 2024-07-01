@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\CategoryDetail;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\PlayersCatogory;
@@ -195,6 +196,7 @@ class UsersController extends Controller
     {
         $this->data['types'] = UserType::all();
         $this->data['images'] = UserImage::all();
+        $this->data['categories'] = PlayersCatogory::all();
         $this->data['groups'] = Group::all();
         $this->data['formTitle'] = "Add New User";
         $this->data['formURL'] = "users/insert";
