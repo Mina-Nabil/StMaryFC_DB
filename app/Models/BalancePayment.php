@@ -36,7 +36,7 @@ class BalancePayment extends Model
         $oldBalance = $this->new_balance - $this->value;
         $is_monthly_balance_update = str_contains($this->title, "Atnd");
         $is_new_payment = str_contains($this->title, "New Payment");
-        $messageTitle = $is_monthly_balance_update ? $now->subMonth()->shortEnglishMonth : (($is_new_payment) ? "Payment Receipt" :
+        $messageTitle = $is_monthly_balance_update ? $now->subMonth()->shortEnglishMonth . " Report": (($is_new_payment) ? "Payment Receipt" :
             $this->title);
         if (str_contains($this->title, "Atnd")) {
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
@@ -44,14 +44,14 @@ class BalancePayment extends Model
 
         $msg = "               $messageTitle
 
-                         {$this->app_user->USER_NAME}
-                    .........................................
+{$this->app_user->USER_NAME}
+.........................................
 
-                    Old Balance          {$oldBalance} EGP
+Old Balance          {$oldBalance} EGP
 
-                    {$this->title}       {$this->value} EGP
-                    .........................................
-                    New Balance          {$this->new_balance} EGP";
+{$this->title}       {$this->value} EGP
+.........................................
+New Balance          {$this->new_balance} EGP";
 
         // if ($is_monthly_balance_update) {
         //     $msg .= "Till {$now->format('d-M-Y')}";
