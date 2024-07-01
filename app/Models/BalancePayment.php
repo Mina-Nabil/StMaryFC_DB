@@ -56,6 +56,7 @@ class BalancePayment extends Model
         // if ($is_monthly_balance_update) {
         //     $msg .= "Till {$now->format('d-M-Y')}";
         // }
+        Log::info($msg);
         if ($return_text_only) return $msg;
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
     }

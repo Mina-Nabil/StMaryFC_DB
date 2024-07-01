@@ -605,8 +605,7 @@ class ApiController extends Controller
     {
         $user = Auth::user();
         if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
-        Log::info($request->userID);
-        Log::info($request->balanceID);
+
 
         $this->validateRequest($request, [
             "userID" => 'required|exists:app_users,id',
