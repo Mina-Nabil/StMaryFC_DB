@@ -578,20 +578,21 @@ class ApiController extends Controller
         }
     }
 
-    public function getBalanceUpdate($id, Request $request)
+    public function getBalanceUpdate(Request $request)
     {
         $user = Auth::user();
         if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
 
         $this->validateRequest($request, [
-            "userID" => 'required|exists:app_users,id'
+            "userID" => 'required|exists:app_users,id',
+            "balanceID" => 'required|exists:balance_payments,id',
         ]);
 
         /** @var BalancePayment */
         $user = User::findOrFail($request->userID);
 
         /** @var BalancePayment */
-        $update = BalancePayment::findOrFail($id);
+        $update = BalancePayment::findOrFail($request->id);
         $res = $update->getSms();
 
         if ($res) {
