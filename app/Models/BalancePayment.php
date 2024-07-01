@@ -42,7 +42,7 @@ class BalancePayment extends Model
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
         }
 
-        $msg = `               $messageTitle
+        $msg = "               $messageTitle
 
                          {$this->app_user->USER_NAME}
                     .........................................
@@ -51,7 +51,7 @@ class BalancePayment extends Model
 
                     {$this->title}       {$this->value} EGP
                     .........................................
-                    New Balance          {$this->new_balance} EGP`;
+                    New Balance          {$this->new_balance} EGP";
 
         // if ($is_monthly_balance_update) {
         //     $msg .= "Till {$now->format('d-M-Y')}";
