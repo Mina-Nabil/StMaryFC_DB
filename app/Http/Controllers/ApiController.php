@@ -594,7 +594,7 @@ class ApiController extends Controller
         /** @var BalancePayment */
         $update = BalancePayment::findOrFail($request->id);
         $res = $update->getSms();
-
+        Log::info($res);
         if ($res) {
             return $this->getApiMessage(true, [
                 'update_message' => $res,
