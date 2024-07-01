@@ -590,11 +590,13 @@ class ApiController extends Controller
             "balanceID" => 'required|exists:balance_payments,id',
         ]);
 
-        /** @var BalancePayment */
+        /** @var User */
         $user = User::findOrFail($request->userID);
+        Log::info($user);
 
         /** @var BalancePayment */
         $update = BalancePayment::findOrFail($request->balanceID);
+        Log::info($update);
         $res = $update->getSms();
         Log::info($res);
         if ($res) {
