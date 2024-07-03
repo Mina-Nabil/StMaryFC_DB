@@ -42,20 +42,24 @@ class BalancePayment extends Model
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
         }
 
-        $msg = ".                $messageTitle
+        $msg = ".     $messageTitle
 
-*{$this->app_user->USER_NAME}*
-.........................................
+.          *{$this->app_user->USER_NAME}*
+............................................
 
 Old Balance          {$oldBalance} EGP
 
 {$this->title}       {$this->value} EGP
-.........................................
+............................................
 *New* Balance          *{$this->new_balance}* *EGP*";
 
-        // if ($is_monthly_balance_update) {
-        //     $msg .= "Till {$now->format('d-M-Y')}";
-        // }
+        if ($is_new_payment) {
+            $msg .= "            
+            
+            
+............................................
+.            THANK YOU";
+        }
         Log::info($msg);
         if ($return_text_only) return $msg;
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);
