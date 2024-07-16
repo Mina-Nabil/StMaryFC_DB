@@ -35,8 +35,8 @@ class BalancePayment extends Model
         $oldBalance = $this->new_balance - $this->value;
         $is_monthly_balance_update = str_contains($this->title, "Atnd");
         $is_new_payment = str_contains($this->title, "New Payment");
-        $messageTitle = $is_monthly_balance_update ? $now->subMonth()->shortEnglishMonth . " Report": (($is_new_payment) ? "Payment Receipt" :
-            $this->title);
+        $messageTitle = $this->is_settlment ? "Settlment"  :(  $is_monthly_balance_update ? $now->subMonth()->shortEnglishMonth . " Report": (($is_new_payment) ? "Payment Receipt" :
+            $this->title));
         if (str_contains($this->title, "Atnd")) {
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
         }
