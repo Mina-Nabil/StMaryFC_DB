@@ -29,7 +29,6 @@ class BalancePayment extends Model
 
     public function sendSms($return_text_only = false)
     {
-        if ($this->is_settlment) return;
 
         $now = new Carbon($this->created_at);
         $this->loadMissing('app_user');
