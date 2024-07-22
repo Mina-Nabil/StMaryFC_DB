@@ -43,21 +43,21 @@ class BalancePayment extends Model
 
         $msg = ".     $messageTitle
 
-.          *{$this->app_user->USER_NAME}*
+          *{$this->app_user->USER_NAME}*
 ............................................
 
 Old Balance          {$oldBalance} EGP
 
 {$this->title}       {$this->value} EGP
 ............................................
-*New* Balance          *{$this->new_balance}* *EGP*";
+*New* *Balance*          *{$this->new_balance}* *EGP*";
 
         if ($is_new_payment) {
             $msg .= "            
             
             
 ............................................
-.            THANK YOU";
+            THANK YOU";
         }
         Log::info($msg);
         if ($return_text_only) return $msg;
