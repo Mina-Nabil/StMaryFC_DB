@@ -163,9 +163,9 @@ class ApiController extends Controller
                 }
                 if (count($failedIDs) == 0) {
                     return $this->getApiMessage(1);
-                } elseif (count($failedIDs) < count($request->userIDs)) {
+                } elseif (count($failedIDs) < count($userIDs)) {
                     return $this->getApiMessage(2, ['failedIDs' => $failedIDs]);
-                } elseif (count($failedIDs) == count($request->userIDs)) {
+                } elseif (count($failedIDs) == count($userIDs)) {
                     return $this->getApiMessage(false, ['Message' => "Failed to take attendance"]);
                 } else {
                     return $this->getApiMessage(false, ['Message' => "Oops Something went wrong!"]);
@@ -485,6 +485,7 @@ class ApiController extends Controller
 
     public function addPayment(Request $request)
     {
+        Log::info("GEET ASLAN");
         $user = Auth::user();
         if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
 
