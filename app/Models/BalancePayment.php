@@ -40,17 +40,19 @@ class BalancePayment extends Model
         if (str_contains($this->title, "Atnd")) {
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
         }
-
+        $valueText = str_replace("-", "- ", $this->value);
+        $balanceText = str_replace("-", "- ", $this->new_balance);
+        $oldBalanceText = str_replace("-", "- ", $oldBalance);
         $msg = ".     $messageTitle
 
           *{$this->app_user->USER_NAME}*
 ............................................
 
-Old Balance          {$oldBalance} EGP
+Old Balance          {$oldBalanceText} EGP
 
-{$this->title}       {$this->value} EGP
+{$this->title}       {$valueText} EGP
 ............................................
-*New* *Balance*          *{$this->new_balance}* *EGP*";
+*New* *Balance*          *{$balanceText}* *EGP*";
 
         if ($is_new_payment) {
             $msg .= "            
