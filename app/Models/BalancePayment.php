@@ -43,16 +43,16 @@ class BalancePayment extends Model
         $valueText = str_replace("-", "- ", $this->value);
         $balanceText = str_replace("-", "- ", $this->new_balance);
         $oldBalanceText = str_replace("-", "- ", $oldBalance);
-        $msg = ".     $messageTitle
+        $msg = ".           *$messageTitle*
 
           *{$this->app_user->USER_NAME}*
 ............................................
 
-Old Balance          {$oldBalanceText} EGP
+Old Balance             {$oldBalanceText} EGP
 
-{$this->title}       {$valueText} EGP
+{$this->title}          {$valueText} EGP
 ............................................
-*New* *Balance*          *{$balanceText}* *EGP*";
+*New* *Balance*         *{$balanceText}* *EGP*";
 
         if ($is_new_payment) {
             $msg .= "            
