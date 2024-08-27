@@ -127,7 +127,7 @@
                                                 href="{{ url($att['foreignUrl'][0] . '/' . $item->{$att['foreignUrl']['1']}) }}">{{ $item->{$att['foreignUrl'][2]}->{$att['foreignUrl'][3]} ?? '' }}</a>
                                         </td>
                                     @elseif(array_key_exists('sendwhatsappPayment', $att))
-                                        <td><a
+                                        <td><a target="_blank"
                                                 href="https://wa.me/{{ $item->app_user->USER_MOBN }}?text={{ urlencode($item->sendSms(true)) }}">Send</a>
                                         </td>
                                     @elseif(array_key_exists('assetImg', $att))
