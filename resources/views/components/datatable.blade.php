@@ -128,7 +128,7 @@
                                         </td>
                                     @elseif(array_key_exists('sendwhatsappPayment', $att))
                                         <td><a target="_blank"
-                                                href="https://wa.me/+2{{ $item->app_user->USER_MOBN }}?text={{ urlencode($item->sendSms(true)) }}"><i class="fa fa-whatsapp"></i></a>
+                                                href="https://wa.me/+2{{ $item->app_user->USER_MOBN }}?text={{ urlencode($item->sendSms(true)) }}"><i class="fa fa-whatsapp"  style="font-size:48px;color:#25D366"></i></a>
                                         </td>
                                     @elseif(array_key_exists('assetImg', $att))
                                         <td>
