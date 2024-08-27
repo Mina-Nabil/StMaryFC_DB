@@ -178,7 +178,7 @@ class PaymentsController extends Controller
             'value',
             ['comment' => ['att' => 'note']],
             ['foreignUrl' => ['users/profile', 'collected_by', 'collected_by_user', 'USER_NAME']],
-            ['sendwhatsappPayment'],
+            ['sendwhatsappPayment' => ''],
         ];
     }
 }
