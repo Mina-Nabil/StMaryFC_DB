@@ -171,13 +171,14 @@ class PaymentsController extends Controller
         $this->data['items'] = $paymentQuery->get();
         $this->data['title'] =  "Payments Report -- Total: " . $this->data['items']->sum('value');
         $this->data['subTitle'] = $userTitle . " From "  . $startDate->format('Y-F-d') . " to " . $endDate->format('Y-F-d');
-        $this->data['cols'] = ['User', 'Date', 'Amount', 'Note', 'Collector'];
+        $this->data['cols'] = ['User', 'Date', 'Amount', 'Note', 'Collector', 'Send'];
         $this->data['atts'] = [
             ['foreignUrl' => ['users/profile', 'app_users_id', 'app_user', 'USER_NAME']],
             ['date' => ['att' => 'created_at', 'format' => 'Y-F-d H:i']],
             'value',
             ['comment' => ['att' => 'note']],
             ['foreignUrl' => ['users/profile', 'collected_by', 'collected_by_user', 'USER_NAME']],
+            ['sendwhatsappPayment' => ['USER_MOBN']],
         ];
     }
 }
