@@ -128,7 +128,7 @@
                                         </td>
                                     @elseif(array_key_exists('sendwhatsappPayment', $att))
                                         <td><a
-                                                href="https://wa.me/{{ $item->{$att['sendwhatsappPayment']['0']} }}?text={{ urlencode($item->sendSms(true)) }}">Send</a>
+                                                href="https://wa.me/{{ $item->app_user->USER_MOBN }}?text={{ urlencode($item->sendSms(true)) }}">Send</a>
                                         </td>
                                     @elseif(array_key_exists('assetImg', $att))
                                         <td>
