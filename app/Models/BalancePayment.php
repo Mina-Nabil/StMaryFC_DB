@@ -52,7 +52,7 @@ Old Balance             {$oldBalanceText} EGP
 
 {$this->title}          {$valueText} EGP
 ..................................................
-*New* *Balance*         *{$balanceText}* *EGP*";
+*New* *Balance*          *{$balanceText}* *EGP*";
 
         if ($is_new_payment) {
             $msg .= "            
