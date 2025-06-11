@@ -98,9 +98,8 @@ class User extends Authenticatable
 ............................................
 
 Dear $firstName 's  Parent,
-we kindly remind you
-that your current
-balance is  $balance EGP";
+kindly settle the outstanding 
+balance of $balance EGP";
 
             return $msg;
         } catch (Exception $e) {
