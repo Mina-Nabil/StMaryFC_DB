@@ -94,12 +94,10 @@ class User extends Authenticatable
             $now = new Carbon($this->created_at);
             $balance = $latestPayment ? $latestPayment->new_balance : 0;
             $firstName = explode(' ', $this->USER_NAME)[0];
-            $msg = "               REMINDER    
-............................................
-
+            $msg = "
 Dear $firstName 's  Parent,
 kindly settle the outstanding 
-balance of $balance EGP";
+balance of *$balance EGP*";
 
             return $msg;
         } catch (Exception $e) {
