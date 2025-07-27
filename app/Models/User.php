@@ -76,11 +76,11 @@ class User extends Authenticatable
         }
     }
 
-    public function sendLastUpdate()
+    public function sendLastUpdate($get_text_only = false)
     {
         try {
             $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
-            return $latestPayment?->sendSms();
+            return $latestPayment?->sendSms($get_text_only);
         } catch (Exception $e) {
             report($e);
             return false;
