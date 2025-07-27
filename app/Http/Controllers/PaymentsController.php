@@ -34,10 +34,11 @@ class PaymentsController extends Controller
         $data['groups'] = Group::all();
         $data['title'] = "Payments Due -- Total: " . number_format($data['items']->sum('balance'));
         $data['subTitle'] = "Check total due amounts";
-        $data['cols'] = ['User', 'due'];
+        $data['cols'] = ['User', 'due', 'action'];
         $data['atts'] = [
             ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'id', 'shownAtt' => 'USER_NAME']],
-            'balance'
+            'balance',
+            ['sendwhatsappPayment' => '']
         ];
         $data['showDueFilter'] = true;
 
