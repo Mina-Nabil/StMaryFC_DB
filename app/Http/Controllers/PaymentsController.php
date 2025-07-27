@@ -38,7 +38,7 @@ class PaymentsController extends Controller
         $data['atts'] = [
             ['attUrl' => ['url' => 'users/profile', 'urlAtt' => 'id', 'shownAtt' => 'USER_NAME']],
             'balance',
-            ['sendwhatsappPayment' => '']
+            ['sendwhatsappPaymentUser' => '']
         ];
         $data['showDueFilter'] = true;
 

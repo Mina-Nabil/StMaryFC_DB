@@ -130,6 +130,10 @@
                                         <td><a target="_blank"
                                                 href="https://wa.me/+2{{ $item->app_user->USER_MOBN }}?text={{ urlencode($item->sendSms(true)) }}"><i class="fab fa-whatsapp"  style="font-size:25px;color:#25D366"></i></a>
                                         </td>
+                                    @elseif(array_key_exists('sendwhatsappPaymentUser', $att))
+                                        <td><a target="_blank"
+                                                href="https://wa.me/+2{{ $item->USER_MOBN }}?text={{ urlencode($item->sendLastUpdate()) }}"><i class="fab fa-whatsapp"  style="font-size:25px;color:#25D366"></i></a>
+                                        </td>
                                     @elseif(array_key_exists('assetImg', $att))
                                         <td>
                                             <img src="{{ asset('storage/' . $item->{$att['assetImg']['filename']}) }}"
