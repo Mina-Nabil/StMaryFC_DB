@@ -55,7 +55,7 @@ class User extends Authenticatable
         }
     }
 
-    public function sendBalanceReminder()
+    public function sendBalanceReminder($return_text_only = false)
     {
         try {
             $latestPayment = $this->balance_payments()->orderByDesc('id')->first();
@@ -67,7 +67,11 @@ class User extends Authenticatable
             We kindly remind you that your current balance is $balance EGP 
             Thank you";
 
-            Payment::sendSMS($this->USER_MOBN, $msg);
+            if ($return_text_only) {
+                return $msg;
+            } else {
+                Payment::sendSMS($this->USER_MOBN, $msg);
+            }
 
             return true;
         } catch (Exception $e) {
