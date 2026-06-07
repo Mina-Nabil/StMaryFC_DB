@@ -35,32 +35,28 @@ class BalancePayment extends Model
         $oldBalance = $this->new_balance - $this->value;
         $is_monthly_balance_update = str_contains($this->title, "Atnd");
         $is_new_payment = str_contains($this->title, "New Payment");
-        $messageTitle = $this->is_settlment ? "Settlment"  :(  $is_monthly_balance_update ? $now->subMonth()->shortEnglishMonth . " Report": (($is_new_payment) ? "Payment Receipt" :
-            $this->title));
+        $reportMonth = $now->subMonth()->shortEnglishMonth;
         if (str_contains($this->title, "Atnd")) {
             $this->title = str_replace('Atnd', 'Attendance', $this->title);
         }
         $valueText = str_replace("-", "- ", $this->value);
         $balanceText = str_replace("-", "- ", $this->new_balance);
         $oldBalanceText = str_replace("-", "- ", $oldBalance);
-        $msg = ".           *$messageTitle*
 
-          *{$this->app_user->USER_NAME}*
-..................................................
+        $key = $this->is_settlment ? 'receipt_settlement'
+            : ($is_monthly_balance_update ? 'receipt_attendance'
+                : ($is_new_payment ? 'receipt_new_payment' : 'receipt_generic'));
+        $data = [
+            '{{user_name}}'   => $this->app_user->USER_NAME,
+            '{{old_balance}}' => $oldBalanceText,
+            '{{value}}'       => $valueText,
+            '{{new_balance}}' => $balanceText,
+            '{{title}}'       => $this->title,
+            '{{report_month}}' => $reportMonth,
+        ];
+        $body = MessageTemplate::bodyByKey($key, MessageTemplate::defaultBody($key));
+        $msg = strtr($body, $data);
 
-Old Balance             {$oldBalanceText} EGP
-
-{$this->title}          {$valueText} EGP
-..................................................
-*New* *Balance*          *{$balanceText}* *EGP*";
-
-        if ($is_new_payment) {
-            $msg .= "            
-            
-            
-..................................................
-                   THANK YOU";
-        }
         Log::info($msg);
         if ($return_text_only) return $msg;
         return Payment::sendSMS($this->app_user->USER_MOBN, $msg);

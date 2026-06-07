@@ -62,10 +62,10 @@ class User extends Authenticatable
             $now = new Carbon($this->created_at);
             $balance = $latestPayment ? $latestPayment->new_balance : 0;
             $firstName = explode(' ', $this->USER_NAME)[0];
-            $msg = "Reminder
-            Dear $firstName's Parent,
-            We kindly remind you that your current balance is $balance EGP 
-            Thank you";
+            $data = ['{{first_name}}' => $firstName, '{{balance}}' => $balance];
+            $key = 'balance_reminder_sms';
+            $body = MessageTemplate::bodyByKey($key, MessageTemplate::defaultBody($key));
+            $msg = strtr($body, $data);
 
             if ($return_text_only) {
                 return $msg;
@@ -98,10 +98,10 @@ class User extends Authenticatable
             $now = new Carbon($this->created_at);
             $balance = $latestPayment ? $latestPayment->new_balance : 0;
             $firstName = explode(' ', $this->USER_NAME)[0];
-            $msg = "
-Dear $firstName 's  Parent,
-kindly settle the outstanding 
-balance of *$balance EGP*";
+            $data = ['{{first_name}}' => $firstName, '{{balance}}' => $balance];
+            $key = 'balance_reminder_whatsapp';
+            $body = MessageTemplate::bodyByKey($key, MessageTemplate::defaultBody($key));
+            $msg = strtr($body, $data);
 
             return $msg;
         } catch (Exception $e) {

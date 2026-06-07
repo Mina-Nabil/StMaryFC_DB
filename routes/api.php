@@ -47,6 +47,8 @@ Route::middleware('auth:sanctum')->post('/get/update/', 'ApiController@getBalanc
 Route::middleware('auth:sanctum')->post('/get/last/update', 'ApiController@getLastUpdate');
 Route::middleware('auth:sanctum')->post('/get/balance/reminder', 'ApiController@getBalanceReminder');
 Route::middleware('auth:sanctum')->post('/send/sms', 'ApiController@sendSMS');
+Route::middleware('auth:sanctum')->get('/sms/templates', 'ApiController@getMessageTemplates');
+Route::middleware('auth:sanctum')->post('/sms/templates/render', 'ApiController@renderMessageTemplate');
 
 //groups
 Route::middleware('auth:sanctum')->get('/users/by/group/id/{id}', 'ApiController@getUsersByGroupID');

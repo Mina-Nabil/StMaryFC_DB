@@ -191,6 +191,10 @@
 
                         </li>
 
+                        <li> <a href="{{url('messages/show')}}"><i class="fas fa-comment-dots"></i><span class="hide-menu">Messages</span></a>
+
+                        </li>
+
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

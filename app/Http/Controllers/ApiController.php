@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\EventPayment;
 use App\Models\EventsAttendance;
 use App\Models\Group;
+use App\Models\MessageTemplate;
 use App\Models\Payment;
 use App\Models\PlayersCatogory;
 use App\Models\User;
@@ -650,6 +651,40 @@ class ApiController extends Controller
         } else {
             return $this->getApiMessage(false, ['error' => 'Sending SMS failed']);
         }
+    }
+
+    public function getMessageTemplates(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $templates = MessageTemplate::where('is_system', false)
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return $this->getApiMessage(true, ['templates' => $templates]);
+    }
+
+    public function renderMessageTemplate(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->USER_USTP_ID == 4) abort(403, "Unauthorized");
+
+        $this->validateRequest($request, [
+            "userID"     => 'required|exists:app_users,id',
+            "templateID" => 'required|exists:message_templates,id',
+        ]);
+
+        /** @var User */
+        $user = User::findOrFail($request->userID);
+        /** @var MessageTemplate */
+        $template = MessageTemplate::findOrFail($request->templateID);
+
+        return $this->getApiMessage(true, [
+            'message' => $template->render(MessageTemplate::dataForUser($user)),
+            'number'  => $user->USER_MOBN,
+        ]);
     }
 
     public function deleteUserPayment(Request $request)

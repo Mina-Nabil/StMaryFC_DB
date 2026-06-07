@@ -105,17 +105,14 @@ class Payment extends Model
 
     public static function sendPaymentSMS($name, $mob, $amount, $month, $refund = false)
     {
-        if ($refund) $message = "[REFUND] \n";
-        else
-            $message = "St. Mary Rehab Football Academy \n";
-        $message .= "{$name} \n";
-        if ($refund)
-            $message .= "Refund {$amount} LE \n";
-        else
-            $message .= "Payment Received {$amount} LE \n";
-        $message .= "{$month}
-        
-        Thank you";
+        $key = $refund ? 'payment_refund' : 'payment_received';
+        $data = [
+            '{{user_name}}' => $name,
+            '{{value}}'     => $amount,
+            '{{month}}'     => $month,
+        ];
+        $body = MessageTemplate::bodyByKey($key, MessageTemplate::defaultBody($key));
+        $message = strtr($body, $data);
 
         return self::sendSMS($mob, $message);
     }

@@ -82,6 +82,14 @@ Route::get('groups/toggle/{id}', 'GroupsController@toggle');
 Route::post('groups/insert', 'GroupsController@insert');
 Route::post('groups/update', 'GroupsController@update');
 
+//Message templates
+Route::get('messages/show', 'MessagesController@home');
+Route::get('messages/edit/{id}', 'MessagesController@edit');
+Route::get('messages/toggle/{id}', 'MessagesController@toggle');
+Route::get('messages/delete/{id}', 'MessagesController@delete');
+Route::post('messages/insert', 'MessagesController@insert');
+Route::post('messages/update', 'MessagesController@update');
+
 //Dashboard users
 Route::get("dash/users/all", 'DashUsersController@index');
 Route::post("dash/users/insert", 'DashUsersController@insert');

@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             "USER_BDAY" => "1994-04-28",
             "USER_FACE_ID" => "NULL",
         ]);
+
+        $this->call(MessageTemplatesSeeder::class);
     }
 }
