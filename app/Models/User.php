@@ -135,7 +135,7 @@ class User extends Authenticatable
                 $event = Event::findOrFail($event_id);
                 EventPayment::addPayment($this->id, $event->id, $amount);
 
-                $this->addToBalance(-1 * $amount, "($event->EVNT_NAME) Receipt", $note, false);
+                $this->addToBalance(-1 * $amount, "$event->EVNT_NAME Receipt", $note, false);
 
                 if (isset($eventState) && $eventState > 0) {
                     Event::attachUser($event->id, $this->id, $eventState);
