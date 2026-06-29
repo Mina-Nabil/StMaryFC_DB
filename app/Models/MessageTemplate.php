@@ -46,7 +46,7 @@ class MessageTemplate extends Model
     {
         $dots = str_repeat('.', 50);
         $receipt = function ($messageTitle, $suffix = '') use ($dots) {
-            return ".           *{$messageTitle}*\n\n          *{{user_name}}*\n{$dots}\n\nOld Balance             {{old_balance}} EGP\n\n{{title}}          {{value}} EGP\n{$dots}\n*New* *Balance*          *{{new_balance}}* *EGP*" . $suffix;
+            return ".           *{$messageTitle}*\n\n          *{{user_name}}*\n{$dots}\n\nOld Balance             {{old_balance}} EGP\n\nFees          {{value}} EGP\n{$dots}\n*New* *Balance*          *{{new_balance}}* *EGP*" . $suffix;
         };
         $thankYou = "            \n            \n            \n{$dots}\n                   THANK YOU";
 
