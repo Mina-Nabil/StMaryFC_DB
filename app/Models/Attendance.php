@@ -14,7 +14,9 @@ class Attendance extends Model
     protected $table = "attendance";
     public $timestamps = false;
 
-    protected $dates = ['ATND_DATE'];
+    protected $casts = [
+        'ATND_DATE' => 'datetime',
+    ];
 
     public static function getAttendance($from, $to, $user = 0, $group = 0)
     {

@@ -24,6 +24,7 @@ class User extends Authenticatable
 
     protected $table = "app_users";
     public $timestamps = false;
+    protected $authPasswordName = 'USER_PASS';
 
     //functions
     public function addToBalance($value, $title, $desc = null, $isSettlment = false)
@@ -250,7 +251,7 @@ class User extends Authenticatable
             ->selectRaw(" (SELECT COUNT(id)    from attendance where ATND_USER_ID = t1.id and ATND_DATE >= '{$from}' AND ATND_DATE <= '{$to}') as A ")->get();
     }
 
-    public function setReminderDate(DateTime $date = null)
+    public function setReminderDate(?DateTime $date = null)
     {
         $this->USER_LTST_RMDR = $date ? $date->format("Y-m-d H:i:s") : date("Y-m-d H:i:s");
         $this->save();
